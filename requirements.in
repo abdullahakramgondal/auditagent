@@ -1,0 +1,26 @@
+# --- Core / config ---
+pydantic
+pydantic-settings
+python-dotenv
+tenacity
+
+# --- PDF parsing + synthetic data (Week 1) ---
+pdfplumber
+reportlab
+faker
+
+# --- Retrieval (Week 1, Day 6) ---
+chromadb
+sentence-transformers
+
+# --- LLM (Week 2) ---
+google-genai
+
+# --- Evaluation + matching (Week 2-3) ---
+pandas
+scikit-learn
+rapidfuzz
+
+# --- Dev tools ---
+pytest
+ruff
