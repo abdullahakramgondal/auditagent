@@ -24,6 +24,7 @@ and SLA uptime cannot be verified from an invoice, so they are out of scope.
 ## Out of scope for v1
 Scanned PDFs (OCR), multiple currencies, tax rules,
 contract amendments, non-English contracts, user login
+Non-integer quantities (e.g. kilograms or meters)
 
 ## Done means
 One case runs end to end, then 30 synthetic sets are evaluated.
