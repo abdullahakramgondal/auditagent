@@ -1,0 +1,46 @@
+{
+  "case_id": "case_001",
+  "seed": 1,
+  "buyer": "Lahore Software House Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "layout": {
+    "contract_pages": 6,
+    "wording_variant": 1,
+    "filler_clauses": ["confidentiality", "termination", "warranty"],
+    "target_page": {"late_penalty": 4}
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-15",
+      "mode": "flat_percent",
+      "percent": "10",
+      "grace_days": 0
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-001",
+    "po_date": "2026-09-01",
+    "delivery_due_date": "2026-10-15",
+    "line_items": [
+      {"item_name": "Server", "quantity": 10, "unit_price": "1000000", "line_total": "10000000"}
+    ],
+    "total_amount": "10000000"
+  },
+  "invoice": {
+    "invoice_number": "INV-001",
+    "invoice_date": "2026-10-26",
+    "delivery_date": "2026-10-25",
+    "line_items": [
+      {"item_name": "Server", "quantity": 10, "unit_price": "1000000", "line_total": "10000000"}
+    ],
+    "total_amount": "10000000"
+  },
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "10000000",
+    "correct_payable": "9000000",
+    "total_difference": "1000000",
+    "finding_types": ["late_penalty"]
+  }
+}

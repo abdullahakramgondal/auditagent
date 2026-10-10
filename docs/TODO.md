@@ -22,3 +22,4 @@
 ## Done so far
 - Day 1: scope.md and example_case.md
 - Day 2: schemas (contract, invoice/PO, audit) with 8 passing tests
+- Day 3: clause templates (3 wording variants, decoy clauses)

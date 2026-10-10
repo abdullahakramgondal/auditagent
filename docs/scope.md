@@ -25,6 +25,8 @@ and SLA uptime cannot be verified from an invoice, so they are out of scope.
 Scanned PDFs (OCR), multiple currencies, tax rules,
 contract amendments, non-English contracts, user login
 Non-integer quantities (e.g. kilograms or meters)
+whole-unit quantities only
+Grace days: per-day penalty counts only days beyond the grace period; flat penalty applies only if delay exceeds the grace period.
 
 ## Done means
 One case runs end to end, then 30 synthetic sets are evaluated.
