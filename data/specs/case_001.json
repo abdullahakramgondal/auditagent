@@ -6,7 +6,7 @@
   "layout": {
     "contract_pages": 6,
     "wording_variant": 1,
-    "filler_clauses": ["confidentiality", "termination", "warranty"],
+    "filler_clauses": ["confidentiality", "termination", "warranty", "liability"],
     "target_page": {"late_penalty": 4}
   },
   "rules": [
