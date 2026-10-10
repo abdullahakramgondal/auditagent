@@ -11,6 +11,13 @@ Inputs: Contract PDF, PO PDF, Invoice PDF (text-based PDFs only)
 3. Payment terms (Net N days; invoice due date must match)
 4. Agreed unit price (invoice rate must not exceed contract rate)
 
+## Calculation rules
+- The penalty percentage is applied to the invoice total.
+- Days late = delivery date minus deadline. If negative, it is set to zero.
+- Grace days: a per-day penalty counts only the days beyond the grace period;
+  a flat penalty applies only if the delay exceeds the grace period.
+- Money is handled as Decimal and computed by code, never by the LLM.
+
 ## Output
 - Status: COMPLIANT / NON_COMPLIANT / NEEDS_REVIEW
 - Findings list. Each finding has: clause text, contract page,
@@ -23,10 +30,8 @@ and SLA uptime cannot be verified from an invoice, so they are out of scope.
 
 ## Out of scope for v1
 Scanned PDFs (OCR), multiple currencies, tax rules,
-contract amendments, non-English contracts, user login
-Non-integer quantities (e.g. kilograms or meters)
-whole-unit quantities only
-Grace days: per-day penalty counts only days beyond the grace period; flat penalty applies only if delay exceeds the grace period.
+contract amendments, non-English contracts, user login,
+non-integer quantities (whole units only, e.g. no kilograms or meters)
 
 ## Done means
 One case runs end to end, then 30 synthetic sets are evaluated.
