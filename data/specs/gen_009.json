@@ -1,0 +1,70 @@
+{
+  "case_id": "gen_009",
+  "category": "late_flat",
+  "seed": 1009,
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Metro IT Distributors",
+  "layout": {
+    "contract_pages": 9,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "late_payment_charge",
+      "confidentiality",
+      "warranty"
+    ],
+    "target_page": {
+      "late_penalty": 3
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-03",
+      "mode": "flat_percent",
+      "grace_days": 0,
+      "percent": "10"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-109",
+    "po_date": "2026-09-01",
+    "delivery_due_date": "2026-10-03",
+    "line_items": [
+      {
+        "item_name": "Leased Line 100 Mbps (annual)",
+        "quantity": 20,
+        "unit_price": "1000000",
+        "line_total": "20000000"
+      }
+    ],
+    "total_amount": "20000000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5009",
+    "invoice_date": "2026-10-07",
+    "delivery_date": "2026-10-06",
+    "line_items": [
+      {
+        "item_name": "Leased Line 100 Mbps (annual)",
+        "quantity": 20,
+        "unit_price": "1000000",
+        "line_total": "20000000"
+      }
+    ],
+    "total_amount": "20000000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "20000000.00",
+    "correct_payable": "18000000.00",
+    "total_difference": "2000000.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "2000000.00"
+    }
+  }
+}

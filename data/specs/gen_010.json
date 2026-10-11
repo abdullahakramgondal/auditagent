@@ -1,0 +1,83 @@
+{
+  "case_id": "gen_010",
+  "category": "late_flat",
+  "seed": 1010,
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Metro IT Distributors",
+  "layout": {
+    "contract_pages": 18,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "late_payment_charge",
+      "confidentiality",
+      "liability",
+      "termination"
+    ],
+    "target_page": {
+      "late_penalty": 7,
+      "payment_terms": 2,
+      "volume_discount": 8
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-09-18",
+      "mode": "flat_percent",
+      "grace_days": 3,
+      "percent": "12"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 15
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 30,
+      "discount_percent": "7"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-110",
+    "po_date": "2026-08-06",
+    "delivery_due_date": "2026-09-18",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 21,
+        "unit_price": "40000",
+        "line_total": "840000"
+      }
+    ],
+    "total_amount": "840000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5010",
+    "invoice_date": "2026-09-30",
+    "delivery_date": "2026-09-28",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 21,
+        "unit_price": "40000",
+        "line_total": "840000"
+      }
+    ],
+    "total_amount": "840000",
+    "adjustments": [],
+    "due_date": "2026-10-18"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "840000.00",
+    "correct_payable": "739200.00",
+    "total_difference": "100800.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "100800.00"
+    }
+  }
+}

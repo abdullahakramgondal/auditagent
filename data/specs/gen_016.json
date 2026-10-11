@@ -1,0 +1,73 @@
+{
+  "case_id": "gen_016",
+  "category": "grace_inside",
+  "seed": 1016,
+  "buyer": "Lahore Software House Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "layout": {
+    "contract_pages": 15,
+    "wording_variant": 2,
+    "filler_clauses": [
+      "late_payment_charge",
+      "liability",
+      "confidentiality"
+    ],
+    "target_page": {
+      "late_penalty": 7,
+      "payment_terms": 7
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-15",
+      "mode": "per_day_percent",
+      "grace_days": 7,
+      "percent": "2",
+      "cap_percent": "5"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 60
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-116",
+    "po_date": "2026-08-23",
+    "delivery_due_date": "2026-10-15",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 9,
+        "unit_price": "320000",
+        "line_total": "2880000"
+      }
+    ],
+    "total_amount": "2880000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5016",
+    "invoice_date": "2026-10-24",
+    "delivery_date": "2026-10-19",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 9,
+        "unit_price": "320000",
+        "line_total": "2880000"
+      }
+    ],
+    "total_amount": "2880000",
+    "adjustments": [],
+    "due_date": "2026-12-27"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "2880000.00",
+    "correct_payable": "2880000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

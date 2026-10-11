@@ -1,0 +1,70 @@
+{
+  "case_id": "gen_006",
+  "category": "compliant_applied",
+  "seed": 1006,
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "layout": {
+    "contract_pages": 15,
+    "wording_variant": 2,
+    "filler_clauses": [
+      "warranty",
+      "confidentiality"
+    ],
+    "target_page": {
+      "volume_discount": 13
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 30,
+      "discount_percent": "5"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-106",
+    "po_date": "2026-08-29",
+    "delivery_due_date": "2026-09-28",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 48,
+        "unit_price": "140000",
+        "line_total": "6720000"
+      }
+    ],
+    "total_amount": "6720000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5006",
+    "invoice_date": "2026-09-28",
+    "delivery_date": "2026-09-27",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 48,
+        "unit_price": "140000",
+        "line_total": "6720000"
+      }
+    ],
+    "total_amount": "6384000",
+    "adjustments": [
+      {
+        "label": "Less: volume discount",
+        "amount": "-336000"
+      }
+    ]
+  },
+  "vendor_applied": [
+    "volume_discount"
+  ],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "6384000.00",
+    "correct_payable": "6384000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

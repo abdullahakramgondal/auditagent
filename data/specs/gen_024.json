@@ -1,0 +1,70 @@
+{
+  "case_id": "gen_024",
+  "category": "terms_wrong",
+  "seed": 1024,
+  "buyer": "Five Rivers Technologies Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "layout": {
+    "contract_pages": 6,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "termination",
+      "liability",
+      "late_payment_charge",
+      "warranty",
+      "confidentiality"
+    ],
+    "target_page": {
+      "payment_terms": 2
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "payment_terms",
+      "net_days": 15
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-124",
+    "po_date": "2026-08-21",
+    "delivery_due_date": "2026-10-16",
+    "line_items": [
+      {
+        "item_name": "Cisco Catalyst 9300 Switch",
+        "quantity": 28,
+        "unit_price": "630000",
+        "line_total": "17640000"
+      }
+    ],
+    "total_amount": "17640000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5024",
+    "invoice_date": "2026-10-15",
+    "delivery_date": "2026-10-13",
+    "line_items": [
+      {
+        "item_name": "Cisco Catalyst 9300 Switch",
+        "quantity": 28,
+        "unit_price": "630000",
+        "line_total": "17640000"
+      }
+    ],
+    "total_amount": "17640000",
+    "adjustments": [],
+    "due_date": "2026-10-19"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "17640000.00",
+    "correct_payable": "17640000.00",
+    "total_difference": "0.00",
+    "finding_types": [
+      "payment_terms"
+    ],
+    "finding_amounts": {
+      "payment_terms": "0.00"
+    }
+  }
+}

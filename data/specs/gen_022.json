@@ -1,0 +1,70 @@
+{
+  "case_id": "gen_022",
+  "category": "price_over",
+  "seed": 1022,
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 11,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "warranty",
+      "liability",
+      "termination",
+      "confidentiality",
+      "late_payment_charge"
+    ],
+    "target_page": {
+      "unit_price": 4
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "unit_price",
+      "item_name": "Microsoft 365 Business License",
+      "agreed_unit_price": "30000"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-122",
+    "po_date": "2026-08-24",
+    "delivery_due_date": "2026-09-25",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 27,
+        "unit_price": "30000",
+        "line_total": "810000"
+      }
+    ],
+    "total_amount": "810000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5022",
+    "invoice_date": "2026-09-25",
+    "delivery_date": "2026-09-24",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 27,
+        "unit_price": "33000",
+        "line_total": "891000"
+      }
+    ],
+    "total_amount": "891000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "891000.00",
+    "correct_payable": "810000.00",
+    "total_difference": "81000.00",
+    "finding_types": [
+      "unit_price"
+    ],
+    "finding_amounts": {
+      "unit_price": "81000.00"
+    }
+  }
+}

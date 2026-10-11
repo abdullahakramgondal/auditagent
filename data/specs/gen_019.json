@@ -1,0 +1,69 @@
+{
+  "case_id": "gen_019",
+  "category": "volume_missed",
+  "seed": 1019,
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 15,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "warranty",
+      "termination",
+      "liability",
+      "confidentiality"
+    ],
+    "target_page": {
+      "volume_discount": 4
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 25,
+      "discount_percent": "7"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-119",
+    "po_date": "2026-08-07",
+    "delivery_due_date": "2026-09-30",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 50,
+        "unit_price": "160000",
+        "line_total": "8000000"
+      }
+    ],
+    "total_amount": "8000000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5019",
+    "invoice_date": "2026-09-29",
+    "delivery_date": "2026-09-25",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 50,
+        "unit_price": "160000",
+        "line_total": "8000000"
+      }
+    ],
+    "total_amount": "8000000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "8000000.00",
+    "correct_payable": "7440000.00",
+    "total_difference": "560000.00",
+    "finding_types": [
+      "volume_discount"
+    ],
+    "finding_amounts": {
+      "volume_discount": "560000.00"
+    }
+  }
+}

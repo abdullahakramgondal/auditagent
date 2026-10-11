@@ -1,0 +1,79 @@
+{
+  "case_id": "gen_003",
+  "category": "compliant_plain",
+  "seed": 1003,
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "layout": {
+    "contract_pages": 4,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "late_payment_charge",
+      "confidentiality",
+      "termination"
+    ],
+    "target_page": {
+      "unit_price": 2,
+      "late_penalty": 2,
+      "volume_discount": 3
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "unit_price",
+      "item_name": "Dell PowerEdge R750 Server",
+      "agreed_unit_price": "2050000"
+    },
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-11",
+      "mode": "per_day_percent",
+      "grace_days": 3,
+      "percent": "2",
+      "cap_percent": "5"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 30,
+      "discount_percent": "7"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-103",
+    "po_date": "2026-08-30",
+    "delivery_due_date": "2026-10-11",
+    "line_items": [
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 21,
+        "unit_price": "2050000",
+        "line_total": "43050000"
+      }
+    ],
+    "total_amount": "43050000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5003",
+    "invoice_date": "2026-10-13",
+    "delivery_date": "2026-10-08",
+    "line_items": [
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 21,
+        "unit_price": "2050000",
+        "line_total": "43050000"
+      }
+    ],
+    "total_amount": "43050000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "43050000.00",
+    "correct_payable": "43050000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

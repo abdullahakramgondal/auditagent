@@ -1,0 +1,74 @@
+{
+  "case_id": "gen_018",
+  "category": "volume_missed",
+  "seed": 1018,
+  "buyer": "Five Rivers Technologies Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 8,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "late_payment_charge",
+      "liability",
+      "confidentiality"
+    ],
+    "target_page": {
+      "volume_discount": 6,
+      "payment_terms": 6
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 25,
+      "discount_percent": "10"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 15
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-118",
+    "po_date": "2026-08-07",
+    "delivery_due_date": "2026-09-27",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 31,
+        "unit_price": "140000",
+        "line_total": "4340000"
+      }
+    ],
+    "total_amount": "4340000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5018",
+    "invoice_date": "2026-09-26",
+    "delivery_date": "2026-09-22",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 31,
+        "unit_price": "140000",
+        "line_total": "4340000"
+      }
+    ],
+    "total_amount": "4340000",
+    "adjustments": [],
+    "due_date": "2026-10-15"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "4340000.00",
+    "correct_payable": "3906000.00",
+    "total_difference": "434000.00",
+    "finding_types": [
+      "volume_discount"
+    ],
+    "finding_amounts": {
+      "volume_discount": "434000.00"
+    }
+  }
+}

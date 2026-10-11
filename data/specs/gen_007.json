@@ -1,0 +1,81 @@
+{
+  "case_id": "gen_007",
+  "category": "late_flat",
+  "seed": 1007,
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "layout": {
+    "contract_pages": 4,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "liability",
+      "termination"
+    ],
+    "target_page": {
+      "late_penalty": 4
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-09",
+      "mode": "flat_percent",
+      "grace_days": 3,
+      "percent": "15"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-107",
+    "po_date": "2026-08-12",
+    "delivery_due_date": "2026-10-09",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 8,
+        "unit_price": "510000",
+        "line_total": "4080000"
+      },
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 10,
+        "unit_price": "1700000",
+        "line_total": "17000000"
+      }
+    ],
+    "total_amount": "21080000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5007",
+    "invoice_date": "2026-10-27",
+    "delivery_date": "2026-10-22",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 8,
+        "unit_price": "510000",
+        "line_total": "4080000"
+      },
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 10,
+        "unit_price": "1700000",
+        "line_total": "17000000"
+      }
+    ],
+    "total_amount": "21080000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "21080000.00",
+    "correct_payable": "17918000.00",
+    "total_difference": "3162000.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "3162000.00"
+    }
+  }
+}

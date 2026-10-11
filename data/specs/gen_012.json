@@ -1,0 +1,76 @@
+{
+  "case_id": "gen_012",
+  "category": "late_per_day",
+  "seed": 1012,
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 17,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "liability",
+      "termination"
+    ],
+    "target_page": {
+      "late_penalty": 13,
+      "volume_discount": 7
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-01",
+      "mode": "per_day_percent",
+      "grace_days": 0,
+      "percent": "2",
+      "cap_percent": "8"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 50,
+      "discount_percent": "10"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-112",
+    "po_date": "2026-08-26",
+    "delivery_due_date": "2026-10-01",
+    "line_items": [
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 3,
+        "unit_price": "2080000",
+        "line_total": "6240000"
+      }
+    ],
+    "total_amount": "6240000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5012",
+    "invoice_date": "2026-10-10",
+    "delivery_date": "2026-10-06",
+    "line_items": [
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 3,
+        "unit_price": "2080000",
+        "line_total": "6240000"
+      }
+    ],
+    "total_amount": "6240000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "6240000.00",
+    "correct_payable": "5740800.00",
+    "total_difference": "499200.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "499200.00"
+    }
+  }
+}

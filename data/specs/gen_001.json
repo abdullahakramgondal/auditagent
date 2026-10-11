@@ -1,0 +1,72 @@
+{
+  "case_id": "gen_001",
+  "category": "compliant_plain",
+  "seed": 1001,
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Metro IT Distributors",
+  "layout": {
+    "contract_pages": 7,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "late_payment_charge",
+      "confidentiality"
+    ],
+    "target_page": {
+      "volume_discount": 4,
+      "late_penalty": 5
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 25,
+      "discount_percent": "3"
+    },
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-19",
+      "mode": "per_day_percent",
+      "grace_days": 0,
+      "percent": "2",
+      "cap_percent": "8"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-101",
+    "po_date": "2026-08-27",
+    "delivery_due_date": "2026-10-19",
+    "line_items": [
+      {
+        "item_name": "APC Smart-UPS 3000VA",
+        "quantity": 3,
+        "unit_price": "270000",
+        "line_total": "810000"
+      }
+    ],
+    "total_amount": "810000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5001",
+    "invoice_date": "2026-10-20",
+    "delivery_date": "2026-10-15",
+    "line_items": [
+      {
+        "item_name": "APC Smart-UPS 3000VA",
+        "quantity": 3,
+        "unit_price": "270000",
+        "line_total": "810000"
+      }
+    ],
+    "total_amount": "810000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "810000.00",
+    "correct_payable": "810000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

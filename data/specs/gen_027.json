@@ -1,0 +1,78 @@
+{
+  "case_id": "gen_027",
+  "category": "multi_breach",
+  "seed": 1027,
+  "buyer": "Five Rivers Technologies Pvt Ltd",
+  "vendor": "Alpha Hardware Traders",
+  "layout": {
+    "contract_pages": 5,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "late_payment_charge",
+      "confidentiality"
+    ],
+    "target_page": {
+      "late_penalty": 4,
+      "payment_terms": 2
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-09-28",
+      "mode": "per_day_percent",
+      "grace_days": 0,
+      "percent": "2",
+      "cap_percent": "10"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 60
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-127",
+    "po_date": "2026-08-01",
+    "delivery_due_date": "2026-09-28",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 37,
+        "unit_price": "30000",
+        "line_total": "1110000"
+      }
+    ],
+    "total_amount": "1110000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5027",
+    "invoice_date": "2026-10-08",
+    "delivery_date": "2026-10-07",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 37,
+        "unit_price": "30000",
+        "line_total": "1110000"
+      }
+    ],
+    "total_amount": "1110000",
+    "adjustments": [],
+    "due_date": "2026-11-26"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "1110000.00",
+    "correct_payable": "999000.00",
+    "total_difference": "111000.00",
+    "finding_types": [
+      "late_penalty",
+      "payment_terms"
+    ],
+    "finding_amounts": {
+      "late_penalty": "111000.00",
+      "payment_terms": "0.00"
+    }
+  }
+}

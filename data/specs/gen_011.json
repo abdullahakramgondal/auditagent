@@ -1,0 +1,79 @@
+{
+  "case_id": "gen_011",
+  "category": "late_per_day",
+  "seed": 1011,
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "layout": {
+    "contract_pages": 12,
+    "wording_variant": 2,
+    "filler_clauses": [
+      "late_payment_charge",
+      "confidentiality",
+      "termination",
+      "liability",
+      "warranty"
+    ],
+    "target_page": {
+      "late_penalty": 9,
+      "unit_price": 2
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-01",
+      "mode": "per_day_percent",
+      "grace_days": 0,
+      "percent": "2",
+      "cap_percent": "8"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Leased Line 100 Mbps (annual)",
+      "agreed_unit_price": "1150000"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-111",
+    "po_date": "2026-08-27",
+    "delivery_due_date": "2026-10-01",
+    "line_items": [
+      {
+        "item_name": "Leased Line 100 Mbps (annual)",
+        "quantity": 33,
+        "unit_price": "1150000",
+        "line_total": "37950000"
+      }
+    ],
+    "total_amount": "37950000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5011",
+    "invoice_date": "2026-10-09",
+    "delivery_date": "2026-10-05",
+    "line_items": [
+      {
+        "item_name": "Leased Line 100 Mbps (annual)",
+        "quantity": 33,
+        "unit_price": "1150000",
+        "line_total": "37950000"
+      }
+    ],
+    "total_amount": "37950000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "37950000.00",
+    "correct_payable": "34914000.00",
+    "total_difference": "3036000.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "3036000.00"
+    }
+  }
+}

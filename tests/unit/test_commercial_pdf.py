@@ -19,3 +19,14 @@ def test_po_pdf_contains_key_fields(tmp_path):
     text = " ".join(read_pages(pdf))
     for piece in ("PO-2026-001", "15 October 2026", "Server", "PKR 10,000,000"):
         assert piece in text
+
+
+def test_invoice_pdf_shows_adjustments(tmp_path):
+    spec = json.loads(json.dumps(SPEC))
+    spec["invoice"]["adjustments"] = [{"label": "Less: volume discount", "amount": "-3000000"}]
+    spec["invoice"]["total_amount"] = "7000000"
+    pdf = write_invoice_pdf(spec, tmp_path / "invoice.pdf")
+    text = " ".join(read_pages(pdf))
+    assert "Less: volume discount" in text
+    assert "3,000,000" in text
+    assert "PKR 7,000,000" in text

@@ -1,0 +1,71 @@
+{
+  "case_id": "gen_029",
+  "category": "decoy",
+  "seed": 1029,
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 4,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "liability",
+      "late_payment_charge",
+      "termination"
+    ],
+    "target_page": {
+      "late_penalty": 4
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-25",
+      "mode": "per_day_percent",
+      "grace_days": 3,
+      "percent": "2",
+      "cap_percent": "15"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-129",
+    "po_date": "2026-09-09",
+    "delivery_due_date": "2026-10-25",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 37,
+        "unit_price": "300000",
+        "line_total": "11100000"
+      }
+    ],
+    "total_amount": "11100000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5029",
+    "invoice_date": "2026-11-10",
+    "delivery_date": "2026-11-09",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 37,
+        "unit_price": "300000",
+        "line_total": "11100000"
+      }
+    ],
+    "total_amount": "11100000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "11100000.00",
+    "correct_payable": "9435000.00",
+    "total_difference": "1665000.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "1665000.00"
+    }
+  }
+}

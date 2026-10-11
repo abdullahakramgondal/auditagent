@@ -1,0 +1,86 @@
+{
+  "case_id": "gen_017",
+  "category": "grace_inside",
+  "seed": 1017,
+  "buyer": "Lahore Software House Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 13,
+    "wording_variant": 2,
+    "filler_clauses": [
+      "late_payment_charge",
+      "liability",
+      "confidentiality",
+      "termination"
+    ],
+    "target_page": {
+      "late_penalty": 9,
+      "payment_terms": 4
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-09-17",
+      "mode": "per_day_percent",
+      "grace_days": 3,
+      "percent": "2",
+      "cap_percent": "15"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 60
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-117",
+    "po_date": "2026-08-07",
+    "delivery_due_date": "2026-09-17",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 5,
+        "unit_price": "460000",
+        "line_total": "2300000"
+      },
+      {
+        "item_name": "Leased Line 100 Mbps (annual)",
+        "quantity": 14,
+        "unit_price": "1400000",
+        "line_total": "19600000"
+      }
+    ],
+    "total_amount": "21900000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5017",
+    "invoice_date": "2026-09-25",
+    "delivery_date": "2026-09-20",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 5,
+        "unit_price": "460000",
+        "line_total": "2300000"
+      },
+      {
+        "item_name": "Leased Line 100 Mbps (annual)",
+        "quantity": 14,
+        "unit_price": "1400000",
+        "line_total": "19600000"
+      }
+    ],
+    "total_amount": "21900000",
+    "adjustments": [],
+    "due_date": "2026-11-27"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "21900000.00",
+    "correct_payable": "21900000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

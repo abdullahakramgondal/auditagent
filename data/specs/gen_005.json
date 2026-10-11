@@ -1,0 +1,72 @@
+{
+  "case_id": "gen_005",
+  "category": "compliant_applied",
+  "seed": 1005,
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "layout": {
+    "contract_pages": 13,
+    "wording_variant": 2,
+    "filler_clauses": [
+      "termination",
+      "confidentiality",
+      "warranty",
+      "liability"
+    ],
+    "target_page": {
+      "volume_discount": 9
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 25,
+      "discount_percent": "10"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-105",
+    "po_date": "2026-08-27",
+    "delivery_due_date": "2026-10-24",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 28,
+        "unit_price": "620000",
+        "line_total": "17360000"
+      }
+    ],
+    "total_amount": "17360000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5005",
+    "invoice_date": "2026-10-24",
+    "delivery_date": "2026-10-19",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 28,
+        "unit_price": "620000",
+        "line_total": "17360000"
+      }
+    ],
+    "total_amount": "15624000",
+    "adjustments": [
+      {
+        "label": "Less: volume discount",
+        "amount": "-1736000"
+      }
+    ]
+  },
+  "vendor_applied": [
+    "volume_discount"
+  ],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "15624000.00",
+    "correct_payable": "15624000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

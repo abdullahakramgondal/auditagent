@@ -1,0 +1,77 @@
+{
+  "case_id": "gen_026",
+  "category": "multi_breach",
+  "seed": 1026,
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "layout": {
+    "contract_pages": 10,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "warranty",
+      "confidentiality",
+      "liability",
+      "termination"
+    ],
+    "target_page": {
+      "payment_terms": 9,
+      "volume_discount": 4
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "payment_terms",
+      "net_days": 15
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 20,
+      "discount_percent": "10"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-126",
+    "po_date": "2026-08-17",
+    "delivery_due_date": "2026-09-23",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 40,
+        "unit_price": "40000",
+        "line_total": "1600000"
+      }
+    ],
+    "total_amount": "1600000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5026",
+    "invoice_date": "2026-09-24",
+    "delivery_date": "2026-09-21",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 40,
+        "unit_price": "40000",
+        "line_total": "1600000"
+      }
+    ],
+    "total_amount": "1600000",
+    "adjustments": [],
+    "due_date": "2026-09-30"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "1600000.00",
+    "correct_payable": "1440000.00",
+    "total_difference": "160000.00",
+    "finding_types": [
+      "payment_terms",
+      "volume_discount"
+    ],
+    "finding_amounts": {
+      "volume_discount": "160000.00",
+      "payment_terms": "0.00"
+    }
+  }
+}

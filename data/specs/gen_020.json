@@ -1,0 +1,69 @@
+{
+  "case_id": "gen_020",
+  "category": "volume_missed",
+  "seed": 1020,
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "layout": {
+    "contract_pages": 19,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "warranty",
+      "liability",
+      "confidentiality",
+      "termination"
+    ],
+    "target_page": {
+      "volume_discount": 17
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 30,
+      "discount_percent": "7"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-120",
+    "po_date": "2026-08-26",
+    "delivery_due_date": "2026-10-13",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 43,
+        "unit_price": "260000",
+        "line_total": "11180000"
+      }
+    ],
+    "total_amount": "11180000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5020",
+    "invoice_date": "2026-10-14",
+    "delivery_date": "2026-10-09",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 43,
+        "unit_price": "260000",
+        "line_total": "11180000"
+      }
+    ],
+    "total_amount": "11180000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "11180000.00",
+    "correct_payable": "10397400.00",
+    "total_difference": "782600.00",
+    "finding_types": [
+      "volume_discount"
+    ],
+    "finding_amounts": {
+      "volume_discount": "782600.00"
+    }
+  }
+}

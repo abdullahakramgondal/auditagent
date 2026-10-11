@@ -1,0 +1,68 @@
+{
+  "case_id": "gen_015",
+  "category": "grace_inside",
+  "seed": 1015,
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "layout": {
+    "contract_pages": 16,
+    "wording_variant": 2,
+    "filler_clauses": [
+      "termination",
+      "late_payment_charge",
+      "liability",
+      "confidentiality"
+    ],
+    "target_page": {
+      "late_penalty": 11
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-25",
+      "mode": "per_day_percent",
+      "grace_days": 5,
+      "percent": "1",
+      "cap_percent": "5"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-115",
+    "po_date": "2026-09-03",
+    "delivery_due_date": "2026-10-25",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 24,
+        "unit_price": "40000",
+        "line_total": "960000"
+      }
+    ],
+    "total_amount": "960000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5015",
+    "invoice_date": "2026-11-02",
+    "delivery_date": "2026-10-29",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 24,
+        "unit_price": "40000",
+        "line_total": "960000"
+      }
+    ],
+    "total_amount": "960000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "960000.00",
+    "correct_payable": "960000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

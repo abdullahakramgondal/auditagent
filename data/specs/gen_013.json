@@ -1,0 +1,79 @@
+{
+  "case_id": "gen_013",
+  "category": "late_per_day",
+  "seed": 1013,
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 5,
+    "wording_variant": 2,
+    "filler_clauses": [
+      "warranty",
+      "confidentiality",
+      "liability",
+      "termination",
+      "late_payment_charge"
+    ],
+    "target_page": {
+      "late_penalty": 4,
+      "unit_price": 3
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-24",
+      "mode": "per_day_percent",
+      "grace_days": 0,
+      "percent": "1",
+      "cap_percent": "10"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Dell PowerEdge R750 Server",
+      "agreed_unit_price": "2180000"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-113",
+    "po_date": "2026-09-06",
+    "delivery_due_date": "2026-10-24",
+    "line_items": [
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 8,
+        "unit_price": "2180000",
+        "line_total": "17440000"
+      }
+    ],
+    "total_amount": "17440000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5013",
+    "invoice_date": "2026-10-28",
+    "delivery_date": "2026-10-25",
+    "line_items": [
+      {
+        "item_name": "Dell PowerEdge R750 Server",
+        "quantity": 8,
+        "unit_price": "2180000",
+        "line_total": "17440000"
+      }
+    ],
+    "total_amount": "17440000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "17440000.00",
+    "correct_payable": "17265600.00",
+    "total_difference": "174400.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "174400.00"
+    }
+  }
+}

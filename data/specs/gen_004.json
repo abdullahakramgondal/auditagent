@@ -1,0 +1,77 @@
+{
+  "case_id": "gen_004",
+  "category": "compliant_plain",
+  "seed": 1004,
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Alpha Hardware Traders",
+  "layout": {
+    "contract_pages": 7,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "late_payment_charge",
+      "warranty"
+    ],
+    "target_page": {
+      "late_penalty": 2,
+      "unit_price": 5,
+      "payment_terms": 2
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-12",
+      "mode": "flat_percent",
+      "grace_days": 0,
+      "percent": "5"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Lenovo ThinkPad T14 Laptop",
+      "agreed_unit_price": "310000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 30
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-104",
+    "po_date": "2026-09-11",
+    "delivery_due_date": "2026-10-12",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 37,
+        "unit_price": "310000",
+        "line_total": "11470000"
+      }
+    ],
+    "total_amount": "11470000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5004",
+    "invoice_date": "2026-10-12",
+    "delivery_date": "2026-10-11",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 37,
+        "unit_price": "310000",
+        "line_total": "11470000"
+      }
+    ],
+    "total_amount": "11470000",
+    "adjustments": [],
+    "due_date": "2026-11-12"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "11470000.00",
+    "correct_payable": "11470000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

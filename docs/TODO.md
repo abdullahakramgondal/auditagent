@@ -14,6 +14,7 @@
 | 10 | PO and invoice need 2 to 3 layout variants (right now every document looks the same, which makes Agent 2 evaluation too easy) | Needs the spec generator first | Day 4 |
 | 12 | Dataset sanity tests: for all 30 cases, invoice total is consistent with vendor_applied, and billed_total - correct_payable == total_difference | Needs the 30 specs | Day 4 |
 | 13 | Week 4 rule engine must be written independently of ground_truth.py (never import or copy it) | Otherwise both can share the same mistake and evaluation becomes meaningless | Week 4 |
+| 14 | Realistic evaluation tiers: Tier B (8-10 LLM-written long contracts from specs, hand-verified, written by at least 2 different AIs plus 1-2 by hand), Tier C (2-3 messy docs with tables, headers, scattered clauses) | Needs a working Agent 1 first | Week 2, Day 9-10 and Week 3 |
 
 ## Completed items
 

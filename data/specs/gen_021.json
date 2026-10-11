@@ -1,0 +1,81 @@
+{
+  "case_id": "gen_021",
+  "category": "price_over",
+  "seed": 1021,
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "layout": {
+    "contract_pages": 13,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "termination",
+      "liability"
+    ],
+    "target_page": {
+      "unit_price": 5,
+      "payment_terms": 7,
+      "late_penalty": 7
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "unit_price",
+      "item_name": "Microsoft 365 Business License",
+      "agreed_unit_price": "40000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 30
+    },
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-17",
+      "mode": "flat_percent",
+      "grace_days": 0,
+      "percent": "12"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-121",
+    "po_date": "2026-09-04",
+    "delivery_due_date": "2026-10-17",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 11,
+        "unit_price": "40000",
+        "line_total": "440000"
+      }
+    ],
+    "total_amount": "440000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5021",
+    "invoice_date": "2026-10-19",
+    "delivery_date": "2026-10-14",
+    "line_items": [
+      {
+        "item_name": "Microsoft 365 Business License",
+        "quantity": 11,
+        "unit_price": "44000",
+        "line_total": "484000"
+      }
+    ],
+    "total_amount": "484000",
+    "adjustments": [],
+    "due_date": "2026-11-18"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "484000.00",
+    "correct_payable": "440000.00",
+    "total_difference": "44000.00",
+    "finding_types": [
+      "unit_price"
+    ],
+    "finding_amounts": {
+      "unit_price": "44000.00"
+    }
+  }
+}

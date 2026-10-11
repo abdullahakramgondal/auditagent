@@ -14,3 +14,9 @@
 
 Every case: 3 wording variants, 2 to 8 contract pages, varied items.
 Ground truth comes from the spec file, never from the system under test.
+
+## Evaluation tiers
+- Tier A: 30 generated cases (exact ground truth from code)
+- Tier B: 8-10 realistic LLM-written contracts, hand-verified against the spec
+- Tier C: 2-3 messy documents (tables, headers, scattered clauses)
+Results are reported per tier. Tier A measures accuracy; Tiers B and C measure realism.

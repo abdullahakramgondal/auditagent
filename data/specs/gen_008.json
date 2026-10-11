@@ -1,0 +1,83 @@
+{
+  "case_id": "gen_008",
+  "category": "late_flat",
+  "seed": 1008,
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Metro IT Distributors",
+  "layout": {
+    "contract_pages": 13,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "termination",
+      "liability",
+      "confidentiality",
+      "warranty"
+    ],
+    "target_page": {
+      "late_penalty": 3,
+      "unit_price": 5,
+      "payment_terms": 8
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-11-08",
+      "mode": "flat_percent",
+      "grace_days": 0,
+      "percent": "15"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Cisco Catalyst 9300 Switch",
+      "agreed_unit_price": "380000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 45
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-108",
+    "po_date": "2026-09-15",
+    "delivery_due_date": "2026-11-08",
+    "line_items": [
+      {
+        "item_name": "Cisco Catalyst 9300 Switch",
+        "quantity": 14,
+        "unit_price": "380000",
+        "line_total": "5320000"
+      }
+    ],
+    "total_amount": "5320000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5008",
+    "invoice_date": "2026-11-13",
+    "delivery_date": "2026-11-12",
+    "line_items": [
+      {
+        "item_name": "Cisco Catalyst 9300 Switch",
+        "quantity": 14,
+        "unit_price": "380000",
+        "line_total": "5320000"
+      }
+    ],
+    "total_amount": "5320000",
+    "adjustments": [],
+    "due_date": "2027-01-01"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "5320000.00",
+    "correct_payable": "4522000.00",
+    "total_difference": "798000.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "798000.00"
+    }
+  }
+}

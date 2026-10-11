@@ -1,0 +1,70 @@
+{
+  "case_id": "gen_030",
+  "category": "decoy",
+  "seed": 1030,
+  "buyer": "Five Rivers Technologies Pvt Ltd",
+  "vendor": "Metro IT Distributors",
+  "layout": {
+    "contract_pages": 3,
+    "wording_variant": 1,
+    "filler_clauses": [
+      "liability",
+      "late_payment_charge",
+      "confidentiality"
+    ],
+    "target_page": {
+      "late_penalty": 2
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-13",
+      "mode": "flat_percent",
+      "grace_days": 0,
+      "percent": "5"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-130",
+    "po_date": "2026-09-08",
+    "delivery_due_date": "2026-10-13",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 37,
+        "unit_price": "160000",
+        "line_total": "5920000"
+      }
+    ],
+    "total_amount": "5920000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5030",
+    "invoice_date": "2026-10-30",
+    "delivery_date": "2026-10-28",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 37,
+        "unit_price": "160000",
+        "line_total": "5920000"
+      }
+    ],
+    "total_amount": "5920000",
+    "adjustments": []
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "5920000.00",
+    "correct_payable": "5624000.00",
+    "total_difference": "296000.00",
+    "finding_types": [
+      "late_penalty"
+    ],
+    "finding_amounts": {
+      "late_penalty": "296000.00"
+    }
+  }
+}

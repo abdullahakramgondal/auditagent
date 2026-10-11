@@ -1,0 +1,85 @@
+{
+  "case_id": "gen_002",
+  "category": "compliant_plain",
+  "seed": 1002,
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "layout": {
+    "contract_pages": 7,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "warranty",
+      "liability",
+      "late_payment_charge"
+    ],
+    "target_page": {
+      "payment_terms": 6,
+      "late_penalty": 7,
+      "unit_price": 7,
+      "volume_discount": 5
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "payment_terms",
+      "net_days": 30
+    },
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-09-28",
+      "mode": "per_day_percent",
+      "grace_days": 0,
+      "percent": "1",
+      "cap_percent": "5"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Cisco Catalyst 9300 Switch",
+      "agreed_unit_price": "620000"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 50,
+      "discount_percent": "3"
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-102",
+    "po_date": "2026-08-09",
+    "delivery_due_date": "2026-09-28",
+    "line_items": [
+      {
+        "item_name": "Cisco Catalyst 9300 Switch",
+        "quantity": 39,
+        "unit_price": "620000",
+        "line_total": "24180000"
+      }
+    ],
+    "total_amount": "24180000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5002",
+    "invoice_date": "2026-10-03",
+    "delivery_date": "2026-09-28",
+    "line_items": [
+      {
+        "item_name": "Cisco Catalyst 9300 Switch",
+        "quantity": 39,
+        "unit_price": "620000",
+        "line_total": "24180000"
+      }
+    ],
+    "total_amount": "24180000",
+    "adjustments": [],
+    "due_date": "2026-11-07"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "24180000.00",
+    "correct_payable": "24180000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

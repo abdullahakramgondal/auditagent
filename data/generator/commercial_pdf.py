@@ -23,7 +23,7 @@ def _date_line(label: str, iso: str | None) -> list[str]:
     return [f"{label}: {fmt_date(date.fromisoformat(iso))}"] if iso else []
 
 
-def _draw_document(path, title, header_lines, items, total) -> Path:
+def _draw_document(path, title, header_lines, items, total, adjustments=()) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     c = canvas.Canvas(str(path), pagesize=A4)
@@ -56,6 +56,13 @@ def _draw_document(path, title, header_lines, items, total) -> Path:
         if y < MARGIN + 40:
             raise ValueError("Too many line items for one page")
 
+    for adj in adjustments:
+        amount = Decimal(str(adj["amount"]))
+        sign = "-" if amount < 0 else ""
+        c.drawString(COLS[0], y, adj["label"])
+        c.drawString(COLS[3], y, f"{sign}{_money(abs(amount))}")
+        y -= 16
+
     y -= 10
     c.setFont("Helvetica-Bold", 12)
     c.drawString(COLS[2], y, "Total:")
@@ -81,4 +88,11 @@ def write_invoice_pdf(spec: dict, out_path) -> Path:
     header += _date_line("Delivery Date", inv.get("delivery_date"))
     header += _date_line("Due Date", inv.get("due_date"))
     header += [f"Bill To: {spec['buyer']}", f"From: {spec['vendor']}"]
-    return _draw_document(out_path, "INVOICE", header, inv["line_items"], inv["total_amount"])
+    return _draw_document(
+        out_path,
+        "INVOICE",
+        header,
+        inv["line_items"],
+        inv["total_amount"],
+        inv.get("adjustments", []),
+    )

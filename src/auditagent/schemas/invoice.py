@@ -12,6 +12,13 @@ class LineItem(BaseModel):
     line_total: Decimal = Field(ge=0)
 
 
+class Adjustment(BaseModel):
+    """A deduction or charge printed on the invoice, e.g. 'Less: volume discount'."""
+
+    label: str = Field(min_length=1)
+    amount: Decimal  # negative = credit to the buyer
+
+
 class InvoiceData(BaseModel):
     """Output of Agent 2 for one invoice."""
 
@@ -20,8 +27,10 @@ class InvoiceData(BaseModel):
     delivery_date: date | None = None
     due_date: date | None = None
     line_items: list[LineItem] = Field(min_length=1)
+    adjustments: list[Adjustment] = Field(default_factory=list)
     total_amount: Decimal = Field(gt=0)
     currency: Literal["PKR"] = "PKR"
+    
 
 
 class PurchaseOrderData(BaseModel):

@@ -1,0 +1,67 @@
+{
+  "case_id": "gen_025",
+  "category": "terms_wrong",
+  "seed": 1025,
+  "buyer": "Five Rivers Technologies Pvt Ltd",
+  "vendor": "Alpha Hardware Traders",
+  "layout": {
+    "contract_pages": 5,
+    "wording_variant": 3,
+    "filler_clauses": [
+      "warranty",
+      "termination"
+    ],
+    "target_page": {
+      "payment_terms": 2
+    }
+  },
+  "rules": [
+    {
+      "clause_type": "payment_terms",
+      "net_days": 45
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-125",
+    "po_date": "2026-08-14",
+    "delivery_due_date": "2026-09-24",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 25,
+        "unit_price": "120000",
+        "line_total": "3000000"
+      }
+    ],
+    "total_amount": "3000000"
+  },
+  "invoice": {
+    "invoice_number": "INV-5025",
+    "invoice_date": "2026-09-23",
+    "delivery_date": "2026-09-21",
+    "line_items": [
+      {
+        "item_name": "HP LaserJet Enterprise Printer",
+        "quantity": 25,
+        "unit_price": "120000",
+        "line_total": "3000000"
+      }
+    ],
+    "total_amount": "3000000",
+    "adjustments": [],
+    "due_date": "2026-10-29"
+  },
+  "vendor_applied": [],
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "3000000.00",
+    "correct_payable": "3000000.00",
+    "total_difference": "0.00",
+    "finding_types": [
+      "payment_terms"
+    ],
+    "finding_amounts": {
+      "payment_terms": "0.00"
+    }
+  }
+}
