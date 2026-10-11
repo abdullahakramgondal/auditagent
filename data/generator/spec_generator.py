@@ -6,6 +6,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from data.generator.ground_truth import evaluate_case
+from data.generator.commercial_pdf import DOC_VARIANTS
 from data.generator.templates import FILLERS, VARIANTS
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -222,6 +223,7 @@ def build_spec(category: str, index: int) -> dict:
         "layout": {
             "contract_pages": pages,
             "wording_variant": rng.choice(VARIANTS),
+            "doc_variant": random.Random(seed + 7).choice(DOC_VARIANTS),
             "filler_clauses": fillers,
             "target_page": {r["clause_type"]: rng.randint(2, pages) for r in rules},
         },

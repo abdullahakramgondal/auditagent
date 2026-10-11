@@ -2,7 +2,8 @@
 
 | Category | Cases | Purpose |
 |---|---|---|
-| All compliant | 6 | No false alarms |
+| Compliant, plain | 4 | No false alarms |
+| Compliant, vendor already applied the deduction | 2 | Deduction must be read from the invoice |
 | Late penalty, flat % | 4 | Easy case |
 | Late penalty, per-day + cap | 4 | Arithmetic test |
 | Late but inside grace days (compliant) | 3 | Common mistake: penalty applied wrongly |
@@ -12,8 +13,10 @@
 | Multiple breaches in one case | 3 | Findings must agree |
 | Decoy / tricky wording | 2 | Penalty-like text in the wrong clause |
 
-Every case: 3 wording variants, 2 to 8 contract pages, varied items.
+Every case: 3 wording variants, 3 to 20 contract pages, varied items, and one of
+3 PO/invoice layouts (different labels, date formats and table styles).
 Ground truth comes from the spec file, never from the system under test.
+The dataset has 31 specs: 30 generated plus 1 hand-made anchor (case_001).
 
 ## Evaluation tiers
 - Tier A: 30 generated cases (exact ground truth from code)

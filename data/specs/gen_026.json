@@ -7,6 +7,7 @@
   "layout": {
     "contract_pages": 10,
     "wording_variant": 1,
+    "doc_variant": 3,
     "filler_clauses": [
       "warranty",
       "confidentiality",

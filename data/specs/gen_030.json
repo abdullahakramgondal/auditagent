@@ -7,6 +7,7 @@
   "layout": {
     "contract_pages": 3,
     "wording_variant": 1,
+    "doc_variant": 1,
     "filler_clauses": [
       "liability",
       "late_payment_charge",

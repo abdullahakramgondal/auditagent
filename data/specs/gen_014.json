@@ -7,6 +7,7 @@
   "layout": {
     "contract_pages": 7,
     "wording_variant": 3,
+    "doc_variant": 3,
     "filler_clauses": [
       "late_payment_charge",
       "termination",

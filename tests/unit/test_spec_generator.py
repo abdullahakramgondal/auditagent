@@ -93,3 +93,7 @@ def test_all_specs_build_into_pdfs(tmp_path):
         expected = json.loads((out / "expected.json").read_text())
         for kind, target in spec["layout"]["target_page"].items():
             assert expected["rule_sources"][kind]["page"] == target, spec["case_id"]
+
+def test_all_three_document_layouts_are_used():
+    specs = generate_all()
+    assert {s["layout"]["doc_variant"] for s in specs} == {1, 2, 3}
