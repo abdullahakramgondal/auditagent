@@ -18,6 +18,14 @@ Inputs: Contract PDF, PO PDF, Invoice PDF (text-based PDFs only)
   a flat penalty applies only if the delay exceeds the grace period.
 - Money is handled as Decimal and computed by code, never by the LLM.
 
+- Base total = invoice quantity x min(invoice unit price, agreed unit price).
+- Late penalty percentage is applied to the base total.
+- Volume discount applies when total units on the invoice >= min quantity; the percentage is applied to the base total.
+- Discount and penalty are computed separately on the same base (no compounding).
+- Correct payable = base total - discount - penalty.
+- Payment terms breach: invoice due date is earlier than invoice date + Net N days. It has no PKR amount.
+- Total difference = sum of finding amounts = billed total - correct payable.
+
 ## Output
 - Status: COMPLIANT / NON_COMPLIANT / NEEDS_REVIEW
 - Findings list. Each finding has: clause text, contract page,
