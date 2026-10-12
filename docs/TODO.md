@@ -16,6 +16,8 @@
 | 15 | Agent 3 must read vendor deductions from invoice adjustments, never from the spec | vendor_applied exists only in the answer key | Week 4 |
 | 16 | Contract boilerplate is only 6 repeated generic clauses, so 20-page contracts look repetitive. Add more varied filler text and clause wording | Needs time; not blocking | Day 5 or later |
 | 17 | Agent 2 must handle three date formats (25 October 2026, 25-Oct-2026, 25/10/2026, all day first), label synonyms (Invoice No / Bill No / Invoice #) and normalize dates to ISO | Needs Agent 2 | Week 3 |
+| 18 | Layout 2 invoices (two-column header) may give mixed reading order from pdfplumber. If Agent 2 fails on them, parse with word coordinates | Only matters once Agent 2 exists | Week 3 |
+| 19 | OCR fallback for scanned PDFs (pytesseract plus the Tesseract installer). Out of v1 scope, parser already warns on empty pages | Scope control | Week 6, only if time is left |
 
 ## Completed items
 
@@ -37,3 +39,4 @@
 - Day 2: schemas (contract, invoice/PO, audit) with passing tests
 - Day 3: clause templates, contract/PO/invoice PDFs, expected.json builder, learning notes
 - Day 4: ground truth for all four clause types, spec generator (30 cases, 10 categories), invoice adjustments, three PO/invoice layouts (61 tests passing)
+- Day 5: PDF parser (page-wise text, hash, warnings, size and page limits), ParsedDocument schema (71 tests passing)
