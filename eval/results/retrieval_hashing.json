@@ -1,0 +1,52 @@
+{
+  "embedder": "hashing",
+  "summary": {
+    "late_penalty": {
+      "n": 20,
+      "recall@1": 1.0,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "decoy_top1": 0
+    },
+    "volume_discount": {
+      "n": 13,
+      "recall@1": 0.923,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "decoy_top1": 0
+    },
+    "payment_terms": {
+      "n": 15,
+      "recall@1": 0.867,
+      "recall@3": 0.867,
+      "recall@5": 0.933,
+      "decoy_top1": 0
+    },
+    "unit_price": {
+      "n": 10,
+      "recall@1": 0.6,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "decoy_top1": 1
+    },
+    "ALL": {
+      "n": 58,
+      "recall@1": 0.879,
+      "recall@3": 0.966,
+      "recall@5": 0.983,
+      "decoy_top1": 1
+    }
+  },
+  "misses_below_top3": [
+    {
+      "case": "gen_016",
+      "clause": "payment_terms",
+      "rank": null
+    },
+    {
+      "case": "gen_017",
+      "clause": "payment_terms",
+      "rank": 5
+    }
+  ]
+}

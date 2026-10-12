@@ -18,6 +18,11 @@
 | 17 | Agent 2 must handle three date formats (25 October 2026, 25-Oct-2026, 25/10/2026, all day first), label synonyms (Invoice No / Bill No / Invoice #) and normalize dates to ISO | Needs Agent 2 | Week 3 |
 | 18 | Layout 2 invoices (two-column header) may give mixed reading order from pdfplumber. If Agent 2 fails on them, parse with word coordinates | Only matters once Agent 2 exists | Week 3 |
 | 19 | OCR fallback for scanned PDFs (pytesseract plus the Tesseract installer). Out of v1 scope, parser already warns on empty pages | Scope control | Week 6, only if time is left |
+| 20 | Retrieval can return decoy clauses in the top-k. Agent 1 must pick the real rule and cite it. Revisit prompts after the eval numbers | Needs Agent 1 | Week 2, Day 9-10 |
+| 21 | Chunker assumes numbered headings (1. Title or 1.1 Title). Tier B and C documents with other styles (Article I, unnumbered bold headings) need a fallback check | Needs Tier B and C documents | Week 2 Day 9-10 and Week 3 |
+| 22 | If semantic recall is weak, add hybrid retrieval (keywords plus embeddings) | Only if the eval shows a need | After eval review |
+| 23 | Retrieval eval is easy on synthetic data (descriptive numbered headings, template wording). Re-run it on Tier B and C documents before trusting the recall numbers | Needs Tier B and C | Week 2 Day 9-10 and Week 3 |
+| 24 | unit_price recall@1 is 0.6 for both embedders (top-3 is 1.0). Check which chunk wins rank 1; low priority | Not blocking | Week 2, while tuning Agent 1 retrieval |
 
 ## Completed items
 
@@ -40,3 +45,4 @@
 - Day 3: clause templates, contract/PO/invoice PDFs, expected.json builder, learning notes
 - Day 4: ground truth for all four clause types, spec generator (30 cases, 10 categories), invoice adjustments, three PO/invoice layouts (61 tests passing)
 - Day 5: PDF parser (page-wise text, hash, warnings, size and page limits), ParsedDocument schema (71 tests passing)
+- Day 6: clause-aware chunker (header/footer removal), embedder interface (local MiniLM and offline hashing baseline), per-document in-memory ChromaDB index, retrieval eval harness. Result on 58 clause/contract pairs: MiniLM recall@3 = 1.0 (hashing baseline 0.966). Decision: MiniLM, top-5 chunks to Agent 1 (84 tests passing)
