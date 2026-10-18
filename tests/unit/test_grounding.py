@@ -1,0 +1,99 @@
+from datetime import date
+from decimal import Decimal
+
+import pytest
+
+from auditagent.agents.grounding import (
+    date_in,
+    days_in,
+    locate_quote,
+    number_in,
+    numbers_in,
+    percent_in,
+    units_in,
+)
+from auditagent.schemas.chunk import Chunk
+
+QUOTE = "If delivery of the goods is later than 15 October 2026, a penalty of 10% shall apply to the final invoice."
+
+
+def chunk(chunk_id, text, page=1):
+    return Chunk(chunk_id=chunk_id, page_start=page, page_end=page, heading="", text=text)
+
+
+def test_numbers_in_reads_commas_and_decimals():
+    found = numbers_in("PKR 1,500,000 and 2.5% by 15 October 2026.")
+    assert found == {Decimal(1500000), Decimal("2.5"), Decimal(15), Decimal(2026)}
+
+
+def test_number_in_matches_whole_numbers_only():
+    text = "a penalty of 10% shall apply"
+    assert number_in(10, text) and number_in(10.0, text) and number_in(Decimal("10"), text)
+    assert not number_in(1, text)  # "1" is only a piece of "10"
+    assert not number_in(15, text)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "later than 15 October 2026",
+        "later than 15th October 2026",
+        "later than October 15, 2026",
+        "later than 15-Oct-2026",
+        "later than 15/10/2026",
+        "later than 2026-10-15",
+        "later than 15 october 2026",
+    ],
+)
+def test_date_in_accepts_common_formats(text):
+    assert date_in(date(2026, 10, 15), text)
+
+
+@pytest.mark.parametrize(
+    "text", ["later than 16 October 2026", "later than 15 November 2026", "later than 15 October 2025"]
+)
+def test_date_in_rejects_other_dates(text):
+    assert not date_in(date(2026, 10, 15), text)
+
+
+def test_quote_is_found_despite_spacing_and_curly_quotes():
+    chunks = [chunk("a-1", "3. Delivery " + QUOTE.replace("goods", "\u201cgoods\u201d"))]
+    messy = QUOTE.replace(" ", "  ").replace("goods", '"goods"')
+    assert locate_quote(chunks, messy).chunk_id == "a-1"
+
+
+def test_quote_that_is_not_in_the_contract_is_refused():
+    chunks = [chunk("a-1", "3. Delivery " + QUOTE)]
+    assert locate_quote(chunks, "A penalty of 12% applies for every week of delay after 1 November.") is None
+
+
+def test_very_short_quotes_are_refused():
+    chunks = [chunk("a-1", "3. Delivery " + QUOTE)]
+    assert locate_quote(chunks, "10%") is None
+
+
+def test_cited_chunk_wins_when_the_quote_appears_twice():
+    chunks = [chunk("a-1", QUOTE, page=1), chunk("a-2", QUOTE, page=2)]
+    assert locate_quote(chunks, QUOTE, cited_id="a-2").chunk_id == "a-2"
+    assert locate_quote(chunks, QUOTE, cited_id="zzz").chunk_id == "a-1"
+
+
+def test_percent_must_be_written_as_a_percentage_not_as_a_date():
+    """The day '15' in '15 October' must not count as '15%'."""
+    assert percent_in(10, QUOTE) and not percent_in(15, QUOTE)
+    assert percent_in(2.5, "a charge of 2.5 percent applies") and percent_in(7, "7 per cent")
+
+
+def test_days_are_read_in_common_legal_styles():
+    assert days_in(30, "payable within thirty (30) days of the invoice")
+    assert days_in(30, "payable 30 calendar days after the date")
+    assert days_in(45, "settle invoices on Net 45 terms")
+    assert days_in(3, "No penalty applies if the delay is not more than 3 days.")
+    assert not days_in(15, QUOTE)  # 15 October is a date, not a number of days
+
+
+def test_units_are_read_next_to_the_word_units():
+    assert units_in(25, "orders 25 or more units in a single order")
+    assert units_in(50, "any order of 50 units or above")
+    assert units_in(25, "at least 25 units")
+    assert not units_in(5, "a discount of 5% on orders of 25 units")
