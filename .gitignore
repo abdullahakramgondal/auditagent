@@ -17,3 +17,5 @@ data/generated/
 # OS
 Thumbs.db
 .DS_Store
+
+eval/results/agent1_*/
