@@ -1,7 +1,8 @@
-"""Run Agent 1 on the synthetic contracts and score it against the answer key.
+"""Run Agent 1 on contracts and score it against the answer key.
 
-Run:  python -m eval.agent1_eval --limit 5     (a few contracts, evenly spread, to try it out)
-      python -m eval.agent1_eval               (all contracts; finished ones are reused)
+Run:  python -m eval.agent1_eval --limit 5     (Tier A: generated contracts, a few evenly spread)
+      python -m eval.agent1_eval               (Tier A: all; finished ones are reused)
+      python -m eval.agent1_eval --tier b      (Tier B: LLM-written PDFs in data/tier_b/pdf)
 Sends contract text to the LLM provider: synthetic data only.
 """
 
@@ -24,6 +25,7 @@ from eval.agent1_scoring import KINDS, aggregate, score_case
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT / "eval" / "results"
+TIER_B_DIR = ROOT / "data" / "tier_b"
 
 
 class CountingProvider:
@@ -53,6 +55,8 @@ def _fmt(value) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--tier", choices=["a", "b"], default="a",
+                        help="a: generated contracts, b: LLM-written contracts in data/tier_b")
     parser.add_argument("--limit", type=int, default=None, help="run only N evenly spread contracts")
     parser.add_argument("--pause", type=float, default=6.0, help="seconds to wait between live contracts")
     parser.add_argument("--fresh", action="store_true", help="ignore saved results and call the model again")
@@ -67,9 +71,17 @@ def main() -> None:
     embedder.embed(["warm up"])  # load the model before any timing starts
     extractor = LegalExtractor(provider, embedder)
 
-    cache_dir = RESULTS_DIR / f"agent1_{provider.model}"
+    tag = "agent1" if args.tier == "a" else "agent1_tierb"
+    cache_dir = RESULTS_DIR / f"{tag}_{provider.model}"
     cache_dir.mkdir(parents=True, exist_ok=True)
-    specs = _pick(sorted((ROOT / "data" / "specs").glob("*.json")), args.limit)
+    if args.tier == "a":
+        all_specs = sorted((ROOT / "data" / "specs").glob("*.json"))
+    else:
+        all_specs = [p for p in sorted((TIER_B_DIR / "specs").glob("*.json"))
+                     if (TIER_B_DIR / "pdf" / f"{p.stem}.pdf").exists()]
+    specs = _pick(all_specs, args.limit)
+    if not specs:
+        raise SystemExit("No contracts to run (for Tier B: put PDFs in data/tier_b/pdf/<id>.pdf).")
 
     scored, seconds, calls, problems, issues = [], [], [], [], []
     with tempfile.TemporaryDirectory() as tmp:
@@ -82,9 +94,14 @@ def main() -> None:
                 saved = json.loads(cache_file.read_text())
                 print(f"{case_id}: saved result reused")
             else:
-                out = build_case(spec_path, tmp)
-                gold_sources = json.loads((out / "expected.json").read_text())["rule_sources"]
-                doc = parse_pdf(out / "contract.pdf")
+                if args.tier == "a":
+                    out = build_case(spec_path, tmp)
+                    gold_sources = json.loads((out / "expected.json").read_text())["rule_sources"]
+                    pdf_path = out / "contract.pdf"
+                else:
+                    gold_sources = {}
+                    pdf_path = TIER_B_DIR / "pdf" / f"{case_id}.pdf"
+                doc = parse_pdf(pdf_path)
                 calls_before, started = provider.calls, time.perf_counter()
                 try:
                     result = extractor.extract(doc)
@@ -110,14 +127,20 @@ def main() -> None:
             calls.append(saved["llm_calls"])
             for kind, entry in case_score.items():
                 if entry["status"] in ("wrong", "refused", "silent_miss", "spurious"):
-                    wrong_fields = [f for f, ok in entry.get("fields", {}).items() if not ok]
-                    problems.append({"case": case_id, "clause": kind, "status": entry["status"], "wrong_fields": wrong_fields})
-            issues += [{"case": case_id, "clause": i.clause_type, "reason": i.reason} for i in result.issues]
+                    problems.append({
+                        "case": case_id, "clause": kind, "status": entry["status"],
+                        "wrong_fields": [f for f, ok in entry.get("fields", {}).items() if not ok],
+                        "gold": next((r for r in spec["rules"] if r["clause_type"] == kind), None),
+                        "got": next((r.model_dump(mode="json", exclude={"source"})
+                                     for r in result.contract.rules if r.clause_type == kind), None),
+                    })
+            issues += [{"case": case_id, "clause": i.clause_type, "reason": i.reason, "quote": i.quote}
+                       for i in result.issues]
 
     if not scored:
         return
     summary = aggregate(scored)
-    print(f"\nmodel: {provider.model}   contracts scored: {len(scored)}")
+    print(f"\ntier {args.tier.upper()}   model: {provider.model}   contracts scored: {len(scored)}")
     print(f"{'clause':16} {'gold':>4} {'right':>5} {'wrong':>5} {'refus':>5} {'silent':>6} {'spur':>4}  {'recall':>6} {'prec':>5}")
     for name in (*KINDS, "ALL"):
         t = summary[name]
@@ -130,14 +153,18 @@ def main() -> None:
           f"and {sum(calls) / len(calls):.1f} model calls per contract")
     print(f"\nProblems ({len(problems)}):")
     for p in problems:
-        print("  ", p)
+        print(f"   {p['case']} {p['clause']}: {p['status']}  wrong fields: {p['wrong_fields']}")
+        print(f"       gold: {p['gold']}")
+        print(f"       got : {p['got']}")
     print(f"\nRefusals and issues ({len(issues)}):")
     for i in issues:
-        print("  ", i)
+        print(f"   {i['case']} [{i['clause']}] {i['reason']}")
+        if i["quote"]:
+            print(f"       quote: {i['quote']}")
 
-    out_path = RESULTS_DIR / f"agent1_{provider.model}_summary.json"
+    out_path = RESULTS_DIR / f"{tag}_{provider.model}_summary.json"
     out_path.write_text(json.dumps({
-        "model": provider.model, "contracts": len(scored), "summary": summary,
+        "tier": args.tier, "model": provider.model, "contracts": len(scored), "summary": summary,
         "avg_seconds": round(sum(seconds) / len(seconds), 1), "median_seconds": statistics.median(seconds),
         "avg_calls": round(sum(calls) / len(calls), 1),
         "problems": problems, "issues": issues,

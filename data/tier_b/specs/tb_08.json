@@ -1,0 +1,29 @@
+{
+  "case_id": "tb_08",
+  "writer": "chatgpt",
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-12-31",
+      "mode": "flat_percent",
+      "percent": "15",
+      "grace_days": 0
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Fortinet FortiGate 100F Firewall",
+      "agreed_unit_price": "620000"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 10,
+      "discount_percent": "2"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 30
+    }
+  ]
+}

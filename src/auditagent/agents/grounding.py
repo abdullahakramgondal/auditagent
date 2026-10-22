@@ -9,12 +9,15 @@ from auditagent.schemas.chunk import Chunk
 
 MIN_QUOTE_CHARS = 25
 _NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
-_PERCENT = re.compile(r"(\d+(?:\.\d+)?)\s*(?:%|per\s?cent\b)", re.I)
-_DAYS = re.compile(
-    r"\(?(\d+)\)?\s*(?:(?:calendar|business|working|consecutive)\s+)?days?\b|\bnet\s*(\d+)\b", re.I
+_WORD_IN_BRACKETS = r"(?:\([A-Za-z][A-Za-z\- ]*\)\s*)?"  # e.g. "40 (forty) units"
+PERCENT_RE = re.compile(rf"(\d+(?:\.\d+)?)\)?\s*{_WORD_IN_BRACKETS}(?:%|per\s?cent\b)", re.I)
+DAYS_RE = re.compile(
+    rf"\(?(\d+)\)?\s*{_WORD_IN_BRACKETS}(?:(?:calendar|business|working|consecutive)\s+)?days?\b"
+    r"|\bnet\s*(\d+)\b",
+    re.I,
 )
-_UNITS = re.compile(
-    r"(\d[\d,]*)\s*(?:\(\d+\)\s*)?(?:or\s+(?:more|above|over)\s+)?"
+UNITS_RE = re.compile(
+    rf"(\d[\d,]*)\)?\s*{_WORD_IN_BRACKETS}(?:or\s+(?:more|above|over|greater)\s+)?"
     r"(?:units?|pieces?|items?|devices?|licen[cs]es?|seats?)\b",
     re.I,
 )
@@ -57,17 +60,17 @@ def _values(pattern: re.Pattern, text: str) -> set[Decimal]:
 
 def percent_in(value, text: str) -> bool:
     """True if `value` is written as a percentage (10%, 10 percent) in `text`."""
-    return Decimal(str(value)) in _values(_PERCENT, text)
+    return Decimal(str(value)) in _values(PERCENT_RE, text)
 
 
 def days_in(value, text: str) -> bool:
     """True if `value` is written as a number of days (30 days, Net 30, (30) calendar days)."""
-    return Decimal(str(value)) in _values(_DAYS, text)
+    return Decimal(str(value)) in _values(DAYS_RE, text)
 
 
 def units_in(value, text: str) -> bool:
     """True if `value` is written as a number of units (25 or more units)."""
-    return Decimal(str(value)) in _values(_UNITS, text)
+    return Decimal(str(value)) in _values(UNITS_RE, text)
 
 
 def date_in(day: date, text: str) -> bool:

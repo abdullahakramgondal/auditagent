@@ -1,0 +1,29 @@
+{
+  "case_id": "tb_04",
+  "writer": "chatgpt",
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-31",
+      "mode": "flat_percent",
+      "percent": "10",
+      "grace_days": 2
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 100,
+      "discount_percent": "12"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Lenovo ThinkPad T14 Laptop",
+      "agreed_unit_price": "275000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 60
+    }
+  ]
+}

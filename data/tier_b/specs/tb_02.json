@@ -1,0 +1,21 @@
+{
+  "case_id": "tb_02",
+  "writer": "chatgpt",
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Metro IT Distributors",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-12-05",
+      "mode": "per_day_percent",
+      "percent": "1.5",
+      "grace_days": 0,
+      "cap_percent": "12"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 40,
+      "discount_percent": "6"
+    }
+  ]
+}

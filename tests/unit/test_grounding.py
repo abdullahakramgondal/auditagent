@@ -97,3 +97,23 @@ def test_units_are_read_next_to_the_word_units():
     assert units_in(50, "any order of 50 units or above")
     assert units_in(25, "at least 25 units")
     assert not units_in(5, "a discount of 5% on orders of 25 units")
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "40 units",
+        "forty (40) units",
+        "40 (forty) units",
+        "forty (40) or more Units",
+        "at least forty (40) units of Equipment",
+        "orders of 40 or more units",
+    ],
+)
+def test_units_are_read_in_every_common_legal_style(text):
+    assert units_in(40, text)
+
+
+def test_words_in_brackets_do_not_hide_days_or_percentages():
+    assert days_in(30, "within thirty (30) days") and days_in(30, "within 30 (thirty) calendar days")
+    assert percent_in(8, "eight percent (8%)") and percent_in(8, "8 (eight) per cent")
+    assert not units_in(30, "within thirty (30) days")

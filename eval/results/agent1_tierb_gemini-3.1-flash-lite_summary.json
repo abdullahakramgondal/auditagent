@@ -1,0 +1,174 @@
+{
+  "tier": "b",
+  "model": "gemini-3.1-flash-lite",
+  "contracts": 4,
+  "summary": {
+    "late_penalty": {
+      "gold": 3,
+      "correct": 1,
+      "wrong": 1,
+      "refused": 1,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 1,
+      "pairs": 2,
+      "field_ok": 9,
+      "field_n": 10,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.333,
+      "precision": 0.5,
+      "field_accuracy": 0.9,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "volume_discount": {
+      "gold": 3,
+      "correct": 3,
+      "wrong": 0,
+      "refused": 0,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 1,
+      "pairs": 3,
+      "field_ok": 6,
+      "field_n": 6,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "payment_terms": {
+      "gold": 3,
+      "correct": 3,
+      "wrong": 0,
+      "refused": 0,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 1,
+      "pairs": 3,
+      "field_ok": 3,
+      "field_n": 3,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "unit_price": {
+      "gold": 2,
+      "correct": 1,
+      "wrong": 0,
+      "refused": 0,
+      "silent_miss": 1,
+      "spurious": 0,
+      "correct_absent": 2,
+      "pairs": 1,
+      "field_ok": 2,
+      "field_n": 2,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.5,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "ALL": {
+      "gold": 11,
+      "correct": 8,
+      "wrong": 1,
+      "refused": 1,
+      "silent_miss": 1,
+      "spurious": 0,
+      "correct_absent": 5,
+      "pairs": 9,
+      "field_ok": 20,
+      "field_n": 21,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.727,
+      "precision": 0.889,
+      "field_accuracy": 0.952,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    }
+  },
+  "avg_seconds": 11.4,
+  "median_seconds": 6.3,
+  "avg_calls": 4.0,
+  "problems": [
+    {
+      "case": "tb_01",
+      "clause": "late_penalty",
+      "status": "wrong",
+      "wrong_fields": [
+        "cap_percent"
+      ],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-11-20",
+        "mode": "flat_percent",
+        "percent": "8",
+        "grace_days": 5
+      },
+      "got": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-11-20",
+        "mode": "flat_percent",
+        "percent": "8.0",
+        "cap_percent": "8.0",
+        "grace_days": 5
+      }
+    },
+    {
+      "case": "tb_04",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-10-31",
+        "mode": "flat_percent",
+        "percent": "10",
+        "grace_days": 2
+      },
+      "got": null
+    },
+    {
+      "case": "tb_04",
+      "clause": "unit_price",
+      "status": "silent_miss",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "unit_price",
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "agreed_unit_price": "275000"
+      },
+      "got": null
+    }
+  ],
+  "issues": [
+    {
+      "case": "tb_04",
+      "clause": "late_penalty",
+      "reason": "deadline 2024-05-23 is not written in the quote",
+      "quote": "5.3 Where the Vendor delivers the Equipment under the Initial Order after the Delivery Deadline, the Vendor shall pay to the Buyer, as a genuine pre-estimate of the Buyer's loss and not as a penalty in the nature of a continuing charge, a sum equal to 10% of the invoice value of the Equipment so delivered. This amount is payable once only in respect of the late delivery, and does not increase with the length of the delay. No such sum shall be payable where the delay does not exceed the first 2 days after the Delivery Deadline."
+    }
+  ]
+}

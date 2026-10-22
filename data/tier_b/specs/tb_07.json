@@ -1,0 +1,17 @@
+{
+  "case_id": "tb_07",
+  "writer": "claude",
+  "buyer": "Punjab Digital Solutions Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "rules": [
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 25,
+      "discount_percent": "3.5"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 14
+    }
+  ]
+}

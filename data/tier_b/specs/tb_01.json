@@ -1,0 +1,19 @@
+{
+  "case_id": "tb_01",
+  "writer": "claude",
+  "buyer": "Lahore Software House Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-11-20",
+      "mode": "flat_percent",
+      "percent": "8",
+      "grace_days": 5
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 45
+    }
+  ]
+}

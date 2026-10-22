@@ -1,0 +1,21 @@
+{
+  "case_id": "tb_06",
+  "writer": "chatgpt",
+  "buyer": "Lahore Software House Pvt Ltd",
+  "vendor": "Metro IT Distributors",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-01-15",
+      "mode": "per_day_percent",
+      "percent": "0.5",
+      "grace_days": 7,
+      "cap_percent": "5"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "HP LaserJet Enterprise Printer",
+      "agreed_unit_price": "130000"
+    }
+  ]
+}

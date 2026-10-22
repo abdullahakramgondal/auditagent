@@ -82,3 +82,12 @@ def test_aggregate_counts_recall_and_precision():
     assert summary["volume_discount"]["silent_miss"] == 1
     assert summary["ALL"]["gold"] == 4 and summary["ALL"]["correct"] == 2
     assert summary["late_penalty"]["field_accuracy"] == 0.9  # 9 of 10 fields right
+
+
+def test_without_gold_sources_values_are_scored_but_page_and_quote_are_not():
+    scored = score_case(SPEC, result([late(), volume()]), {})
+    assert scored["late_penalty"]["status"] == "correct"
+    assert scored["late_penalty"]["page_ok"] is None and scored["late_penalty"]["quote_ok"] is None
+    summary = aggregate([scored])
+    assert summary["ALL"]["recall"] == 1.0 and summary["ALL"]["field_accuracy"] == 1.0
+    assert summary["ALL"]["page_accuracy"] is None and summary["ALL"]["quote_accuracy"] is None

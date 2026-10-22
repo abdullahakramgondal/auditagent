@@ -1,0 +1,22 @@
+{
+  "case_id": "tb_03",
+  "writer": "claude",
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Alpha Hardware Traders",
+  "rules": [
+    {
+      "clause_type": "unit_price",
+      "item_name": "Cisco Catalyst 9300 Switch",
+      "agreed_unit_price": "540000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 30
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 20,
+      "discount_percent": "4"
+    }
+  ]
+}

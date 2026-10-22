@@ -43,12 +43,14 @@ def score_case(spec: dict, result: AgentOneResult, gold_sources: dict) -> dict:
         if gold_rules and got_rules:
             gold, got = gold_rules[0], got_rules[0]
             fields = {f: _same(f, _value(gold, f), _value(got, f)) for f in FIELDS[kind]}
-            source = gold_sources.get(kind) or {}
+            source = gold_sources.get(kind)  # Tier B has no gold page or quote: then both stay None
             entry.update(
                 status="correct" if all(fields.values()) else "wrong",
                 fields=fields,
-                page_ok=got["source"]["page"] == source.get("page"),
-                quote_ok=bool(source.get("text"))
+                page_ok=None if not source else got["source"]["page"] == source.get("page"),
+                quote_ok=None
+                if not source
+                else bool(source.get("text"))
                 and normalize_for_match(source["text"]) in normalize_for_match(got["source"]["text"]),
             )
         elif gold_rules:
@@ -68,7 +70,7 @@ def _ratio(num: int, den: int):
 def aggregate(scored_cases: list[dict]) -> dict:
     """Totals per clause type and overall: recall, precision, field, page and quote accuracy."""
     keys = ("gold", "correct", "wrong", "refused", "silent_miss", "spurious", "correct_absent",
-            "pairs", "field_ok", "field_n", "page_ok", "quote_ok")
+            "pairs", "field_ok", "field_n", "page_ok", "page_n", "quote_ok", "quote_n")
     totals = {kind: dict.fromkeys(keys, 0) for kind in KINDS}
     for case in scored_cases:
         for kind, e in case.items():
@@ -79,8 +81,12 @@ def aggregate(scored_cases: list[dict]) -> dict:
                 t["pairs"] += 1
                 t["field_ok"] += sum(e["fields"].values())
                 t["field_n"] += len(e["fields"])
-                t["page_ok"] += e["page_ok"]
-                t["quote_ok"] += e["quote_ok"]
+                if e["page_ok"] is not None:
+                    t["page_n"] += 1
+                    t["page_ok"] += e["page_ok"]
+                if e["quote_ok"] is not None:
+                    t["quote_n"] += 1
+                    t["quote_ok"] += e["quote_ok"]
 
     totals["ALL"] = {k: sum(totals[kind][k] for kind in KINDS) for k in keys}
     summary = {}
@@ -90,7 +96,7 @@ def aggregate(scored_cases: list[dict]) -> dict:
             "recall": _ratio(t["correct"], t["gold"]),
             "precision": _ratio(t["correct"], t["correct"] + t["wrong"] + t["spurious"]),
             "field_accuracy": _ratio(t["field_ok"], t["field_n"]),
-            "page_accuracy": _ratio(t["page_ok"], t["pairs"]),
-            "quote_accuracy": _ratio(t["quote_ok"], t["pairs"]),
+            "page_accuracy": _ratio(t["page_ok"], t["page_n"]),
+            "quote_accuracy": _ratio(t["quote_ok"], t["quote_n"]),
         }
     return summary

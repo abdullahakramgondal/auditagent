@@ -1,0 +1,12 @@
+{
+  "case_id": "tb_05",
+  "writer": "claude",
+  "buyer": "Five Rivers Technologies Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "rules": [
+    {
+      "clause_type": "payment_terms",
+      "net_days": 21
+    }
+  ]
+}
