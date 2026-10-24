@@ -1,5 +1,6 @@
 """Agent 1: find the audit rules in a contract and prove each one against the contract text."""
 
+import re
 from datetime import date
 from decimal import Decimal
 
@@ -30,13 +31,21 @@ from auditagent.schemas.document import ParsedDocument
 from auditagent.schemas.extraction import AgentOneResult, ExtractionIssue
 
 KINDS = ("late_penalty", "volume_discount", "payment_terms", "unit_price")
-TOP_K = 5
+TOP_K = 8
+
+# Safety net: if these patterns appear in the retrieved clauses, an empty answer is suspicious.
+HINTS = {
+    "late_penalty": re.compile(r"\b(late|delay\w*)\b.{0,200}\d+(\.\d+)?\s*%", re.I | re.S),
+    "volume_discount": re.compile(r"\bdiscount\b.{0,200}\d+(\.\d+)?\s*%", re.I | re.S),
+    "payment_terms": re.compile(r"\bwithin\b.{0,60}\b\d+\b.{0,20}\bdays?\b", re.I | re.S),
+    "unit_price": re.compile(r"\bunit\b.{0,120}PKR\s*\d", re.I | re.S),
+}
 
 RETRIEVAL_QUERIES = {
     "late_penalty": "penalty or deduction for late delivery of the goods",
     "volume_discount": "discount for ordering a large quantity of units",
     "payment_terms": "invoice payment due within a number of days",
-    "unit_price": "agreed unit price per item that must not be exceeded",
+    "unit_price": "Unit Price in PKR per unit, the fixed price per item stated in the contract",
 }
 
 FORMS = {
@@ -173,6 +182,13 @@ class LegalExtractor:
                         rules.append(rule)
                     if issue is not None:
                         issues.append(issue)
+                if not form.rules and any(HINTS[kind].search(h.chunk.text) for h in hits):
+                    issues.append(
+                        ExtractionIssue(
+                            clause_type=kind,
+                            reason="Keywords found in the contract but no rule extracted: needs review",
+                        )
+                    )
         finally:
             index.close()
         return self._result(rules, issues)

@@ -51,6 +51,11 @@ def full_replies():
     return [reply(LATE), reply(VOLUME), reply(PAYMENT), reply(PRICE)]
 
 
+def issue_for(result, clause_type):
+    """The issue reported for one clause type (the safety net can add issues for other types too)."""
+    return next(i for i in result.issues if i.clause_type == clause_type)
+
+
 def test_all_four_rules_are_extracted_with_pages_from_the_parser():
     result, provider = run(full_replies())
     assert result.issues == []
@@ -72,36 +77,45 @@ def test_prompt_shows_the_relevant_clause_with_its_chunk_id():
     assert "later than 15 October 2026" in provider.prompts[0]
 
 
-def test_empty_answers_give_no_rules_and_no_issues():
-    result, _ = run([reply(), reply(), reply(), reply()])
+def test_empty_answers_on_a_contract_without_the_clauses_give_no_rules_and_no_issues():
+    # Page 1 only: parties and scope, no penalty, discount, payment or price wording.
+    result, _ = run([reply(), reply(), reply(), reply()], document=doc([PAGES[0]]))
     assert result.contract.rules == [] and result.issues == []
+
+
+def test_empty_answers_on_a_contract_that_has_the_clauses_are_flagged_for_review():
+    """Safety net: the clauses are there but the model returned nothing, so never stay silent."""
+    result, _ = run([reply(), reply(), reply(), reply()])
+    assert result.contract.rules == []
+    # payment_terms is not flagged here: its hint needs the word "within", and PAYMENT_Q says "payable 30 ... days".
+    assert {i.clause_type for i in result.issues} == {"late_penalty", "volume_discount", "unit_price"}
+    assert all("needs review" in i.reason for i in result.issues)
 
 
 def test_invented_quote_is_refused():
     fake = {**LATE, "quote": "The Vendor shall pay a penalty of 12% for every week of delay after 1 November 2026."}
     result, _ = run([reply(fake), reply(), reply(), reply()])
     assert result.contract.rules == []
-    assert result.issues[0].clause_type == "late_penalty"
-    assert "not found" in result.issues[0].reason
+    assert "not found" in issue_for(result, "late_penalty").reason
 
 
 def test_number_that_is_not_in_the_quote_is_refused():
     result, _ = run([reply({**LATE, "percent": 15}), reply(), reply(), reply()])
     assert result.contract.rules == []
-    assert "percent 15" in result.issues[0].reason
+    assert "percent 15" in issue_for(result, "late_penalty").reason
 
 
 def test_date_that_is_not_in_the_quote_is_refused():
     result, _ = run([reply({**LATE, "deadline": "2026-10-16"}), reply(), reply(), reply()])
     assert result.contract.rules == []
-    assert "2026-10-16" in result.issues[0].reason
+    assert "2026-10-16" in issue_for(result, "late_penalty").reason
 
 
 def test_decoy_clause_reported_as_a_late_penalty_is_refused():
     decoy = {**LATE, "quote": LIABILITY_Q, "chunk_id": f"{PREFIX}-004"}
     result, _ = run([reply(decoy), reply(), reply(), reply()])
     assert result.contract.rules == []
-    assert "deadline" in result.issues[0].reason
+    assert "deadline" in issue_for(result, "late_penalty").reason
 
 
 def test_wrong_chunk_id_does_not_matter_the_real_location_is_used():
@@ -120,8 +134,7 @@ def test_unusable_model_output_is_retried_through_the_form_inspector():
 def test_one_clause_type_failing_does_not_stop_the_others():
     result, _ = run(["bad", "bad", "bad", reply(VOLUME), reply(PAYMENT), reply(PRICE)])
     assert [r.clause_type for r in result.contract.rules] == ["volume_discount", "payment_terms", "unit_price"]
-    assert result.issues[0].clause_type == "late_penalty"
-    assert "unusable" in result.issues[0].reason
+    assert "unusable" in issue_for(result, "late_penalty").reason
 
 
 def test_contract_without_text_is_reported_and_costs_no_model_calls():
@@ -134,10 +147,10 @@ def test_contract_without_text_is_reported_and_costs_no_model_calls():
 def test_quantity_that_is_not_next_to_units_is_refused():
     result, _ = run([reply(), reply({**VOLUME, "min_quantity": 5}), reply(), reply()])
     assert result.contract.rules == []
-    assert "min_quantity 5" in result.issues[0].reason
+    assert "min_quantity 5" in issue_for(result, "volume_discount").reason
 
 
 def test_payment_days_must_be_written_as_days():
     result, _ = run([reply(), reply(), reply({**PAYMENT, "net_days": 15}), reply()])
     assert result.contract.rules == []
-    assert "net_days 15" in result.issues[0].reason
+    assert "net_days 15" in issue_for(result, "payment_terms").reason
