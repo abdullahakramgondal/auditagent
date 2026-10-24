@@ -21,6 +21,11 @@ UNITS_RE = re.compile(
     r"(?:units?|pieces?|items?|devices?|licen[cs]es?|seats?)\b",
     re.I,
 )
+# A defined term that names a date: (the "Delivery Deadline") or "Delivery Date" means ...
+# Only terms ending in Deadline, Date or Day count, so party names such as (the "Vendor") never link two clauses.
+_DEFINED_DATE_TERM_RE = re.compile(
+    r'"((?:[A-Z][A-Za-z]* ){0,3}(?:Deadline|Date|Day))"(?=\s*\)|\s+(?:shall\s+)?means\b)'
+)
 _MONTHS = (
     "january", "february", "march", "april", "may", "june",
     "july", "august", "september", "october", "november", "december",
@@ -89,6 +94,17 @@ def date_in(day: date, text: str) -> bool:
             for suffix in ("st", "nd", "rd", "th"):
                 forms |= {f"{d}{suffix} {m} {day.year}", f"{d}{suffix} of {m} {day.year}", f"{m} {d}{suffix}, {day.year}"}
     return any(form in t for form in forms)
+
+
+def defined_terms(text: str) -> set[str]:
+    """The date terms the text defines, e.g. (the "Delivery Deadline") or "Delivery Date" means ..."""
+    return set(_DEFINED_DATE_TERM_RE.findall(_fold(text)))
+
+
+def shares_defined_term(definition: str, usage: str) -> bool:
+    """True if `usage` uses a date term that `definition` defines (case matters: defined terms are capitalised)."""
+    folded = _fold(usage)
+    return any(term in folded for term in defined_terms(definition))
 
 
 def locate_quote(chunks: list[Chunk], quote: str, cited_id: str | None = None) -> Chunk | None:

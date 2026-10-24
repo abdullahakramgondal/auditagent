@@ -1,7 +1,7 @@
 """Retrieval check on the synthetic dataset.
 
-For every contract: is the clause that holds each rule among the top-k chunks when we
-search with a plain-English description of the clause type?
+For every contract: is the clause that holds each rule among the chunks Agent 1 sends to the model?
+It uses the same retrieve() and queries as Agent 1, so it measures what production does.
 
 Run:  python -m eval.retrieval_eval                      (semantic model, ~90 MB download once)
       python -m eval.retrieval_eval --embedder hashing   (offline word-matching baseline)
@@ -13,6 +13,7 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
+from auditagent.agents.legal_extractor import retrieve
 from auditagent.ingestion.chunker import chunk_document
 from auditagent.ingestion.embedder import HashingEmbedder, SentenceTransformerEmbedder
 from auditagent.ingestion.pdf_parser import normalize_for_match, parse_pdf
@@ -22,18 +23,13 @@ from data.generator.build_case import build_case
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT / "eval" / "results"
 
-QUERIES = {
-    "late_penalty": "penalty or deduction for late delivery of the goods",
-    "volume_discount": "discount for ordering a large quantity of units",
-    "payment_terms": "invoice payment due within a number of days",
-    "unit_price": "agreed unit price per item that must not be exceeded",
-}
 DECOY_HEADINGS = ("Liability", "Late Payment")
-KS = (1, 3, 5)
+KS = (1, 3, 5, 8)
 
 
 def evaluate(embedder, label: str) -> dict:
     found = defaultdict(lambda: {k: 0 for k in KS})
+    sent = defaultdict(int)
     total = defaultdict(int)
     decoy_top1 = defaultdict(int)
     misses = []
@@ -47,16 +43,18 @@ def evaluate(embedder, label: str) -> dict:
 
             for kind, source in expected["rule_sources"].items():
                 gold = normalize_for_match(source["text"])
-                hits = index.search(QUERIES[kind], k=max(KS))
+                shown = retrieve(index, kind)  # exactly what Agent 1 shows the model
                 rank = next(
-                    (i + 1 for i, h in enumerate(hits) if gold in normalize_for_match(h.chunk.text)),
+                    (i for i, chunk in enumerate(shown, start=1) if gold in normalize_for_match(chunk.text)),
                     None,
                 )
                 total[kind] += 1
+                if rank is not None:
+                    sent[kind] += 1
                 for k in KS:
                     if rank is not None and rank <= k:
                         found[kind][k] += 1
-                if rank != 1 and any(d in hits[0].chunk.heading for d in DECOY_HEADINGS):
+                if rank != 1 and any(d in shown[0].heading for d in DECOY_HEADINGS):
                     decoy_top1[kind] += 1
                 if rank is None or rank > 3:
                     misses.append({"case": spec_path.stem, "clause": kind, "rank": rank})
@@ -66,6 +64,7 @@ def evaluate(embedder, label: str) -> dict:
         kind: {
             "n": total[kind],
             **{f"recall@{k}": round(found[kind][k] / total[kind], 3) for k in KS},
+            "sent": round(sent[kind] / total[kind], 3),
             "decoy_top1": decoy_top1[kind],
         }
         for kind in total
@@ -74,6 +73,7 @@ def evaluate(embedder, label: str) -> dict:
     summary["ALL"] = {
         "n": n_all,
         **{f"recall@{k}": round(sum(found[x][k] for x in total) / n_all, 3) for k in KS},
+        "sent": round(sum(sent[x] for x in total) / n_all, 3),
         "decoy_top1": sum(decoy_top1.values()),
     }
     return {"embedder": label, "summary": summary, "misses_below_top3": misses}
@@ -86,12 +86,12 @@ def main() -> None:
     embedder = SentenceTransformerEmbedder() if args.embedder == "minilm" else HashingEmbedder()
 
     result = evaluate(embedder, args.embedder)
-    print(f"{'clause':16} {'n':>3} " + " ".join(f"recall@{k}" for k in KS) + "  decoy_top1")
+    print(f"{'clause':16} {'n':>3} " + " ".join(f"recall@{k}" for k in KS) + "  sent  decoy_top1")
     for kind, row in result["summary"].items():
         print(
             f"{kind:16} {row['n']:>3} "
             + " ".join(f"{row[f'recall@{k}']:>8}" for k in KS)
-            + f"  {row['decoy_top1']:>5}"
+            + f"  {row['sent']:>4}  {row['decoy_top1']:>5}"
         )
     print("misses below top-3:", len(result["misses_below_top3"]))
 

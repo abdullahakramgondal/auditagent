@@ -32,8 +32,9 @@ def ideal_form(rule, quote):
     kind = rule["clause_type"]
     if kind == "late_penalty":
         cap = rule.get("cap_percent")
-        return {**base, "deadline": rule["deadline"], "mode": rule["mode"], "percent": float(rule["percent"]),
-                "cap_percent": None if cap is None else float(cap), "grace_days": rule.get("grace_days", 0)}
+        return {**base, "deadline_quote": quote, "deadline": rule["deadline"], "mode": rule["mode"],
+                "percent": float(rule["percent"]), "cap_percent": None if cap is None else float(cap),
+                "grace_days": rule.get("grace_days", 0)}
     if kind == "volume_discount":
         return {**base, "min_quantity": rule["min_quantity"], "discount_percent": float(rule["discount_percent"])}
     if kind == "payment_terms":

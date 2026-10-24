@@ -21,8 +21,18 @@ PAGES = [
     f"SUPPLY AGREEMENT\n5. Payment Terms\n{PAYMENT_Q}\n6. Pricing\n{PRICE_Q}\n7. Volume Discount\n{VOLUME_Q}\nPage 3 of 3",
 ]
 
-LATE = {"quote": LATE_Q, "chunk_id": f"{PREFIX}-003", "deadline": "2026-10-15", "mode": "flat_percent",
-        "percent": 10, "cap_percent": None, "grace_days": 0}
+# A contract where the penalty clause only says "the Delivery Deadline" and another clause defines the date.
+DATE_Q = 'The Vendor shall deliver the goods on or before 31 October 2026 (the "Delivery Deadline"), at its own cost and risk.'
+TERM_Q = "If the Vendor delivers the goods after the Delivery Deadline, a penalty of 10% of the invoice value shall apply."
+DEFINED_PAGES = [
+    f"SUPPLY AGREEMENT\n1. Parties\nThis Agreement is between Buyer Co and Vendor Co.\n2. Delivery\n{DATE_Q}\nPage 1 of 2",
+    f"SUPPLY AGREEMENT\n3. Late Delivery\n{TERM_Q}\nPage 2 of 2",
+]
+
+LATE = {"quote": LATE_Q, "chunk_id": f"{PREFIX}-003", "deadline_quote": LATE_Q, "deadline": "2026-10-15",
+        "mode": "flat_percent", "percent": 10, "cap_percent": None, "grace_days": 0}
+TERM_LATE = {"quote": TERM_Q, "chunk_id": f"{PREFIX}-003", "deadline_quote": DATE_Q, "deadline": "2026-10-31",
+             "mode": "flat_percent", "percent": 10, "cap_percent": None, "grace_days": 0}
 VOLUME = {"quote": VOLUME_Q, "chunk_id": f"{PREFIX}-007", "min_quantity": 25, "discount_percent": 5}
 PAYMENT = {"quote": PAYMENT_Q, "chunk_id": f"{PREFIX}-005", "net_days": 30}
 PRICE = {"quote": PRICE_Q, "chunk_id": f"{PREFIX}-006", "item_name": "Dell PowerEdge R750 Server",
@@ -65,6 +75,7 @@ def test_all_four_rules_are_extracted_with_pages_from_the_parser():
     late, volume, payment, price = result.contract.rules
     assert (late.source.page, volume.source.page, payment.source.page, price.source.page) == (2, 3, 3, 3)
     assert late.deadline == date(2026, 10, 15) and late.percent == Decimal("10") and late.cap_percent is None
+    assert late.deadline_source is None  # the date is written in the penalty quote itself
     assert price.agreed_unit_price == Decimal("1500000")
     assert late.source.text == LATE_Q
     assert result.llm_model == "scripted-1"
@@ -87,8 +98,9 @@ def test_empty_answers_on_a_contract_that_has_the_clauses_are_flagged_for_review
     """Safety net: the clauses are there but the model returned nothing, so never stay silent."""
     result, _ = run([reply(), reply(), reply(), reply()])
     assert result.contract.rules == []
-    # payment_terms is not flagged here: its hint needs the word "within", and PAYMENT_Q says "payable 30 ... days".
-    assert {i.clause_type for i in result.issues} == {"late_penalty", "volume_discount", "unit_price"}
+    assert {i.clause_type for i in result.issues} == {
+        "late_penalty", "volume_discount", "payment_terms", "unit_price"
+    }
     assert all("needs review" in i.reason for i in result.issues)
 
 
@@ -112,10 +124,27 @@ def test_date_that_is_not_in_the_quote_is_refused():
 
 
 def test_decoy_clause_reported_as_a_late_penalty_is_refused():
+    """The liability clause cannot borrow the real deadline from another clause: it shares no defined date term."""
     decoy = {**LATE, "quote": LIABILITY_Q, "chunk_id": f"{PREFIX}-004"}
     result, _ = run([reply(decoy), reply(), reply(), reply()])
     assert result.contract.rules == []
     assert "deadline" in issue_for(result, "late_penalty").reason
+
+
+def test_deadline_written_in_another_clause_is_accepted_when_a_defined_term_links_them():
+    result, _ = run([reply(TERM_LATE), reply(), reply(), reply()], document=doc(DEFINED_PAGES))
+    assert result.issues == []
+    late = result.contract.rules[0]
+    assert late.deadline == date(2026, 10, 31)
+    assert late.source.page == 2 and late.source.text == TERM_Q
+    assert late.deadline_source.page == 1 and late.deadline_source.text == DATE_Q
+
+
+def test_invented_deadline_quote_is_refused():
+    invented = {**TERM_LATE, "deadline_quote": 'The delivery deadline for the goods is 31 October 2026 (the "Delivery Deadline").'}
+    result, _ = run([reply(invented), reply(), reply(), reply()], document=doc(DEFINED_PAGES))
+    assert result.contract.rules == []
+    assert "2026-10-31" in issue_for(result, "late_penalty").reason
 
 
 def test_wrong_chunk_id_does_not_matter_the_real_location_is_used():

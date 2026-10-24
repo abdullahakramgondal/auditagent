@@ -12,6 +12,12 @@ from pydantic import BaseModel, Field
 class LateRuleForm(BaseModel):
     quote: str = Field(description="The clause sentence(s), copied word for word from the contract text")
     chunk_id: str = Field(description="The chunk_id of the chunk the quote was copied from")
+    deadline_quote: str = Field(
+        description=(
+            "The sentence(s) that state the delivery date, copied word for word from the contract text. "
+            "Repeat the same text as quote when the date is written in the penalty clause itself"
+        )
+    )
     deadline: str = Field(description="Delivery deadline as YYYY-MM-DD")
     mode: Literal["flat_percent", "per_day_percent"]
     percent: float = Field(ge=0.01, le=100, description="Penalty percentage without the % sign")

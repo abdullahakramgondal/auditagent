@@ -23,3 +23,11 @@ def test_form_schema_avoids_keywords_gemini_rejects(form):
 def test_cap_percent_must_be_stated_even_when_it_is_null():
     schema = LateRulesForm.model_json_schema()
     assert "cap_percent" in schema["$defs"]["LateRuleForm"]["required"]
+
+
+def test_deadline_quote_is_required_and_comes_before_the_deadline():
+    """The model copies the sentence first, then reads the date from it."""
+    late = LateRulesForm.model_json_schema()["$defs"]["LateRuleForm"]
+    assert "deadline_quote" in late["required"]
+    keys = list(late["properties"])
+    assert keys.index("deadline_quote") < keys.index("deadline")

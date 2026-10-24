@@ -20,6 +20,10 @@ class LatePenaltyRule(BaseModel):
     cap_percent: Decimal | None = Field(default=None, gt=0, le=100)
     grace_days: int = Field(default=0, ge=0)
     source: Source
+    deadline_source: Source | None = Field(
+        default=None,
+        description="Where the deadline date is written, only when it is in a different clause than `source`",
+    )
 
 
 class VolumeDiscountRule(BaseModel):
