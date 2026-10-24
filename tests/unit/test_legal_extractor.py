@@ -29,10 +29,23 @@ DEFINED_PAGES = [
     f"SUPPLY AGREEMENT\n3. Late Delivery\n{TERM_Q}\nPage 2 of 2",
 ]
 
+# One clause with the date, the grace period and the penalty in three neighbouring sentences (no defined term).
+DATE_S = "For purposes of the agreed delivery arrangement, the delivery date relevant to the delay mechanism in this clause is 15 January 2027."
+GRACE_S = "The first seven (7) days of delay after that date shall be free of a delivery penalty."
+PENALTY_S = "For each subsequent day of delay, the Vendor shall be liable to the Buyer for a penalty calculated at 0.5% of the invoice value, subject to an aggregate maximum of 5% of that invoice value."
+WHOLE_CLAUSE = f"{DATE_S} {GRACE_S} {PENALTY_S}"
+MULTI_PAGES = [
+    "SUPPLY AGREEMENT\n1. Parties\nThis Agreement is between Buyer Co and Vendor Co.\nPage 1 of 2",
+    f"SUPPLY AGREEMENT\n7. Delivery and Schedule\n7.3 {WHOLE_CLAUSE}\nPage 2 of 2",
+]
+
 LATE = {"quote": LATE_Q, "chunk_id": f"{PREFIX}-003", "deadline_quote": LATE_Q, "deadline": "2026-10-15",
         "mode": "flat_percent", "percent": 10, "cap_percent": None, "grace_days": 0}
 TERM_LATE = {"quote": TERM_Q, "chunk_id": f"{PREFIX}-003", "deadline_quote": DATE_Q, "deadline": "2026-10-31",
              "mode": "flat_percent", "percent": 10, "cap_percent": None, "grace_days": 0}
+MULTI_LATE = {"quote": WHOLE_CLAUSE, "chunk_id": f"{PREFIX}-003", "deadline_quote": WHOLE_CLAUSE,
+              "deadline": "2027-01-15", "mode": "per_day_percent", "percent": 0.5, "cap_percent": 5.0,
+              "grace_days": 7}
 VOLUME = {"quote": VOLUME_Q, "chunk_id": f"{PREFIX}-007", "min_quantity": 25, "discount_percent": 5}
 PAYMENT = {"quote": PAYMENT_Q, "chunk_id": f"{PREFIX}-005", "net_days": 30}
 PRICE = {"quote": PRICE_Q, "chunk_id": f"{PREFIX}-006", "item_name": "Dell PowerEdge R750 Server",
@@ -145,6 +158,24 @@ def test_invented_deadline_quote_is_refused():
     result, _ = run([reply(invented), reply(), reply(), reply()], document=doc(DEFINED_PAGES))
     assert result.contract.rules == []
     assert "2026-10-31" in issue_for(result, "late_penalty").reason
+
+
+def test_a_clause_whose_values_sit_in_three_sentences_is_accepted_when_the_quote_holds_all_three():
+    result, _ = run([reply(MULTI_LATE), reply(), reply(), reply()], document=doc(MULTI_PAGES))
+    assert result.issues == []
+    late = result.contract.rules[0]
+    assert late.deadline == date(2027, 1, 15) and late.grace_days == 7
+    assert late.percent == Decimal("0.5") and late.cap_percent == Decimal("5")
+    assert late.source.page == 2 and late.deadline_source is None
+
+
+def test_quoting_only_the_penalty_sentence_is_refused_because_the_date_and_grace_are_not_in_it():
+    """Regression (tb_06): the model's values were right but its quote held only the third sentence."""
+    partial = {**MULTI_LATE, "quote": PENALTY_S, "deadline_quote": DATE_S}
+    result, _ = run([reply(partial), reply(), reply(), reply()], document=doc(MULTI_PAGES))
+    assert result.contract.rules == []
+    reason = issue_for(result, "late_penalty").reason
+    assert "deadline" in reason and "grace_days 7" in reason
 
 
 def test_wrong_chunk_id_does_not_matter_the_real_location_is_used():

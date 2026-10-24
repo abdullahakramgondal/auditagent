@@ -4,10 +4,13 @@ Run:  python -m eval.agent1_eval --limit 5     (Tier A: generated contracts, a f
       python -m eval.agent1_eval               (Tier A: all; finished ones are reused)
       python -m eval.agent1_eval --tier b      (Tier B: LLM-written PDFs in data/tier_b/pdf)
 Sends contract text to the LLM provider: synthetic data only.
+Each saved result also keeps the raw model answers (with the chunk ids sent and the seconds each call
+took), so a failure can be diagnosed without new model calls.
 """
 
 import argparse
 import json
+import re
 import statistics
 import tempfile
 import time
@@ -26,20 +29,30 @@ from eval.agent1_scoring import KINDS, aggregate, score_case
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT / "eval" / "results"
 TIER_B_DIR = ROOT / "data" / "tier_b"
+CHUNK_ID_RE = re.compile(r"\[chunk_id: ([^\]]+)\]")
 
 
 class CountingProvider:
-    """Wraps a provider and counts how many model calls were made."""
+    """Wraps a provider: counts the model calls and keeps every raw answer for later diagnosis."""
 
     def __init__(self, inner):
         self._inner = inner
         self.name = inner.name
         self.model = inner.model
         self.calls = 0
+        self.raw_answers: list[dict] = []
 
     def generate_json(self, system, prompt, schema):
         self.calls += 1
-        return self._inner.generate_json(system, prompt, schema)
+        started = time.perf_counter()
+        raw = self._inner.generate_json(system, prompt, schema)
+        self.raw_answers.append({
+            "task": prompt[:60],
+            "chunk_ids": CHUNK_ID_RE.findall(prompt),
+            "seconds": round(time.perf_counter() - started, 1),
+            "raw": raw,
+        })
+        return raw
 
 
 def _pick(specs: list[Path], limit: int | None) -> list[Path]:
@@ -102,7 +115,8 @@ def main() -> None:
                     gold_sources = {}
                     pdf_path = TIER_B_DIR / "pdf" / f"{case_id}.pdf"
                 doc = parse_pdf(pdf_path)
-                calls_before, started = provider.calls, time.perf_counter()
+                calls_before, answers_before = provider.calls, len(provider.raw_answers)
+                started = time.perf_counter()
                 try:
                     result = extractor.extract(doc)
                 except LLMError as exc:
@@ -115,6 +129,7 @@ def main() -> None:
                     "llm_calls": provider.calls - calls_before,
                     "gold_sources": gold_sources,
                     "result": result.model_dump(mode="json"),
+                    "raw_answers": provider.raw_answers[answers_before:],
                 }
                 cache_file.write_text(json.dumps(saved, indent=2))
                 print(f"{case_id}: done in {saved['seconds']}s, {saved['llm_calls']} model calls")
@@ -131,7 +146,7 @@ def main() -> None:
                         "case": case_id, "clause": kind, "status": entry["status"],
                         "wrong_fields": [f for f, ok in entry.get("fields", {}).items() if not ok],
                         "gold": next((r for r in spec["rules"] if r["clause_type"] == kind), None),
-                        "got": next((r.model_dump(mode="json", exclude={"source"})
+                        "got": next((r.model_dump(mode="json", exclude={"source", "deadline_source"})
                                      for r in result.contract.rules if r.clause_type == kind), None),
                     })
             issues += [{"case": case_id, "clause": i.clause_type, "reason": i.reason, "quote": i.quote}

@@ -50,12 +50,16 @@ RETRIEVAL_QUERIES = {
 
 # Safety net: if the model returns nothing but these patterns appear in the clauses it was shown,
 # the empty answer is suspicious and must become a review issue, never silence.
+# Delay or lateness of PAYMENT is a Buyer charge, not a delivery penalty: "late payment", "delays payment",
+# "delay in payment" are skipped.
 _LATE_DELIVERY_HINT = re.compile(
-    r"\b(?:late(?!\s+payment)|delay\w*)\b.{0,200}\d+(?:\.\d+)?\s*%", re.I | re.S
-)  # "late payment charge of 2%" is a Buyer charge, not a delivery penalty
+    r"\b(?:late|delay\w*)\b(?!\s+(?:(?:in|of)\s+)?(?:the\s+)?pay).{0,200}\d+(?:\.\d+)?\s*%",
+    re.I | re.S,
+)
 _DISCOUNT_HINT = re.compile(r"\bdiscount\b.{0,200}\d+(?:\.\d+)?\s*%", re.I | re.S)
 _UNIT_PRICE_HINT = re.compile(r"\bunit\b.{0,120}\bPKR\s*\d", re.I | re.S)
 _INVOICE_WORD = re.compile(r"\binvoices?\b", re.I)
+_PAYMENT_WORD = re.compile(r"\b(?:pay\w*|paid|settle\w*|due)\b", re.I)
 
 FORMS = {
     "late_penalty": LateRulesForm,
@@ -77,9 +81,13 @@ TASKS = {
         "Ignore liability caps, termination rights, and late PAYMENT charges that apply to the Buyer. "
         "mode is flat_percent when one percentage applies once, and per_day_percent when a percentage "
         "applies for each day of delay. "
-        "The deadline date is often written in the penalty sentence itself: then copy the same quote into "
-        "deadline_quote. If the penalty clause only refers to the date by a defined term (a capitalised term "
-        "that another clause defines), copy the sentence that states the date into deadline_quote."
+        "The quote must contain EVERY sentence that states a value of the rule: the delivery date, the grace "
+        "period, the percentage and the cap. When they are in neighbouring sentences of one clause, copy all "
+        "of those sentences together as one passage, in the order they appear in the contract; never quote "
+        "only the sentence with the percentage. "
+        "If the penalty clause only refers to the date by a defined term (a capitalised term that another "
+        "clause defines), copy the sentence that states the date into deadline_quote; otherwise repeat the "
+        "quote in deadline_quote."
     ),
     "volume_discount": (
         "Find rules that give the Buyer a DISCOUNT when it orders at least a minimum number of units."
@@ -121,11 +129,12 @@ def hint_fires(kind: str, text: str) -> bool:
     if kind == "volume_discount":
         return bool(_DISCOUNT_HINT.search(text))
     if kind == "payment_terms":
-        return bool(_INVOICE_WORD.search(text) and DAYS_RE.search(text))
+        return bool(_INVOICE_WORD.search(text) and _PAYMENT_WORD.search(text) and DAYS_RE.search(text))
     return bool(_UNIT_PRICE_HINT.search(text))
 
 
 def _prompt(kind: str, chunks: list[Chunk]) -> str:
+    """The prompt for one clause type: the task, the clauses with their chunk ids, and the answer format."""
     blocks = "\n\n".join(f"[chunk_id: {c.chunk_id}]\n{c.text}" for c in chunks)
     return (
         f"{TASKS[kind]}\n\nClauses from the contract:\n\n{blocks}\n\n"
@@ -134,6 +143,7 @@ def _prompt(kind: str, chunks: list[Chunk]) -> str:
 
 
 def _rule_fields(kind: str, form) -> dict:
+    """The model's form as the fields of a rule (numbers as Decimal, without the source)."""
     if kind == "late_penalty":
         return {
             "clause_type": kind,
@@ -209,6 +219,8 @@ def _check_deadline(form, chunks: list[Chunk]) -> tuple[str | None, dict | None]
 
 
 class LegalExtractor:
+    """Agent 1: reads one contract and returns the rules it can prove, plus every proposal it had to refuse."""
+
     def __init__(self, provider: LLMProvider, embedder: Embedder, top_k: int = TOP_K):
         self._provider = provider
         self._embedder = embedder
@@ -249,6 +261,7 @@ class LegalExtractor:
         return self._result(rules, issues)
 
     def _verify(self, kind: str, item, chunks: list[Chunk]):
+        """Check one proposed rule against the contract. Returns (rule, None) or (None, issue)."""
         chunk = locate_quote(chunks, item.quote, item.chunk_id)
         if chunk is None:
             return None, ExtractionIssue(
@@ -279,6 +292,7 @@ class LegalExtractor:
             )
 
     def _result(self, rules, issues) -> AgentOneResult:
+        """Wrap the rules and issues together with the name of the model that was used."""
         return AgentOneResult(
             contract=ExtractedContract(rules=rules), issues=issues, llm_model=self._provider.model
         )
