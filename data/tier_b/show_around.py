@@ -19,7 +19,7 @@ def main(case_id: str, word: str, width: int = 260) -> None:
         low, start = text.lower(), 0
         while (i := low.find(word.lower(), start)) >= 0:
             hits += 1
-            print(f"page {page.number}: ...{text[max(0, i - width): i + width]}...\n")
+            print(f"page {page.number}: ...{text[max(0, i - width) : i + width]}...\n")
             start = i + len(word) + width  # skip hits that overlap the one just shown
     print(f"{hits} place(s) found")
 

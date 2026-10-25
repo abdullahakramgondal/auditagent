@@ -10,7 +10,9 @@ from pydantic import BaseModel, Field
 
 
 class LateRuleForm(BaseModel):
-    quote: str = Field(description="The clause sentence(s), copied word for word from the contract text")
+    quote: str = Field(
+        description="The clause sentence(s), copied word for word from the contract text"
+    )
     chunk_id: str = Field(description="The chunk_id of the chunk the quote was copied from")
     deadline_quote: str = Field(
         description=(
@@ -21,7 +23,9 @@ class LateRuleForm(BaseModel):
     deadline: str = Field(description="Delivery deadline as YYYY-MM-DD")
     mode: Literal["flat_percent", "per_day_percent"]
     percent: float = Field(ge=0.01, le=100, description="Penalty percentage without the % sign")
-    cap_percent: float | None = Field(ge=0.01, le=100, description="Maximum total penalty percent, or null if none")
+    cap_percent: float | None = Field(
+        ge=0.01, le=100, description="Maximum total penalty percent, or null if none"
+    )
     grace_days: int = Field(ge=0, description="Days of delay that are not penalised, 0 if none")
 
 
@@ -35,7 +39,9 @@ class VolumeRuleForm(BaseModel):
 class PaymentRuleForm(BaseModel):
     quote: str
     chunk_id: str
-    net_days: int = Field(ge=0, description="Days after the invoice date within which payment is due")
+    net_days: int = Field(
+        ge=0, description="Days after the invoice date within which payment is due"
+    )
 
 
 class PriceRuleForm(BaseModel):

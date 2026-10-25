@@ -25,9 +25,7 @@ class ContractIndex:
 
     def search(self, query: str, k: int = 3) -> list[SearchHit]:
         k = max(1, min(k, len(self._chunks)))
-        result = self._collection.query(
-            query_embeddings=self._embedder.embed([query]), n_results=k
-        )
+        result = self._collection.query(query_embeddings=self._embedder.embed([query]), n_results=k)
         return [
             SearchHit(chunk=self._chunks[chunk_id], distance=float(dist))
             for chunk_id, dist in zip(result["ids"][0], result["distances"][0])

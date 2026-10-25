@@ -52,7 +52,9 @@ def retrieval_report(doc, kind: str, needle: str, embedder: Embedder, top_k: int
         "top": rows,
         "needle_ranks": [position for position, _, found in rows if found],
         "outside_ranks": [
-            rank for rank, hit in enumerate(ranking, start=1) if holds(hit.chunk) and hit.chunk.chunk_id not in sent
+            rank
+            for rank, hit in enumerate(ranking, start=1)
+            if holds(hit.chunk) and hit.chunk.chunk_id not in sent
         ],
         "prompt_chunks": shown,
     }
@@ -75,16 +77,22 @@ def main() -> None:
     print(f"\nSENT TO THE MODEL ({len(report['top'])} chunks, in prompt order)")
     for position, chunk, found in report["top"]:
         mark = "   <== contains the needle" if found else ""
-        print(f"  #{position}  page {chunk.page_start}  {chunk.chunk_id[-3:]}  {chunk.heading[:60]}{mark}")
+        print(
+            f"  #{position}  page {chunk.page_start}  {chunk.chunk_id[-3:]}  {chunk.heading[:60]}{mark}"
+        )
     if report["needle_ranks"]:
-        print(f"\nRETRIEVAL OK: a chunk with the needle is sent (best position #{min(report['needle_ranks'])}).")
+        print(
+            f"\nRETRIEVAL OK: a chunk with the needle is sent (best position #{min(report['needle_ranks'])})."
+        )
     elif report["outside_ranks"]:
         print(
             f"\nRETRIEVAL MISS: chunks with the needle rank {report['outside_ranks'][:5]} "
             "for the first query and were not sent."
         )
     else:
-        print(f"\nNo chunk contains {args.needle!r}: wrong needle, or the text is split across chunks.")
+        print(
+            f"\nNo chunk contains {args.needle!r}: wrong needle, or the text is split across chunks."
+        )
 
     if args.ask:
         provider = build_provider()

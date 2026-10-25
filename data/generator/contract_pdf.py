@@ -19,12 +19,30 @@ MIN_BLOCKS_PER_PAGE = 3
 
 # Generic padding text. No numbers or percentages on purpose.
 BOILERPLATE = [
-    ("General Provisions", "This Agreement is the entire understanding between the parties and replaces all earlier discussions."),
-    ("Notices", "Any notice under this Agreement must be in writing and sent to the registered address of the other party."),
-    ("Governing Law", "This Agreement is governed by the laws of Pakistan and disputes shall be heard by the courts of Lahore."),
-    ("Assignment", "Neither party may assign its rights under this Agreement without the written consent of the other."),
-    ("Amendments", "Changes to this Agreement are valid only if made in writing and signed by both parties."),
-    ("Severability", "If any provision is held invalid, the remaining provisions continue in full effect."),
+    (
+        "General Provisions",
+        "This Agreement is the entire understanding between the parties and replaces all earlier discussions.",
+    ),
+    (
+        "Notices",
+        "Any notice under this Agreement must be in writing and sent to the registered address of the other party.",
+    ),
+    (
+        "Governing Law",
+        "This Agreement is governed by the laws of Pakistan and disputes shall be heard by the courts of Lahore.",
+    ),
+    (
+        "Assignment",
+        "Neither party may assign its rights under this Agreement without the written consent of the other.",
+    ),
+    (
+        "Amendments",
+        "Changes to this Agreement are valid only if made in writing and signed by both parties.",
+    ),
+    (
+        "Severability",
+        "If any provision is held invalid, the remaining provisions continue in full effect.",
+    ),
 ]
 
 

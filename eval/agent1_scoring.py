@@ -36,7 +36,9 @@ def score_case(spec: dict, result: AgentOneResult, gold_sources: dict) -> dict:
     scored = {}
     for kind in KINDS:
         gold_rules = [r for r in spec["rules"] if r["clause_type"] == kind]
-        got_rules = [r.model_dump(mode="json") for r in result.contract.rules if r.clause_type == kind]
+        got_rules = [
+            r.model_dump(mode="json") for r in result.contract.rules if r.clause_type == kind
+        ]
         issues = [i for i in result.issues if i.clause_type in (kind, "all")]
         entry = {"gold": len(gold_rules), "found": len(got_rules), "issues": len(issues)}
 
@@ -51,7 +53,8 @@ def score_case(spec: dict, result: AgentOneResult, gold_sources: dict) -> dict:
                 quote_ok=None
                 if not source
                 else bool(source.get("text"))
-                and normalize_for_match(source["text"]) in normalize_for_match(got["source"]["text"]),
+                and normalize_for_match(source["text"])
+                in normalize_for_match(got["source"]["text"]),
             )
         elif gold_rules:
             entry["status"] = "refused" if issues else "silent_miss"
@@ -69,8 +72,22 @@ def _ratio(num: int, den: int):
 
 def aggregate(scored_cases: list[dict]) -> dict:
     """Totals per clause type and overall: recall, precision, field, page and quote accuracy."""
-    keys = ("gold", "correct", "wrong", "refused", "silent_miss", "spurious", "correct_absent",
-            "pairs", "field_ok", "field_n", "page_ok", "page_n", "quote_ok", "quote_n")
+    keys = (
+        "gold",
+        "correct",
+        "wrong",
+        "refused",
+        "silent_miss",
+        "spurious",
+        "correct_absent",
+        "pairs",
+        "field_ok",
+        "field_n",
+        "page_ok",
+        "page_n",
+        "quote_ok",
+        "quote_n",
+    )
     totals = {kind: dict.fromkeys(keys, 0) for kind in KINDS}
     for case in scored_cases:
         for kind, e in case.items():

@@ -21,7 +21,12 @@ INVOICE_SPEC = {
         "invoice_date": "2026-10-26",
         "delivery_date": "2026-10-25",
         "line_items": [
-            {"item_name": "Server", "quantity": 10, "unit_price": "1000000", "line_total": "10000000"}
+            {
+                "item_name": "Server",
+                "quantity": 10,
+                "unit_price": "1000000",
+                "line_total": "10000000",
+            }
         ],
         "total_amount": "10000000",
     },

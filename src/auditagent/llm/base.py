@@ -58,4 +58,6 @@ def generate_structured(
                 f"Previous answer: {raw[:1500]}\n"
                 "Return corrected JSON only."
             )
-    raise LLMOutputError(f"No valid output after {max_attempts} attempts. Last problems: {last_error}")
+    raise LLMOutputError(
+        f"No valid output after {max_attempts} attempts. Last problems: {last_error}"
+    )

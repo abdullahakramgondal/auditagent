@@ -10,7 +10,9 @@ from auditagent.schemas.chunk import Chunk
 MIN_QUOTE_CHARS = 25
 _NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
 _WORD_IN_BRACKETS = r"(?:\([A-Za-z][A-Za-z\- ]*\)\s*)?"  # e.g. "40 (forty) units"
-PERCENT_RE = re.compile(rf"(\d+(?:\.\d+)?)\)?\s*{_WORD_IN_BRACKETS}(?:%|per\s?cent\b)", re.IGNORECASE)
+PERCENT_RE = re.compile(
+    rf"(\d+(?:\.\d+)?)\)?\s*{_WORD_IN_BRACKETS}(?:%|per\s?cent\b)", re.IGNORECASE
+)
 DAYS_RE = re.compile(
     rf"\(?(\d+)\)?\s*{_WORD_IN_BRACKETS}(?:(?:calendar|business|working|consecutive)\s+)?days?\b"
     r"|\bnet\s*(\d+)\b",
@@ -27,8 +29,18 @@ _DEFINED_DATE_TERM_RE = re.compile(
     r'"((?:[A-Z][A-Za-z]* ){0,3}(?:Deadline|Date|Day))"(?=\s*\)|\s+(?:shall\s+)?means\b)'
 )
 _MONTHS = (
-    "january", "february", "march", "april", "may", "june",
-    "july", "august", "september", "october", "november", "december",
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
 )
 _QUOTES = {0x201C: '"', 0x201D: '"', 0x2018: "'", 0x2019: "'"}
 
@@ -90,9 +102,18 @@ def date_in(day: date, text: str) -> bool:
     }
     for d in {str(day.day), f"{day.day:02d}"}:
         for m in {month, month[:3]}:
-            forms |= {f"{d} {m} {day.year}", f"{d}-{m}-{day.year}", f"{m} {d}, {day.year}", f"{m} {d} {day.year}"}
+            forms |= {
+                f"{d} {m} {day.year}",
+                f"{d}-{m}-{day.year}",
+                f"{m} {d}, {day.year}",
+                f"{m} {d} {day.year}",
+            }
             for suffix in ("st", "nd", "rd", "th"):
-                forms |= {f"{d}{suffix} {m} {day.year}", f"{d}{suffix} of {m} {day.year}", f"{m} {d}{suffix}, {day.year}"}
+                forms |= {
+                    f"{d}{suffix} {m} {day.year}",
+                    f"{d}{suffix} of {m} {day.year}",
+                    f"{m} {d}{suffix}, {day.year}",
+                }
     return any(form in t for form in forms)
 
 

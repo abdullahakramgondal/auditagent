@@ -6,10 +6,20 @@ from data.generator.contract_pdf import write_contract_pdf
 from data.generator.templates import FILLERS, VARIANTS, render_clause
 
 RULES = [
-    {"clause_type": "late_penalty", "deadline": "2026-10-15", "mode": "per_day_percent",
-     "percent": "1", "cap_percent": "10", "grace_days": 3},
+    {
+        "clause_type": "late_penalty",
+        "deadline": "2026-10-15",
+        "mode": "per_day_percent",
+        "percent": "1",
+        "cap_percent": "10",
+        "grace_days": 3,
+    },
     {"clause_type": "volume_discount", "min_quantity": 25, "discount_percent": "5"},
-    {"clause_type": "unit_price", "item_name": "Dell PowerEdge R750 Server", "agreed_unit_price": "1500000"},
+    {
+        "clause_type": "unit_price",
+        "item_name": "Dell PowerEdge R750 Server",
+        "agreed_unit_price": "1500000",
+    },
     {"clause_type": "payment_terms", "net_days": 45},
 ]
 
@@ -19,7 +29,10 @@ def test_every_rule_clause_lands_in_exactly_one_chunk_on_its_page(tmp_path):
         rng = random.Random(n)
         pages = rng.choice([3, 4, 6, 10, 18, 20])
         spec = {
-            "case_id": f"t{n}", "seed": n, "buyer": "Buyer Co", "vendor": "Vendor Co",
+            "case_id": f"t{n}",
+            "seed": n,
+            "buyer": "Buyer Co",
+            "vendor": "Vendor Co",
             "layout": {
                 "contract_pages": pages,
                 "wording_variant": rng.choice(VARIANTS),

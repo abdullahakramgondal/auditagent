@@ -84,7 +84,9 @@ def api_error(code):
 def make_provider(outcomes, max_retries=3):
     """A GeminiProvider wired to a fake client, with no waiting between retries."""
     client = FakeClient(outcomes)
-    provider = GeminiProvider("unused", "gemini-test", client=client, retry_wait=0, max_retries=max_retries)
+    provider = GeminiProvider(
+        "unused", "gemini-test", client=client, retry_wait=0, max_retries=max_retries
+    )
     return provider, client
 
 

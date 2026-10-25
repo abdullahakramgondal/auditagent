@@ -21,8 +21,13 @@ DECOYS = [
 
 
 def _late(deadline, mode, percent, cap=None, grace=0):
-    rule = {"clause_type": "late_penalty", "deadline": deadline, "mode": mode,
-            "percent": str(percent), "grace_days": grace}
+    rule = {
+        "clause_type": "late_penalty",
+        "deadline": deadline,
+        "mode": mode,
+        "percent": str(percent),
+        "grace_days": grace,
+    }
     if cap is not None:
         rule["cap_percent"] = str(cap)
     return rule
@@ -41,25 +46,75 @@ def _terms(days):
 
 
 SPECS = [
-    {"case_id": "tb_01", "writer": "claude", "buyer": "Lahore Software House Pvt Ltd", "vendor": "Tech Supplies Pvt Ltd",
-     "rules": [_late("2026-11-20", "flat_percent", 8, grace=5), _terms(45)]},
-    {"case_id": "tb_02", "writer": "chatgpt", "buyer": "Punjab Digital Solutions Pvt Ltd", "vendor": "Metro IT Distributors",
-     "rules": [_late("2026-12-05", "per_day_percent", 1.5, cap=12), _volume(40, 6)]},
-    {"case_id": "tb_03", "writer": "claude", "buyer": "Ravi Code Labs Pvt Ltd", "vendor": "Alpha Hardware Traders",
-     "rules": [_price("Cisco Catalyst 9300 Switch", 540000), _terms(30), _volume(20, 4)]},
-    {"case_id": "tb_04", "writer": "chatgpt", "buyer": "Indus Cloud Services Pvt Ltd", "vendor": "Prime Network Solutions",
-     "rules": [_late("2026-10-31", "flat_percent", 10, grace=2), _volume(100, 12),
-               _price("Lenovo ThinkPad T14 Laptop", 275000), _terms(60)]},
-    {"case_id": "tb_05", "writer": "claude", "buyer": "Five Rivers Technologies Pvt Ltd", "vendor": "Crescent Systems Pvt Ltd",
-     "rules": [_terms(21)]},
-    {"case_id": "tb_06", "writer": "chatgpt", "buyer": "Lahore Software House Pvt Ltd", "vendor": "Metro IT Distributors",
-     "rules": [_late("2027-01-15", "per_day_percent", 0.5, cap=5, grace=7),
-               _price("HP LaserJet Enterprise Printer", 130000)]},
-    {"case_id": "tb_07", "writer": "claude", "buyer": "Punjab Digital Solutions Pvt Ltd", "vendor": "Tech Supplies Pvt Ltd",
-     "rules": [_volume(25, 3.5), _terms(14)]},
-    {"case_id": "tb_08", "writer": "chatgpt", "buyer": "Ravi Code Labs Pvt Ltd", "vendor": "Prime Network Solutions",
-     "rules": [_late("2026-12-31", "flat_percent", 15), _price("Fortinet FortiGate 100F Firewall", 620000),
-               _volume(10, 2), _terms(30)]},
+    {
+        "case_id": "tb_01",
+        "writer": "claude",
+        "buyer": "Lahore Software House Pvt Ltd",
+        "vendor": "Tech Supplies Pvt Ltd",
+        "rules": [_late("2026-11-20", "flat_percent", 8, grace=5), _terms(45)],
+    },
+    {
+        "case_id": "tb_02",
+        "writer": "chatgpt",
+        "buyer": "Punjab Digital Solutions Pvt Ltd",
+        "vendor": "Metro IT Distributors",
+        "rules": [_late("2026-12-05", "per_day_percent", 1.5, cap=12), _volume(40, 6)],
+    },
+    {
+        "case_id": "tb_03",
+        "writer": "claude",
+        "buyer": "Ravi Code Labs Pvt Ltd",
+        "vendor": "Alpha Hardware Traders",
+        "rules": [_price("Cisco Catalyst 9300 Switch", 540000), _terms(30), _volume(20, 4)],
+    },
+    {
+        "case_id": "tb_04",
+        "writer": "chatgpt",
+        "buyer": "Indus Cloud Services Pvt Ltd",
+        "vendor": "Prime Network Solutions",
+        "rules": [
+            _late("2026-10-31", "flat_percent", 10, grace=2),
+            _volume(100, 12),
+            _price("Lenovo ThinkPad T14 Laptop", 275000),
+            _terms(60),
+        ],
+    },
+    {
+        "case_id": "tb_05",
+        "writer": "claude",
+        "buyer": "Five Rivers Technologies Pvt Ltd",
+        "vendor": "Crescent Systems Pvt Ltd",
+        "rules": [_terms(21)],
+    },
+    {
+        "case_id": "tb_06",
+        "writer": "chatgpt",
+        "buyer": "Lahore Software House Pvt Ltd",
+        "vendor": "Metro IT Distributors",
+        "rules": [
+            _late("2027-01-15", "per_day_percent", 0.5, cap=5, grace=7),
+            _price("HP LaserJet Enterprise Printer", 130000),
+        ],
+    },
+    {
+        "case_id": "tb_07",
+        "writer": "claude",
+        "buyer": "Punjab Digital Solutions Pvt Ltd",
+        "vendor": "Tech Supplies Pvt Ltd",
+        "rules": [_volume(25, 3.5), _terms(14)],
+    },
+    {
+        "case_id": "tb_08",
+        "writer": "chatgpt",
+        "buyer": "Ravi Code Labs Pvt Ltd",
+        "vendor": "Prime Network Solutions",
+        "rules": [
+            _late("2026-12-31", "flat_percent", 15),
+            _price("Fortinet FortiGate 100F Firewall", 620000),
+            _volume(10, 2),
+            _terms(30),
+        ],
+    },
 ]
 
 
@@ -79,8 +134,10 @@ def describe_rule(rule: dict) -> str:
         if rule["mode"] == "flat_percent":
             text = f"Late delivery penalty: if the Vendor delivers after {when}, a penalty of {_num(rule['percent'])}% of the invoice value applies (one single penalty)."
         else:
-            text = (f"Late delivery penalty: for each day of delay after {when}, a penalty of {_num(rule['percent'])}% "
-                    f"of the invoice value applies, up to a maximum total of {_num(rule['cap_percent'])}%.")
+            text = (
+                f"Late delivery penalty: for each day of delay after {when}, a penalty of {_num(rule['percent'])}% "
+                f"of the invoice value applies, up to a maximum total of {_num(rule['cap_percent'])}%."
+            )
         if rule.get("grace_days"):
             text += f" The first {rule['grace_days']} days of delay carry no penalty."
         return text
@@ -94,7 +151,7 @@ def describe_rule(rule: dict) -> str:
 def build_prompt(spec: dict) -> str:
     terms = "\n".join(f"- {describe_rule(r)}" for r in spec["rules"])
     decoys = "\n".join(f"- {d}" for d in DECOYS)
-    return f"""Write a realistic supply agreement between {spec['buyer']} (the "Buyer") and {spec['vendor']} (the "Vendor") for IT equipment, as it would appear in the procurement files of a Pakistani software company.
+    return f"""Write a realistic supply agreement between {spec["buyer"]} (the "Buyer") and {spec["vendor"]} (the "Vendor") for IT equipment, as it would appear in the procurement files of a Pakistani software company.
 
 Length and style
 - About 3,500 to 4,500 words, in formal legal English.
@@ -117,7 +174,9 @@ def main() -> None:
     for sub in ("specs", "prompts", "contracts", "pdf"):
         (TIER_DIR / sub).mkdir(exist_ok=True)
     for spec in SPECS:
-        (TIER_DIR / "specs" / f"{spec['case_id']}.json").write_text(json.dumps(spec, indent=2) + "\n")
+        (TIER_DIR / "specs" / f"{spec['case_id']}.json").write_text(
+            json.dumps(spec, indent=2) + "\n"
+        )
         (TIER_DIR / "prompts" / f"{spec['case_id']}.txt").write_text(build_prompt(spec))
     print(f"wrote {len(SPECS)} specs and prompts in {TIER_DIR}")
 

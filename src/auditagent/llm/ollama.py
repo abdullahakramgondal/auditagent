@@ -58,7 +58,9 @@ class OllamaProvider:
                 "Raise OLLAMA_TIMEOUT in .env."
             ) from exc
         if response.status_code == 404:
-            raise LLMError(f"Ollama does not have the model {self.model!r}. Download it with: ollama pull {self.model}")
+            raise LLMError(
+                f"Ollama does not have the model {self.model!r}. Download it with: ollama pull {self.model}"
+            )
         if response.status_code != 200:
             raise LLMError(f"Ollama error {response.status_code}: {response.text[:200]}")
         return response.json()

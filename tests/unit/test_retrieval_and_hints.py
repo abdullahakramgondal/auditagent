@@ -9,7 +9,10 @@ from auditagent.schemas.chunk import Chunk
 def chunks():
     texts = [
         ("1. Delivery", 'The Vendor shall deliver by 31 October 2026 (the "Delivery Deadline").'),
-        ("2. Late Delivery", "If the Vendor delivers after the Delivery Deadline, a penalty of 10% applies."),
+        (
+            "2. Late Delivery",
+            "If the Vendor delivers after the Delivery Deadline, a penalty of 10% applies.",
+        ),
         ("3. Payment", "Each invoice shall be paid within 30 days of the invoice date."),
         ("4. Pricing", "The unit price of the Server is PKR 1,500,000."),
         ("5. Notices", "Notices must be in writing."),
@@ -42,7 +45,9 @@ def test_a_clause_type_with_one_query_gets_exactly_top_k_chunks():
 
 
 def test_late_delivery_hint_fires_on_a_delivery_penalty():
-    assert hint_fires("late_penalty", "If the Vendor delays delivery, a penalty of 10% shall apply.")
+    assert hint_fires(
+        "late_penalty", "If the Vendor delays delivery, a penalty of 10% shall apply."
+    )
 
 
 def test_the_late_word_may_come_after_the_percentage():
@@ -68,7 +73,9 @@ def test_the_late_word_may_come_after_the_percentage_in_a_long_clause():
 
 def test_late_payment_charge_is_not_a_late_delivery_hint():
     """Regression (tb_03): a charge on the Buyer for paying late raised a false 'needs review'."""
-    assert not hint_fires("late_penalty", "A late payment charge of 2% per month applies if the Buyer pays late.")
+    assert not hint_fires(
+        "late_penalty", "A late payment charge of 2% per month applies if the Buyer pays late."
+    )
 
 
 @pytest.mark.parametrize(
@@ -85,8 +92,12 @@ def test_delayed_payment_is_not_a_late_delivery_hint(text):
 
 
 def test_payment_hint_needs_an_invoice_a_payment_word_and_a_number_of_days():
-    assert hint_fires("payment_terms", "All invoices are payable 30 calendar days after the date of invoice.")
-    assert hint_fires("payment_terms", "Each invoice shall be paid within thirty (30) days of receipt.")
+    assert hint_fires(
+        "payment_terms", "All invoices are payable 30 calendar days after the date of invoice."
+    )
+    assert hint_fires(
+        "payment_terms", "Each invoice shall be paid within thirty (30) days of receipt."
+    )
     assert not hint_fires("payment_terms", "The Buyer shall pay for the goods promptly.")
 
 
@@ -129,7 +140,9 @@ def test_a_volume_reduction_is_a_volume_discount_hint():
 
 
 def test_the_percentage_may_come_before_the_discount_word():
-    assert hint_fires("volume_discount", "A 5% volume discount applies to orders of 25 or more units.")
+    assert hint_fires(
+        "volume_discount", "A 5% volume discount applies to orders of 25 or more units."
+    )
 
 
 def test_a_late_payment_charge_is_not_a_volume_discount_hint():

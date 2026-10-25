@@ -57,12 +57,17 @@ _PERCENT_RE = re.compile(_PERCENT)
 _DISCOUNT_WORD = r"\b(?:discounts?|rebates?|reductions?)\b"
 # Delay or lateness of PAYMENT is a Buyer charge, not a delivery penalty: "late payment", "delays payment",
 # "delay in payment" are skipped, and the clause must also talk about delivery.
-_LATE_WORD = re.compile(r"\b(?:late|delay\w*)\b(?!\s+(?:(?:in|of)\s+)?(?:the\s+)?pay)", re.IGNORECASE)
+_LATE_WORD = re.compile(
+    r"\b(?:late|delay\w*)\b(?!\s+(?:(?:in|of)\s+)?(?:the\s+)?pay)", re.IGNORECASE
+)
 _DELIVER_WORD = re.compile(r"\bdeliver\w*\b", re.IGNORECASE)
 _DISCOUNT_HINT = re.compile(
-    rf"{_DISCOUNT_WORD}.{{0,200}}{_PERCENT}|{_PERCENT}.{{0,100}}{_DISCOUNT_WORD}", re.IGNORECASE | re.DOTALL
+    rf"{_DISCOUNT_WORD}.{{0,200}}{_PERCENT}|{_PERCENT}.{{0,100}}{_DISCOUNT_WORD}",
+    re.IGNORECASE | re.DOTALL,
 )
-_UNIT_PRICE_HINT = re.compile(r"\bunit\b.{0,120}\bPKR\s*\d|\bPKR\s*\d.{0,80}\bunit\b", re.IGNORECASE | re.DOTALL)
+_UNIT_PRICE_HINT = re.compile(
+    r"\bunit\b.{0,120}\bPKR\s*\d|\bPKR\s*\d.{0,80}\bunit\b", re.IGNORECASE | re.DOTALL
+)
 _INVOICE_WORD = re.compile(r"\binvoices?\b", re.IGNORECASE)
 _PAYMENT_WORD = re.compile(r"\b(?:pay\w*|paid|settle\w*|due)\b", re.IGNORECASE)
 
@@ -109,7 +114,9 @@ TASKS = {
 _RULE = TypeAdapter(ContractRule)
 
 
-def retrieve(index: ContractIndex, kind: str, top_k: int = TOP_K, extra_k: int = EXTRA_K) -> list[Chunk]:
+def retrieve(
+    index: ContractIndex, kind: str, top_k: int = TOP_K, extra_k: int = EXTRA_K
+) -> list[Chunk]:
     """The chunks the model is shown for one clause type: top_k for the first query, then up to
     extra_k new chunks for each further query. Eval and diagnose tools call this same function."""
     first, *further = RETRIEVAL_QUERIES[kind]
@@ -130,11 +137,15 @@ def retrieve(index: ContractIndex, kind: str, top_k: int = TOP_K, extra_k: int =
 def hint_fires(kind: str, text: str) -> bool:
     """True if this clause text looks like the rule of this type (used only for the empty-answer safety net)."""
     if kind == "late_penalty":
-        return bool(_LATE_WORD.search(text) and _DELIVER_WORD.search(text) and _PERCENT_RE.search(text))
+        return bool(
+            _LATE_WORD.search(text) and _DELIVER_WORD.search(text) and _PERCENT_RE.search(text)
+        )
     if kind == "volume_discount":
         return bool(_DISCOUNT_HINT.search(text))
     if kind == "payment_terms":
-        return bool(_INVOICE_WORD.search(text) and _PAYMENT_WORD.search(text) and DAYS_RE.search(text))
+        return bool(
+            _INVOICE_WORD.search(text) and _PAYMENT_WORD.search(text) and DAYS_RE.search(text)
+        )
     return bool(_UNIT_PRICE_HINT.search(text))
 
 
@@ -219,7 +230,10 @@ def _check_deadline(form, chunks: list[Chunk]) -> tuple[str | None, dict | None]
     if holder is None or not date_in(deadline, form.deadline_quote):
         return missing, None
     if not shares_defined_term(form.deadline_quote, form.quote):
-        return f"{missing}, and the quote does not use a date term defined where the date is written", None
+        return (
+            f"{missing}, and the quote does not use a date term defined where the date is written",
+            None,
+        )
     return None, {"page": holder.page_start, "text": normalize_for_match(form.deadline_quote)}
 
 
@@ -235,7 +249,9 @@ class LegalExtractor:
         """Return the verified rules of one contract, plus every proposal we had to refuse."""
         chunks = chunk_document(doc)
         if not chunks:
-            return self._result([], [ExtractionIssue(clause_type="all", reason="The contract has no readable text")])
+            return self._result(
+                [], [ExtractionIssue(clause_type="all", reason="The contract has no readable text")]
+            )
 
         rules: list = []
         issues: list[ExtractionIssue] = []
@@ -244,9 +260,13 @@ class LegalExtractor:
             for kind in KINDS:
                 shown = retrieve(index, kind, self._top_k)
                 try:
-                    form = generate_structured(self._provider, SYSTEM, _prompt(kind, shown), FORMS[kind])
+                    form = generate_structured(
+                        self._provider, SYSTEM, _prompt(kind, shown), FORMS[kind]
+                    )
                 except LLMOutputError as exc:
-                    issues.append(ExtractionIssue(clause_type=kind, reason=f"Model output unusable: {exc}"))
+                    issues.append(
+                        ExtractionIssue(clause_type=kind, reason=f"Model output unusable: {exc}")
+                    )
                     continue
                 for item in form.rules:
                     rule, issue = self._verify(kind, item, chunks)
@@ -279,7 +299,9 @@ class LegalExtractor:
             if problem:
                 problems.insert(0, problem)
         if problems:
-            return None, ExtractionIssue(clause_type=kind, reason="; ".join(problems), quote=item.quote)
+            return None, ExtractionIssue(
+                clause_type=kind, reason="; ".join(problems), quote=item.quote
+            )
         # The page comes from the parser (where the quote really is), never from the model.
         fields = {
             **_rule_fields(kind, item),

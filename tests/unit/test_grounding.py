@@ -52,7 +52,8 @@ def test_date_in_accepts_common_formats(text):
 
 
 @pytest.mark.parametrize(
-    "text", ["later than 16 October 2026", "later than 15 November 2026", "later than 15 October 2025"]
+    "text",
+    ["later than 16 October 2026", "later than 15 November 2026", "later than 15 October 2025"],
 )
 def test_date_in_rejects_other_dates(text):
     assert not date_in(date(2026, 10, 15), text)
@@ -66,7 +67,10 @@ def test_quote_is_found_despite_spacing_and_curly_quotes():
 
 def test_quote_that_is_not_in_the_contract_is_refused():
     chunks = [chunk("a-1", "3. Delivery " + QUOTE)]
-    assert locate_quote(chunks, "A penalty of 12% applies for every week of delay after 1 November.") is None
+    assert (
+        locate_quote(chunks, "A penalty of 12% applies for every week of delay after 1 November.")
+        is None
+    )
 
 
 def test_very_short_quotes_are_refused():
@@ -117,13 +121,17 @@ def test_units_are_read_in_every_common_legal_style(text):
 
 
 def test_words_in_brackets_do_not_hide_days_or_percentages():
-    assert days_in(30, "within thirty (30) days") and days_in(30, "within 30 (thirty) calendar days")
+    assert days_in(30, "within thirty (30) days") and days_in(
+        30, "within 30 (thirty) calendar days"
+    )
     assert percent_in(8, "eight percent (8%)") and percent_in(8, "8 (eight) per cent")
     assert not units_in(30, "within thirty (30) days")
 
 
 def test_defined_date_terms_are_found_in_common_styles():
-    assert defined_terms('on or before 31 October 2026 (the "Delivery Deadline"), at its own cost') == {"Delivery Deadline"}
+    assert defined_terms(
+        'on or before 31 October 2026 (the "Delivery Deadline"), at its own cost'
+    ) == {"Delivery Deadline"}
     assert defined_terms('"Delivery Date" means 31 October 2026') == {"Delivery Date"}
     assert defined_terms("(the \u201cDelivery Deadline\u201d)") == {"Delivery Deadline"}
 
@@ -136,5 +144,9 @@ def test_party_names_and_other_terms_are_not_date_terms():
 def test_a_penalty_clause_is_linked_to_the_clause_that_defines_its_date():
     definition = 'The Vendor shall deliver on or before 31 October 2026 (the "Delivery Deadline").'
     assert shares_defined_term(definition, "A penalty of 10% applies after the Delivery Deadline.")
-    assert not shares_defined_term(definition, "A penalty of 10% applies after the date of delivery.")
-    assert not shares_defined_term(definition, "A penalty applies after the delivery deadline.")  # case matters
+    assert not shares_defined_term(
+        definition, "A penalty of 10% applies after the date of delivery."
+    )
+    assert not shares_defined_term(
+        definition, "A penalty applies after the delivery deadline."
+    )  # case matters

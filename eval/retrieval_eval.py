@@ -45,7 +45,11 @@ def evaluate(embedder, label: str) -> dict:
                 gold = normalize_for_match(source["text"])
                 shown = retrieve(index, kind)  # exactly what Agent 1 shows the model
                 rank = next(
-                    (i for i, chunk in enumerate(shown, start=1) if gold in normalize_for_match(chunk.text)),
+                    (
+                        i
+                        for i, chunk in enumerate(shown, start=1)
+                        if gold in normalize_for_match(chunk.text)
+                    ),
                     None,
                 )
                 total[kind] += 1

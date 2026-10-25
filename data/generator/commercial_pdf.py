@@ -23,20 +23,59 @@ TITLES = {
 }
 LABELS = {
     "invoice": {
-        1: {"number": "Invoice No", "date": "Invoice Date", "delivery": "Delivery Date",
-            "due": "Due Date", "buyer": "Bill To", "vendor": "From", "total": "Total"},
-        2: {"number": "Bill No", "date": "Bill Date", "delivery": "Delivered On",
-            "due": "Payment Due", "buyer": "Customer", "vendor": "Supplier", "total": "Total Payable"},
-        3: {"number": "Invoice #", "date": "Issued On", "delivery": "Date of Delivery",
-            "due": "Pay By", "buyer": "Billed To", "vendor": "Vendor", "total": "Grand Total"},
+        1: {
+            "number": "Invoice No",
+            "date": "Invoice Date",
+            "delivery": "Delivery Date",
+            "due": "Due Date",
+            "buyer": "Bill To",
+            "vendor": "From",
+            "total": "Total",
+        },
+        2: {
+            "number": "Bill No",
+            "date": "Bill Date",
+            "delivery": "Delivered On",
+            "due": "Payment Due",
+            "buyer": "Customer",
+            "vendor": "Supplier",
+            "total": "Total Payable",
+        },
+        3: {
+            "number": "Invoice #",
+            "date": "Issued On",
+            "delivery": "Date of Delivery",
+            "due": "Pay By",
+            "buyer": "Billed To",
+            "vendor": "Vendor",
+            "total": "Grand Total",
+        },
     },
     "po": {
-        1: {"number": "PO No", "date": "PO Date", "due": "Delivery Due Date",
-            "buyer": "Buyer", "vendor": "Vendor", "total": "Total"},
-        2: {"number": "Order No", "date": "Order Date", "due": "Required By",
-            "buyer": "Ordered By", "vendor": "Supplier", "total": "Total Payable"},
-        3: {"number": "Purchase Order #", "date": "Raised On", "due": "Deliver By",
-            "buyer": "Issued By", "vendor": "To", "total": "Grand Total"},
+        1: {
+            "number": "PO No",
+            "date": "PO Date",
+            "due": "Delivery Due Date",
+            "buyer": "Buyer",
+            "vendor": "Vendor",
+            "total": "Total",
+        },
+        2: {
+            "number": "Order No",
+            "date": "Order Date",
+            "due": "Required By",
+            "buyer": "Ordered By",
+            "vendor": "Supplier",
+            "total": "Total Payable",
+        },
+        3: {
+            "number": "Purchase Order #",
+            "date": "Raised On",
+            "due": "Deliver By",
+            "buyer": "Issued By",
+            "vendor": "To",
+            "total": "Grand Total",
+        },
     },
 }
 COLUMN_HEADERS = {
@@ -160,8 +199,13 @@ def write_po_pdf(spec: dict, out_path) -> Path:
         header.append(("main", lab["due"], fmt_doc_date(po["delivery_due_date"], variant)))
     header += [("party", lab["buyer"], spec["buyer"]), ("party", lab["vendor"], spec["vendor"])]
     return _draw_document(
-        out_path, variant, TITLES["po"][variant], header,
-        po["line_items"], po["total_amount"], lab["total"],
+        out_path,
+        variant,
+        TITLES["po"][variant],
+        header,
+        po["line_items"],
+        po["total_amount"],
+        lab["total"],
     )
 
 
@@ -179,7 +223,12 @@ def write_invoice_pdf(spec: dict, out_path) -> Path:
         header.append(("main", lab["due"], fmt_doc_date(inv["due_date"], variant)))
     header += [("party", lab["buyer"], spec["buyer"]), ("party", lab["vendor"], spec["vendor"])]
     return _draw_document(
-        out_path, variant, TITLES["invoice"][variant], header,
-        inv["line_items"], inv["total_amount"], lab["total"],
+        out_path,
+        variant,
+        TITLES["invoice"][variant],
+        header,
+        inv["line_items"],
+        inv["total_amount"],
+        lab["total"],
         inv.get("adjustments", []),
     )

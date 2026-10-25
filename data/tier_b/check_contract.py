@@ -47,7 +47,7 @@ def _to_number(token: str) -> float | None:
 
 
 def _context(text: str, start: int, end: int, width: int = 70) -> str:
-    return normalize_for_match(text[max(0, start - width): end + width])
+    return normalize_for_match(text[max(0, start - width) : end + width])
 
 
 def _expected(spec: dict) -> dict:
@@ -76,21 +76,57 @@ def _checks(spec: dict) -> list[tuple[str, callable]]:
         kind = r["clause_type"]
         if kind == "late_penalty":
             day = date.fromisoformat(r["deadline"])
-            checks.append((f"late_penalty deadline {r['deadline']}", lambda t, d=day: date_in(d, t)))
-            checks.append((f"late_penalty percent {r['percent']}", lambda t, v=r["percent"]: percent_in(v, t)))
+            checks.append(
+                (f"late_penalty deadline {r['deadline']}", lambda t, d=day: date_in(d, t))
+            )
+            checks.append(
+                (f"late_penalty percent {r['percent']}", lambda t, v=r["percent"]: percent_in(v, t))
+            )
             if r.get("cap_percent"):
-                checks.append((f"late_penalty cap {r['cap_percent']}", lambda t, v=r["cap_percent"]: percent_in(v, t)))
+                checks.append(
+                    (
+                        f"late_penalty cap {r['cap_percent']}",
+                        lambda t, v=r["cap_percent"]: percent_in(v, t),
+                    )
+                )
             if r.get("grace_days"):
-                checks.append((f"late_penalty grace {r['grace_days']} days", lambda t, v=r["grace_days"]: days_in(v, t)))
+                checks.append(
+                    (
+                        f"late_penalty grace {r['grace_days']} days",
+                        lambda t, v=r["grace_days"]: days_in(v, t),
+                    )
+                )
         elif kind == "volume_discount":
-            checks.append((f"volume_discount {r['min_quantity']} units", lambda t, v=r["min_quantity"]: units_in(v, t)))
-            checks.append((f"volume_discount {r['discount_percent']}%", lambda t, v=r["discount_percent"]: percent_in(v, t)))
+            checks.append(
+                (
+                    f"volume_discount {r['min_quantity']} units",
+                    lambda t, v=r["min_quantity"]: units_in(v, t),
+                )
+            )
+            checks.append(
+                (
+                    f"volume_discount {r['discount_percent']}%",
+                    lambda t, v=r["discount_percent"]: percent_in(v, t),
+                )
+            )
         elif kind == "payment_terms":
-            checks.append((f"payment_terms {r['net_days']} days", lambda t, v=r["net_days"]: days_in(v, t)))
+            checks.append(
+                (f"payment_terms {r['net_days']} days", lambda t, v=r["net_days"]: days_in(v, t))
+            )
         else:
             name = normalize_for_match(r["item_name"]).lower()
-            checks.append((f"unit_price item {r['item_name']}", lambda t, n=name: n in normalize_for_match(t).lower()))
-            checks.append((f"unit_price PKR {r['agreed_unit_price']}", lambda t, v=r["agreed_unit_price"]: number_in(v, t)))
+            checks.append(
+                (
+                    f"unit_price item {r['item_name']}",
+                    lambda t, n=name: n in normalize_for_match(t).lower(),
+                )
+            )
+            checks.append(
+                (
+                    f"unit_price PKR {r['agreed_unit_price']}",
+                    lambda t, v=r["agreed_unit_price"]: number_in(v, t),
+                )
+            )
     return checks
 
 
@@ -133,7 +169,10 @@ def main(case_id: str) -> None:
 
     print(f"== {case_id}  writer: {spec.get('writer')}  pages: {doc.page_count}  words: {words}")
     print(f"chunks: {len(chunks)}  with numbered headings: {len(headings)}")
-    print("first headings:", headings[:6] or "NONE FOUND (the chunker will treat this text as one block)")
+    print(
+        "first headings:",
+        headings[:6] or "NONE FOUND (the chunker will treat this text as one block)",
+    )
     if doc.warnings:
         print("parser warnings:", doc.warnings)
 
@@ -141,16 +180,25 @@ def main(case_id: str) -> None:
     for label, page in report["required"]:
         print(f"  {'OK     ' if page else 'MISSING'} {label}" + (f"   page {page}" if page else ""))
 
-    print(f"\nUNEXPECTED NUMBERS ({len(report['unexpected'])}): read each one, is it a real extra rule?")
+    print(
+        f"\nUNEXPECTED NUMBERS ({len(report['unexpected'])}): read each one, is it a real extra rule?"
+    )
     for page, kind, value, ctx in report["unexpected"]:
         print(f"  page {page}  {kind} {value}:  ...{ctx}...")
 
-    print(f"\nNUMBER WORDS WITHOUT DIGITS ({len(report['number_words'])}): the extractor refuses these today")
+    print(
+        f"\nNUMBER WORDS WITHOUT DIGITS ({len(report['number_words'])}): the extractor refuses these today"
+    )
     for page, phrase, ctx in report["number_words"]:
         print(f"  page {page}  {phrase!r}:  ...{ctx}...")
 
     clean = all(p for _, p in report["required"]) and not report["unexpected"]
-    print("\nVERDICT:", "looks clean (still skim it)" if clean else "NEEDS A HUMAN LOOK before this contract is used")
+    print(
+        "\nVERDICT:",
+        "looks clean (still skim it)"
+        if clean
+        else "NEEDS A HUMAN LOOK before this contract is used",
+    )
 
 
 if __name__ == "__main__":

@@ -24,7 +24,11 @@ TIER_B_DIR = ROOT / "data" / "tier_b"
 def contracts(tmp: str):
     """(name, spec, contract PDF) for every Tier A and every written Tier B contract."""
     for spec_path in sorted((ROOT / "data" / "specs").glob("*.json")):
-        yield spec_path.stem, json.loads(spec_path.read_text()), build_case(spec_path, tmp) / "contract.pdf"
+        yield (
+            spec_path.stem,
+            json.loads(spec_path.read_text()),
+            build_case(spec_path, tmp) / "contract.pdf",
+        )
     for spec_path in sorted((TIER_B_DIR / "specs").glob("*.json")):
         pdf = TIER_B_DIR / "pdf" / f"{spec_path.stem}.pdf"
         if pdf.exists():
@@ -54,8 +58,10 @@ def main() -> None:
 
     print(f"{'clause':16} {'with rule':>9} {'miss risk':>9} {'without':>8} {'false alarm':>11}")
     for kind in KINDS:
-        print(f"{kind:16} {with_rule[kind]:>9} {len(miss_risk[kind]):>9} "
-              f"{without_rule[kind]:>8} {len(false_alarm[kind]):>11}")
+        print(
+            f"{kind:16} {with_rule[kind]:>9} {len(miss_risk[kind]):>9} "
+            f"{without_rule[kind]:>8} {len(false_alarm[kind]):>11}"
+        )
     for kind in KINDS:
         if miss_risk[kind]:
             print(f"\nMISS RISK  {kind}: {', '.join(miss_risk[kind])}")

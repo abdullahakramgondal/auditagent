@@ -16,11 +16,22 @@ def framed(n, total, *lines):
 
 DOC = make_doc(
     [
-        framed(1, 3, "1. Parties", "This Agreement is between Buyer Co and Vendor Co.",
-               "2. Scope of Supply", "The Vendor shall supply the goods in each order."),
-        framed(2, 3, "3. Late Delivery",
-               "If delivery is later than 15 October 2026, a penalty of 10% shall apply.",
-               "4. Warranty", "The Vendor warrants that all goods are new"),
+        framed(
+            1,
+            3,
+            "1. Parties",
+            "This Agreement is between Buyer Co and Vendor Co.",
+            "2. Scope of Supply",
+            "The Vendor shall supply the goods in each order.",
+        ),
+        framed(
+            2,
+            3,
+            "3. Late Delivery",
+            "If delivery is later than 15 October 2026, a penalty of 10% shall apply.",
+            "4. Warranty",
+            "The Vendor warrants that all goods are new",
+        ),
         framed(3, 3, "and free from defects.", "5. Notices", "Notices must be in writing."),
     ]
 )
@@ -29,7 +40,11 @@ DOC = make_doc(
 def test_one_chunk_per_clause_with_its_page():
     chunks = chunk_document(DOC)
     assert [c.heading for c in chunks] == [
-        "1. Parties", "2. Scope of Supply", "3. Late Delivery", "4. Warranty", "5. Notices"
+        "1. Parties",
+        "2. Scope of Supply",
+        "3. Late Delivery",
+        "4. Warranty",
+        "5. Notices",
     ]
     late = chunks[2]
     assert late.page_start == late.page_end == 2
@@ -51,7 +66,9 @@ def test_clause_running_over_a_page_break_is_one_chunk():
 
 def test_short_documents_keep_all_their_lines():
     doc = make_doc([framed(1, 1, "1. Parties", "Text.")])
-    assert strip_page_furniture(doc.pages) == [["SUPPLY AGREEMENT", "1. Parties", "Text.", "Page 1 of 1"]]
+    assert strip_page_furniture(doc.pages) == [
+        ["SUPPLY AGREEMENT", "1. Parties", "Text.", "Page 1 of 1"]
+    ]
 
 
 def test_long_clause_is_split_with_overlap_and_heading():

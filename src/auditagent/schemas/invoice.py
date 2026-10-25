@@ -30,7 +30,6 @@ class InvoiceData(BaseModel):
     adjustments: list[Adjustment] = Field(default_factory=list)
     total_amount: Decimal = Field(gt=0)
     currency: Literal["PKR"] = "PKR"
-    
 
 
 class PurchaseOrderData(BaseModel):

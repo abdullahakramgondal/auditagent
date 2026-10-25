@@ -12,10 +12,18 @@ from data.generator.commercial_pdf import (
 from data.generator.contract_pdf import read_pages
 
 LINES = [
-    {"item_name": "Fortinet FortiGate 100F Firewall", "quantity": 10,
-     "unit_price": "1000000", "line_total": "10000000"},
-    {"item_name": "APC Smart-UPS 3000VA", "quantity": 4,
-     "unit_price": "250000", "line_total": "1000000"},
+    {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 10,
+        "unit_price": "1000000",
+        "line_total": "10000000",
+    },
+    {
+        "item_name": "APC Smart-UPS 3000VA",
+        "quantity": 4,
+        "unit_price": "250000",
+        "line_total": "1000000",
+    },
 ]
 
 SPEC = {

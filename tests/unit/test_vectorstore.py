@@ -9,9 +9,18 @@ from auditagent.schemas.chunk import Chunk
 
 def chunks():
     texts = [
-        ("1. Late Delivery", "If delivery is later than 15 October 2026, a penalty of 10% shall apply to the final invoice."),
-        ("2. Payment Terms", "All invoices are payable 30 calendar days after the date of invoice."),
-        ("3. Limitation of Liability", "The total liability of either party shall not exceed 10% of the total order value."),
+        (
+            "1. Late Delivery",
+            "If delivery is later than 15 October 2026, a penalty of 10% shall apply to the final invoice.",
+        ),
+        (
+            "2. Payment Terms",
+            "All invoices are payable 30 calendar days after the date of invoice.",
+        ),
+        (
+            "3. Limitation of Liability",
+            "The total liability of either party shall not exceed 10% of the total order value.",
+        ),
         ("4. Confidentiality", "Each party shall keep the terms of this Agreement confidential."),
     ]
     return [

@@ -15,8 +15,10 @@ PRICE_Q = "The agreed unit price for Dell PowerEdge R750 Server is PKR 1,500,000
 VOLUME_Q = "If the Buyer orders 25 or more units in a single order, a discount of 5% shall be applied to the invoice."
 
 PAGES = [
-    ("SUPPLY AGREEMENT\n1. Parties\nThis Agreement is between Buyer Co and Vendor Co.\n"
-    "2. Scope of Supply\nThe Vendor shall supply the goods in each order.\nPage 1 of 3"),
+    (
+        "SUPPLY AGREEMENT\n1. Parties\nThis Agreement is between Buyer Co and Vendor Co.\n"
+        "2. Scope of Supply\nThe Vendor shall supply the goods in each order.\nPage 1 of 3"
+    ),
     f"SUPPLY AGREEMENT\n3. Delivery and Late Delivery\n{LATE_Q}\n4. Limitation of Liability\n{LIABILITY_Q}\nPage 2 of 3",
     f"SUPPLY AGREEMENT\n5. Payment Terms\n{PAYMENT_Q}\n6. Pricing\n{PRICE_Q}\n7. Volume Discount\n{VOLUME_Q}\nPage 3 of 3",
 ]
@@ -39,17 +41,44 @@ MULTI_PAGES = [
     f"SUPPLY AGREEMENT\n7. Delivery and Schedule\n7.3 {WHOLE_CLAUSE}\nPage 2 of 2",
 ]
 
-LATE = {"quote": LATE_Q, "chunk_id": f"{PREFIX}-003", "deadline_quote": LATE_Q, "deadline": "2026-10-15",
-        "mode": "flat_percent", "percent": 10, "cap_percent": None, "grace_days": 0}
-TERM_LATE = {"quote": TERM_Q, "chunk_id": f"{PREFIX}-003", "deadline_quote": DATE_Q, "deadline": "2026-10-31",
-             "mode": "flat_percent", "percent": 10, "cap_percent": None, "grace_days": 0}
-MULTI_LATE = {"quote": WHOLE_CLAUSE, "chunk_id": f"{PREFIX}-003", "deadline_quote": WHOLE_CLAUSE,
-              "deadline": "2027-01-15", "mode": "per_day_percent", "percent": 0.5, "cap_percent": 5.0,
-              "grace_days": 7}
+LATE = {
+    "quote": LATE_Q,
+    "chunk_id": f"{PREFIX}-003",
+    "deadline_quote": LATE_Q,
+    "deadline": "2026-10-15",
+    "mode": "flat_percent",
+    "percent": 10,
+    "cap_percent": None,
+    "grace_days": 0,
+}
+TERM_LATE = {
+    "quote": TERM_Q,
+    "chunk_id": f"{PREFIX}-003",
+    "deadline_quote": DATE_Q,
+    "deadline": "2026-10-31",
+    "mode": "flat_percent",
+    "percent": 10,
+    "cap_percent": None,
+    "grace_days": 0,
+}
+MULTI_LATE = {
+    "quote": WHOLE_CLAUSE,
+    "chunk_id": f"{PREFIX}-003",
+    "deadline_quote": WHOLE_CLAUSE,
+    "deadline": "2027-01-15",
+    "mode": "per_day_percent",
+    "percent": 0.5,
+    "cap_percent": 5.0,
+    "grace_days": 7,
+}
 VOLUME = {"quote": VOLUME_Q, "chunk_id": f"{PREFIX}-007", "min_quantity": 25, "discount_percent": 5}
 PAYMENT = {"quote": PAYMENT_Q, "chunk_id": f"{PREFIX}-005", "net_days": 30}
-PRICE = {"quote": PRICE_Q, "chunk_id": f"{PREFIX}-006", "item_name": "Dell PowerEdge R750 Server",
-         "agreed_unit_price": 1500000}
+PRICE = {
+    "quote": PRICE_Q,
+    "chunk_id": f"{PREFIX}-006",
+    "item_name": "Dell PowerEdge R750 Server",
+    "agreed_unit_price": 1500000,
+}
 
 
 def doc(pages=PAGES):
@@ -83,11 +112,23 @@ def test_all_four_rules_are_extracted_with_pages_from_the_parser():
     result, provider = run(full_replies())
     assert result.issues == []
     assert [r.clause_type for r in result.contract.rules] == [
-        "late_penalty", "volume_discount", "payment_terms", "unit_price"
+        "late_penalty",
+        "volume_discount",
+        "payment_terms",
+        "unit_price",
     ]
     late, volume, payment, price = result.contract.rules
-    assert (late.source.page, volume.source.page, payment.source.page, price.source.page) == (2, 3, 3, 3)
-    assert late.deadline == date(2026, 10, 15) and late.percent == Decimal(10) and late.cap_percent is None
+    assert (late.source.page, volume.source.page, payment.source.page, price.source.page) == (
+        2,
+        3,
+        3,
+        3,
+    )
+    assert (
+        late.deadline == date(2026, 10, 15)
+        and late.percent == Decimal(10)
+        and late.cap_percent is None
+    )
     assert late.deadline_source is None  # the date is written in the penalty quote itself
     assert price.agreed_unit_price == Decimal(1500000)
     assert late.source.text == LATE_Q
@@ -112,13 +153,19 @@ def test_empty_answers_on_a_contract_that_has_the_clauses_are_flagged_for_review
     result, _ = run([reply(), reply(), reply(), reply()])
     assert result.contract.rules == []
     assert {i.clause_type for i in result.issues} == {
-        "late_penalty", "volume_discount", "payment_terms", "unit_price"
+        "late_penalty",
+        "volume_discount",
+        "payment_terms",
+        "unit_price",
     }
     assert all("needs review" in i.reason for i in result.issues)
 
 
 def test_invented_quote_is_refused():
-    fake = {**LATE, "quote": "The Vendor shall pay a penalty of 12% for every week of delay after 1 November 2026."}
+    fake = {
+        **LATE,
+        "quote": "The Vendor shall pay a penalty of 12% for every week of delay after 1 November 2026.",
+    }
     result, _ = run([reply(fake), reply(), reply(), reply()])
     assert result.contract.rules == []
     assert "not found" in issue_for(result, "late_penalty").reason
@@ -154,7 +201,10 @@ def test_deadline_written_in_another_clause_is_accepted_when_a_defined_term_link
 
 
 def test_invented_deadline_quote_is_refused():
-    invented = {**TERM_LATE, "deadline_quote": 'The delivery deadline for the goods is 31 October 2026 (the "Delivery Deadline").'}
+    invented = {
+        **TERM_LATE,
+        "deadline_quote": 'The delivery deadline for the goods is 31 October 2026 (the "Delivery Deadline").',
+    }
     result, _ = run([reply(invented), reply(), reply(), reply()], document=doc(DEFINED_PAGES))
     assert result.contract.rules == []
     assert "2026-10-31" in issue_for(result, "late_penalty").reason
@@ -193,7 +243,11 @@ def test_unusable_model_output_is_retried_through_the_form_inspector():
 
 def test_one_clause_type_failing_does_not_stop_the_others():
     result, _ = run(["bad", "bad", "bad", reply(VOLUME), reply(PAYMENT), reply(PRICE)])
-    assert [r.clause_type for r in result.contract.rules] == ["volume_discount", "payment_terms", "unit_price"]
+    assert [r.clause_type for r in result.contract.rules] == [
+        "volume_discount",
+        "payment_terms",
+        "unit_price",
+    ]
     assert "unusable" in issue_for(result, "late_penalty").reason
 
 

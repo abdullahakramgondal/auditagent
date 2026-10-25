@@ -22,8 +22,12 @@ class PenaltyDemo(BaseModel):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--provider", choices=["gemini", "ollama"], default=None,
-                        help="use this provider instead of LLM_PROVIDER from .env")
+    parser.add_argument(
+        "--provider",
+        choices=["gemini", "ollama"],
+        default=None,
+        help="use this provider instead of LLM_PROVIDER from .env",
+    )
     args = parser.parse_args()
 
     settings = get_settings()
@@ -38,8 +42,10 @@ def main() -> None:
     for n in shown:
         print("  ", n, "  <-- configured" if n == provider.model else "")
     if provider.model not in names:
-        print(f"\nWARNING: '{provider.model}' is not in the list. Set GEMINI_MODEL or OLLAMA_MODEL in .env "
-              f"(for Ollama: ollama pull {provider.model}).")
+        print(
+            f"\nWARNING: '{provider.model}' is not in the list. Set GEMINI_MODEL or OLLAMA_MODEL in .env "
+            f"(for Ollama: ollama pull {provider.model})."
+        )
         return
 
     started = time.perf_counter()

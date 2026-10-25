@@ -53,7 +53,9 @@ def test_a_trailing_slash_in_the_base_url_is_harmless():
         return answer(GOOD)
 
     client = httpx.Client(transport=httpx.MockTransport(handler))
-    OllamaProvider("tiny:1b", base_url="http://ollama.test/", client=client).generate_json("s", "p", Demo)
+    OllamaProvider("tiny:1b", base_url="http://ollama.test/", client=client).generate_json(
+        "s", "p", Demo
+    )
     assert seen["url"] == "http://ollama.test/api/chat"
 
 

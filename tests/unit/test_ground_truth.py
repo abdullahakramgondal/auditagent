@@ -6,7 +6,12 @@ from pathlib import Path
 from data.generator.ground_truth import expected_late_penalty
 
 TOTAL = Decimal(10000000)
-FLAT = {"clause_type": "late_penalty", "deadline": "2026-10-15", "mode": "flat_percent", "percent": "10"}
+FLAT = {
+    "clause_type": "late_penalty",
+    "deadline": "2026-10-15",
+    "mode": "flat_percent",
+    "percent": "10",
+}
 PER_DAY = {
     "clause_type": "late_penalty",
     "deadline": "2026-10-15",

@@ -18,7 +18,9 @@ def main(model: str = "gemini-3.1-flash-lite") -> None:
         saved = json.loads(path.read_text())
         for rule in saved["result"]["contract"]["rules"]:
             gold = saved["gold_sources"].get(rule["clause_type"])
-            if gold and normalize_for_match(gold["text"]) not in normalize_for_match(rule["source"]["text"]):
+            if gold and normalize_for_match(gold["text"]) not in normalize_for_match(
+                rule["source"]["text"]
+            ):
                 shown += 1
                 print(f"{path.stem}  {rule['clause_type']}")
                 print("   gold :", gold["text"])
