@@ -1,0 +1,408 @@
+{
+  "tier": "b",
+  "provider": "ollama",
+  "model": "qwen2.5:3b",
+  "contracts": 8,
+  "summary": {
+    "late_penalty": {
+      "gold": 5,
+      "correct": 0,
+      "wrong": 0,
+      "refused": 5,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 3,
+      "pairs": 0,
+      "field_ok": 0,
+      "field_n": 0,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.0,
+      "precision": null,
+      "field_accuracy": null,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "volume_discount": {
+      "gold": 5,
+      "correct": 3,
+      "wrong": 0,
+      "refused": 1,
+      "silent_miss": 1,
+      "spurious": 0,
+      "correct_absent": 3,
+      "pairs": 3,
+      "field_ok": 6,
+      "field_n": 6,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.6,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "payment_terms": {
+      "gold": 6,
+      "correct": 0,
+      "wrong": 0,
+      "refused": 6,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 2,
+      "pairs": 0,
+      "field_ok": 0,
+      "field_n": 0,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.0,
+      "precision": null,
+      "field_accuracy": null,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "unit_price": {
+      "gold": 4,
+      "correct": 1,
+      "wrong": 0,
+      "refused": 3,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 4,
+      "pairs": 1,
+      "field_ok": 2,
+      "field_n": 2,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.25,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "ALL": {
+      "gold": 20,
+      "correct": 4,
+      "wrong": 0,
+      "refused": 15,
+      "silent_miss": 1,
+      "spurious": 0,
+      "correct_absent": 12,
+      "pairs": 4,
+      "field_ok": 8,
+      "field_n": 8,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.2,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    }
+  },
+  "avg_seconds": 93.6,
+  "median_seconds": 83.9,
+  "avg_calls": 4.0,
+  "problems": [
+    {
+      "case": "tb_01",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-11-20",
+        "mode": "flat_percent",
+        "percent": "8",
+        "grace_days": 5
+      },
+      "got": null
+    },
+    {
+      "case": "tb_01",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 45
+      },
+      "got": null
+    },
+    {
+      "case": "tb_02",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-12-05",
+        "mode": "per_day_percent",
+        "percent": "1.5",
+        "grace_days": 0,
+        "cap_percent": "12"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_03",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 30
+      },
+      "got": null
+    },
+    {
+      "case": "tb_04",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-10-31",
+        "mode": "flat_percent",
+        "percent": "10",
+        "grace_days": 2
+      },
+      "got": null
+    },
+    {
+      "case": "tb_04",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 60
+      },
+      "got": null
+    },
+    {
+      "case": "tb_04",
+      "clause": "unit_price",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "unit_price",
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "agreed_unit_price": "275000"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_05",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 21
+      },
+      "got": null
+    },
+    {
+      "case": "tb_06",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2027-01-15",
+        "mode": "per_day_percent",
+        "percent": "0.5",
+        "grace_days": 7,
+        "cap_percent": "5"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_06",
+      "clause": "unit_price",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "unit_price",
+        "item_name": "HP LaserJet Enterprise Printer",
+        "agreed_unit_price": "130000"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_07",
+      "clause": "volume_discount",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "volume_discount",
+        "min_quantity": 25,
+        "discount_percent": "3.5"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_07",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 14
+      },
+      "got": null
+    },
+    {
+      "case": "tb_08",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-12-31",
+        "mode": "flat_percent",
+        "percent": "15",
+        "grace_days": 0
+      },
+      "got": null
+    },
+    {
+      "case": "tb_08",
+      "clause": "volume_discount",
+      "status": "silent_miss",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "volume_discount",
+        "min_quantity": 10,
+        "discount_percent": "2"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_08",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 30
+      },
+      "got": null
+    },
+    {
+      "case": "tb_08",
+      "clause": "unit_price",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "unit_price",
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "agreed_unit_price": "620000"
+      },
+      "got": null
+    }
+  ],
+  "issues": [
+    {
+      "case": "tb_01",
+      "clause": "late_penalty",
+      "reason": "deadline '20 November 2026' is not a valid YYYY-MM-DD date",
+      "quote": "6.4 Time is of the essence for delivery. Should the Vendor deliver any Equipment after 20 November 2026, it shall pay to the Buyer a penalty equal to 8% of the invoice value of the Equipment so delivered. The Parties agree that no penalty shall accrue in respect of the first five (5) days of delay following that date, but that, once such five (5) day period has been exceeded, the penalty shall become payable in the amount stated above. The penalty is a single, one-time amount and does not increase with the length of the delay, and the Buyer may deduct it from any sum due to the Vendor. The Parties acknowledge that the penalty is a genuine and reasonable pre-estimate of the Buyer's loss from late delivery."
+    },
+    {
+      "case": "tb_01",
+      "clause": "payment_terms",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_02",
+      "clause": "late_penalty",
+      "reason": "deadline '5 December 2026' is not a valid YYYY-MM-DD date",
+      "quote": "6.4 Time is of the essence in respect of delivery. If the Vendor delivers any Equipment after 5 December 2026, a penalty shall accrue against the Vendor for every day of delay beyond that date, at the rate of 1.5% of the invoice value of the Equipment so delayed per day. The aggregate penalty payable in respect of any delivery shall in no circumstances exceed 12% of that invoice value. The Buyer may deduct any penalty due under this Clause from sums payable to the Vendor. The Parties agree that the penalty is a genuine and reasonable pre-estimate of the Buyer's loss resulting from late delivery and not a punitive measure."
+    },
+    {
+      "case": "tb_03",
+      "clause": "payment_terms",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_04",
+      "clause": "late_penalty",
+      "reason": "deadline 'the first 2 days after the Delivery Deadline.' is not a valid YYYY-MM-DD date",
+      "quote": "Where the Vendor delivers the Equipment under the Initial Order after the Delivery Deadline, the Vendor shall pay to the Buyer, as a genuine pre-estimate of the Buyer's loss and not as a penalty in the nature of a continuing charge, a sum equal to 10% of the invoice value of the Equipment so delivered. This amount is payable once only in respect of the late delivery, and does not increase with the length of the delay. No such sum shall be payable where the delay does not exceed the first 2 days after the Delivery Deadline. The Buyer may deduct the amount payable under this clause from any sum due to the Vendor under the relevant Invoice."
+    },
+    {
+      "case": "tb_04",
+      "clause": "payment_terms",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_04",
+      "clause": "unit_price",
+      "reason": "item 'Unit of the Lenovo ThinkPad T14 Laptop' is not written in the quote; agreed_unit_price 275000.0 is not written in the quote",
+      "quote": "Where the Buyer places a single Purchase Order for 100 or more Units, the Vendor shall allow the Buyer a volume discount of twelve per cent (12%) on the Order Value of that Purchase Order, and the discount shall be shown as a separate deduction on the Invoice. Quantities ordered under separate Supply Agreement - Indus Cloud Services Pvt Ltd / Prime Network Solutions - Page 4 Purchase Orders shall not be aggregated for the purpose of this clause."
+    },
+    {
+      "case": "tb_05",
+      "clause": "payment_terms",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_06",
+      "clause": "late_penalty",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_06",
+      "clause": "unit_price",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_07",
+      "clause": "volume_discount",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_07",
+      "clause": "payment_terms",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_08",
+      "clause": "late_penalty",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_08",
+      "clause": "payment_terms",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    },
+    {
+      "case": "tb_08",
+      "clause": "unit_price",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    }
+  ]
+}

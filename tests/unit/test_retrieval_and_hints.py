@@ -45,6 +45,27 @@ def test_late_delivery_hint_fires_on_a_delivery_penalty():
     assert hint_fires("late_penalty", "If the Vendor delays delivery, a penalty of 10% shall apply.")
 
 
+def test_the_late_word_may_come_after_the_percentage():
+    """Regression (tb_01): the only 'delay' sits after the 8%, so the hint stayed silent on an empty answer."""
+    text = (
+        "6.4 Time is of the essence for delivery. Should the Vendor deliver any Equipment after 20 November 2026, "
+        "it shall pay to the Buyer a penalty equal to 8% of the invoice value of the Equipment so delivered. "
+        "The Parties agree that no penalty shall accrue in respect of the first five (5) days of delay following "
+        "that date."
+    )
+    assert hint_fires("late_penalty", text)
+
+
+def test_the_late_word_may_come_after_the_percentage_in_a_long_clause():
+    """Regression (tb_04): 'late delivery' is written after the 10% and after a long sentence."""
+    text = (
+        "Where the Vendor delivers the Equipment after the Delivery Deadline, the Vendor shall pay to the Buyer "
+        "a sum equal to 10% of the invoice value of the Equipment so delivered. This amount is payable once only "
+        "in respect of the late delivery, and does not increase with the length of the delay."
+    )
+    assert hint_fires("late_penalty", text)
+
+
 def test_late_payment_charge_is_not_a_late_delivery_hint():
     """Regression (tb_03): a charge on the Buyer for paying late raised a false 'needs review'."""
     assert not hint_fires("late_penalty", "A late payment charge of 2% per month applies if the Buyer pays late.")
@@ -90,6 +111,31 @@ def test_volume_and_price_hints():
     assert not hint_fires("volume_discount", "The Vendor may offer a discount from time to time.")
     assert hint_fires("unit_price", "The unit price of the Server is PKR 1,500,000.")
     assert not hint_fires("unit_price", "The Vendor shall deliver each unit in good condition.")
+
+
+def test_the_price_may_come_before_the_word_unit():
+    """Regression (gen_011): 'PKR 1,150,000 per unit' has the price first, so the hint stayed silent."""
+    text = "The Vendor shall supply Leased Line 100 Mbps (annual) at a fixed rate of PKR 1,150,000 per unit."
+    assert hint_fires("unit_price", text)
+
+
+def test_a_volume_reduction_is_a_volume_discount_hint():
+    """Regression (tb_08): 'a volume reduction of 2%' was not a hint, so an empty model answer stayed silent."""
+    text = (
+        "8.2 Where a single Order contains ten (10) or more units, a volume reduction of 2% shall be applied "
+        "to the Equipment value for that Order."
+    )
+    assert hint_fires("volume_discount", text)
+
+
+def test_the_percentage_may_come_before_the_discount_word():
+    assert hint_fires("volume_discount", "A 5% volume discount applies to orders of 25 or more units.")
+
+
+def test_a_late_payment_charge_is_not_a_volume_discount_hint():
+    """tb_08 clause 9.3 sits next to the volume clause and must not fire."""
+    text = "The Vendor may charge a late payment charge of 2% per month on an amount that remains overdue and undisputed."
+    assert not hint_fires("volume_discount", text)
 
 
 @pytest.mark.parametrize("kind", KINDS)

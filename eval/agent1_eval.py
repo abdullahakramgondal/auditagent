@@ -3,7 +3,8 @@
 Run:  python -m eval.agent1_eval --limit 5     (Tier A: generated contracts, a few evenly spread)
       python -m eval.agent1_eval               (Tier A: all; finished ones are reused)
       python -m eval.agent1_eval --tier b      (Tier B: LLM-written PDFs in data/tier_b/pdf)
-Sends contract text to the LLM provider: synthetic data only.
+      python -m eval.agent1_eval --tier b --provider ollama   (the small model on this computer)
+Sends contract text to the LLM provider: synthetic data only. Saved results are kept per model.
 Each saved result also keeps the raw model answers (with the chunk ids sent and the seconds each call
 took), so a failure can be diagnosed without new model calls.
 """
@@ -32,6 +33,11 @@ TIER_B_DIR = ROOT / "data" / "tier_b"
 CHUNK_ID_RE = re.compile(r"\[chunk_id: ([^\]]+)\]")
 
 
+def _safe(name: str) -> str:
+    """A model name as a folder or file name (a colon, as in qwen2.5:3b, is not allowed on Windows)."""
+    return re.sub(r"[^A-Za-z0-9._-]", "-", name)
+
+
 class CountingProvider:
     """Wraps a provider: counts the model calls and keeps every raw answer for later diagnosis."""
 
@@ -46,10 +52,12 @@ class CountingProvider:
         self.calls += 1
         started = time.perf_counter()
         raw = self._inner.generate_json(system, prompt, schema)
+        seconds = round(time.perf_counter() - started, 1)
+        print(f"    call {self.calls}: {seconds}s", flush=True)
         self.raw_answers.append({
             "task": prompt[:60],
             "chunk_ids": CHUNK_ID_RE.findall(prompt),
-            "seconds": round(time.perf_counter() - started, 1),
+            "seconds": seconds,
             "raw": raw,
         })
         return raw
@@ -71,21 +79,31 @@ def main() -> None:
     parser.add_argument("--tier", choices=["a", "b"], default="a",
                         help="a: generated contracts, b: LLM-written contracts in data/tier_b")
     parser.add_argument("--limit", type=int, default=None, help="run only N evenly spread contracts")
-    parser.add_argument("--pause", type=float, default=6.0, help="seconds to wait between live contracts")
+    parser.add_argument("--pause", type=float, default=None,
+                        help="seconds to wait between live contracts (default: 6 for Gemini, 0 for Ollama)")
     parser.add_argument("--fresh", action="store_true", help="ignore saved results and call the model again")
-    parser.add_argument("--model", default=None, help="override GEMINI_MODEL for this run")
+    parser.add_argument("--provider", choices=["gemini", "ollama"], default=None,
+                        help="use this provider instead of LLM_PROVIDER from .env")
+    parser.add_argument("--model", default=None, help="override the model of the chosen provider for this run")
     args = parser.parse_args()
 
     settings = get_settings()
+    updates = {}
+    if args.provider:
+        updates["llm_provider"] = args.provider
     if args.model:
-        settings = settings.model_copy(update={"gemini_model": args.model})
+        chosen = updates.get("llm_provider", settings.llm_provider)
+        updates["ollama_model" if chosen == "ollama" else "gemini_model"] = args.model
+    if updates:
+        settings = settings.model_copy(update=updates)
     provider = CountingProvider(build_provider(settings))
+    pause = args.pause if args.pause is not None else (6.0 if provider.name == "gemini" else 0.0)
     embedder = SentenceTransformerEmbedder()
     embedder.embed(["warm up"])  # load the model before any timing starts
     extractor = LegalExtractor(provider, embedder)
 
     tag = "agent1" if args.tier == "a" else "agent1_tierb"
-    cache_dir = RESULTS_DIR / f"{tag}_{provider.model}"
+    cache_dir = RESULTS_DIR / f"{tag}_{_safe(provider.model)}"
     cache_dir.mkdir(parents=True, exist_ok=True)
     if args.tier == "a":
         all_specs = sorted((ROOT / "data" / "specs").glob("*.json"))
@@ -117,6 +135,7 @@ def main() -> None:
                 doc = parse_pdf(pdf_path)
                 calls_before, answers_before = provider.calls, len(provider.raw_answers)
                 started = time.perf_counter()
+                print(f"{case_id}: running ...", flush=True)
                 try:
                     result = extractor.extract(doc)
                 except LLMError as exc:
@@ -133,7 +152,7 @@ def main() -> None:
                 }
                 cache_file.write_text(json.dumps(saved, indent=2))
                 print(f"{case_id}: done in {saved['seconds']}s, {saved['llm_calls']} model calls")
-                time.sleep(args.pause)
+                time.sleep(pause)
 
             result = AgentOneResult.model_validate(saved["result"])
             case_score = score_case(spec, result, saved["gold_sources"])
@@ -155,7 +174,8 @@ def main() -> None:
     if not scored:
         return
     summary = aggregate(scored)
-    print(f"\ntier {args.tier.upper()}   model: {provider.model}   contracts scored: {len(scored)}")
+    print(f"\ntier {args.tier.upper()}   provider: {provider.name}   model: {provider.model}   "
+          f"contracts scored: {len(scored)}")
     print(f"{'clause':16} {'gold':>4} {'right':>5} {'wrong':>5} {'refus':>5} {'silent':>6} {'spur':>4}  {'recall':>6} {'prec':>5}")
     for name in (*KINDS, "ALL"):
         t = summary[name]
@@ -177,9 +197,10 @@ def main() -> None:
         if i["quote"]:
             print(f"       quote: {i['quote']}")
 
-    out_path = RESULTS_DIR / f"{tag}_{provider.model}_summary.json"
+    out_path = RESULTS_DIR / f"{tag}_{_safe(provider.model)}_summary.json"
     out_path.write_text(json.dumps({
-        "tier": args.tier, "model": provider.model, "contracts": len(scored), "summary": summary,
+        "tier": args.tier, "provider": provider.name, "model": provider.model, "contracts": len(scored),
+        "summary": summary,
         "avg_seconds": round(sum(seconds) / len(seconds), 1), "median_seconds": statistics.median(seconds),
         "avg_calls": round(sum(calls) / len(calls), 1),
         "problems": problems, "issues": issues,

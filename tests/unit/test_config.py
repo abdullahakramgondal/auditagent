@@ -27,3 +27,9 @@ def test_gemini_provider_is_built_from_settings():
     s = Settings(_env_file=None, gemini_api_key="k", gemini_model="gemini-test")
     provider = build_provider(s)
     assert provider.name == "gemini" and provider.model == "gemini-test"
+
+
+def test_ollama_provider_is_built_from_settings_and_needs_no_key():
+    s = Settings(_env_file=None, llm_provider="ollama", gemini_api_key=None, ollama_model="tiny:1b")
+    provider = build_provider(s)
+    assert provider.name == "ollama" and provider.model == "tiny:1b"

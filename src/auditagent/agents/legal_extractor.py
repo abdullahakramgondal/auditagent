@@ -50,14 +50,19 @@ RETRIEVAL_QUERIES = {
 
 # Safety net: if the model returns nothing but these patterns appear in the clauses it was shown,
 # the empty answer is suspicious and must become a review issue, never silence.
+# The words may come in either order ("a penalty of 8% ... days of delay", "PKR 1,150,000 per unit"),
+# and contracts say "volume reduction" as well as "discount". eval.hint_check measures all of this.
+_PERCENT = r"\d+(?:\.\d+)?\s*%"
+_PERCENT_RE = re.compile(_PERCENT)
+_DISCOUNT_WORD = r"\b(?:discounts?|rebates?|reductions?)\b"
 # Delay or lateness of PAYMENT is a Buyer charge, not a delivery penalty: "late payment", "delays payment",
-# "delay in payment" are skipped.
-_LATE_DELIVERY_HINT = re.compile(
-    r"\b(?:late|delay\w*)\b(?!\s+(?:(?:in|of)\s+)?(?:the\s+)?pay).{0,200}\d+(?:\.\d+)?\s*%",
-    re.I | re.S,
+# "delay in payment" are skipped, and the clause must also talk about delivery.
+_LATE_WORD = re.compile(r"\b(?:late|delay\w*)\b(?!\s+(?:(?:in|of)\s+)?(?:the\s+)?pay)", re.I)
+_DELIVER_WORD = re.compile(r"\bdeliver\w*\b", re.I)
+_DISCOUNT_HINT = re.compile(
+    rf"{_DISCOUNT_WORD}.{{0,200}}{_PERCENT}|{_PERCENT}.{{0,100}}{_DISCOUNT_WORD}", re.I | re.S
 )
-_DISCOUNT_HINT = re.compile(r"\bdiscount\b.{0,200}\d+(?:\.\d+)?\s*%", re.I | re.S)
-_UNIT_PRICE_HINT = re.compile(r"\bunit\b.{0,120}\bPKR\s*\d", re.I | re.S)
+_UNIT_PRICE_HINT = re.compile(r"\bunit\b.{0,120}\bPKR\s*\d|\bPKR\s*\d.{0,80}\bunit\b", re.I | re.S)
 _INVOICE_WORD = re.compile(r"\binvoices?\b", re.I)
 _PAYMENT_WORD = re.compile(r"\b(?:pay\w*|paid|settle\w*|due)\b", re.I)
 
@@ -125,7 +130,7 @@ def retrieve(index: ContractIndex, kind: str, top_k: int = TOP_K, extra_k: int =
 def hint_fires(kind: str, text: str) -> bool:
     """True if this clause text looks like the rule of this type (used only for the empty-answer safety net)."""
     if kind == "late_penalty":
-        return bool(_LATE_DELIVERY_HINT.search(text))
+        return bool(_LATE_WORD.search(text) and _DELIVER_WORD.search(text) and _PERCENT_RE.search(text))
     if kind == "volume_discount":
         return bool(_DISCOUNT_HINT.search(text))
     if kind == "payment_terms":
