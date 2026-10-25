@@ -15,8 +15,8 @@ PRICE_Q = "The agreed unit price for Dell PowerEdge R750 Server is PKR 1,500,000
 VOLUME_Q = "If the Buyer orders 25 or more units in a single order, a discount of 5% shall be applied to the invoice."
 
 PAGES = [
-    "SUPPLY AGREEMENT\n1. Parties\nThis Agreement is between Buyer Co and Vendor Co.\n"
-    "2. Scope of Supply\nThe Vendor shall supply the goods in each order.\nPage 1 of 3",
+    ("SUPPLY AGREEMENT\n1. Parties\nThis Agreement is between Buyer Co and Vendor Co.\n"
+    "2. Scope of Supply\nThe Vendor shall supply the goods in each order.\nPage 1 of 3"),
     f"SUPPLY AGREEMENT\n3. Delivery and Late Delivery\n{LATE_Q}\n4. Limitation of Liability\n{LIABILITY_Q}\nPage 2 of 3",
     f"SUPPLY AGREEMENT\n5. Payment Terms\n{PAYMENT_Q}\n6. Pricing\n{PRICE_Q}\n7. Volume Discount\n{VOLUME_Q}\nPage 3 of 3",
 ]
@@ -87,9 +87,9 @@ def test_all_four_rules_are_extracted_with_pages_from_the_parser():
     ]
     late, volume, payment, price = result.contract.rules
     assert (late.source.page, volume.source.page, payment.source.page, price.source.page) == (2, 3, 3, 3)
-    assert late.deadline == date(2026, 10, 15) and late.percent == Decimal("10") and late.cap_percent is None
+    assert late.deadline == date(2026, 10, 15) and late.percent == Decimal(10) and late.cap_percent is None
     assert late.deadline_source is None  # the date is written in the penalty quote itself
-    assert price.agreed_unit_price == Decimal("1500000")
+    assert price.agreed_unit_price == Decimal(1500000)
     assert late.source.text == LATE_Q
     assert result.llm_model == "scripted-1"
     assert len(provider.prompts) == 4
@@ -165,7 +165,7 @@ def test_a_clause_whose_values_sit_in_three_sentences_is_accepted_when_the_quote
     assert result.issues == []
     late = result.contract.rules[0]
     assert late.deadline == date(2027, 1, 15) and late.grace_days == 7
-    assert late.percent == Decimal("0.5") and late.cap_percent == Decimal("5")
+    assert late.percent == Decimal("0.5") and late.cap_percent == Decimal(5)
     assert late.source.page == 2 and late.deadline_source is None
 
 

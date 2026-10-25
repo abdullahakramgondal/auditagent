@@ -39,8 +39,8 @@ def make_spec(rules, qty=10, price="1000000", total=None, due_date=None, vendor_
 def test_volume_discount_missed():
     out = evaluate_case(make_spec([VOLUME], qty=60))
     assert out["finding_types"] == ["volume_discount"]
-    assert out["total_difference"] == Decimal("3000000")
-    assert out["correct_payable"] == Decimal("57000000")
+    assert out["total_difference"] == Decimal(3000000)
+    assert out["correct_payable"] == Decimal(57000000)
 
 
 def test_volume_discount_applied_is_compliant():
@@ -53,7 +53,7 @@ def test_volume_discount_applied_is_compliant():
 def test_unit_price_overcharge():
     out = evaluate_case(make_spec([PRICE], price="1100000"))
     assert out["finding_types"] == ["unit_price"]
-    assert out["total_difference"] == Decimal("1000000")
+    assert out["total_difference"] == Decimal(1000000)
 
 
 def test_payment_terms_breach():
@@ -73,8 +73,8 @@ def test_combined_breaches_add_up():
     out = evaluate_case(spec)
     # base = 60 x 1,000,000 = 60M; overcharge 6M; discount 3M; penalty 6M
     assert out["finding_types"] == ["late_penalty", "unit_price", "volume_discount"]
-    assert out["correct_payable"] == Decimal("51000000")
-    assert out["total_difference"] == Decimal("15000000")
+    assert out["correct_payable"] == Decimal(51000000)
+    assert out["total_difference"] == Decimal(15000000)
     assert out["billed_total"] - out["correct_payable"] == out["total_difference"]
 
 

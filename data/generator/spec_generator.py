@@ -5,8 +5,8 @@ import random
 from datetime import date, timedelta
 from pathlib import Path
 
-from data.generator.ground_truth import evaluate_case
 from data.generator.commercial_pdf import DOC_VARIANTS
+from data.generator.ground_truth import evaluate_case
 from data.generator.templates import FILLERS, VARIANTS
 
 ROOT = Path(__file__).resolve().parents[2]

@@ -63,7 +63,7 @@ def test_missing_rule_is_refused_when_an_issue_exists_and_silent_otherwise():
 
 
 def test_rule_that_is_not_in_the_answer_key_is_spurious():
-    extra = UnitPriceRule(item_name="Server", agreed_unit_price=Decimal("100"), source=Source(page=2, text=VOL_Q))
+    extra = UnitPriceRule(item_name="Server", agreed_unit_price=Decimal(100), source=Source(page=2, text=VOL_Q))
     scored = score_case(SPEC, result([late(), volume(), extra]), GOLD_SOURCES)
     assert scored["unit_price"]["status"] == "spurious"
 

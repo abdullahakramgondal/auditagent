@@ -30,7 +30,7 @@ def test_numbers_in_reads_commas_and_decimals():
 
 def test_number_in_matches_whole_numbers_only():
     text = "a penalty of 10% shall apply"
-    assert number_in(10, text) and number_in(10.0, text) and number_in(Decimal("10"), text)
+    assert number_in(10, text) and number_in(10.0, text) and number_in(Decimal(10), text)
     assert not number_in(1, text)  # "1" is only a piece of "10"
     assert not number_in(15, text)
 

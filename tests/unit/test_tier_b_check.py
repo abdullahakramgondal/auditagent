@@ -8,12 +8,12 @@ SPEC = {
 }
 
 CLEAN = [
-    "1. Parties This Agreement is made on 1 October 2026.\n"
+    ("1. Parties This Agreement is made on 1 October 2026.\n"
     "4.2 Delay. If the Vendor delivers after 20 November 2026, a penalty of eight percent (8%) of the invoice applies, "
-    "but the first five (5) days of delay carry no penalty.",
-    "7. Payment. Each invoice shall be paid within forty-five (45) days of the invoice date.\n"
+    "but the first five (5) days of delay carry no penalty."),
+    ("7. Payment. Each invoice shall be paid within forty-five (45) days of the invoice date.\n"
     "9. Liability. Liability is capped at 10% of the order value. Termination needs thirty (30) days notice. "
-    "A late payment charge of 2% per month applies if the Buyer pays late.",
+    "A late payment charge of 2% per month applies if the Buyer pays late."),
 ]
 
 

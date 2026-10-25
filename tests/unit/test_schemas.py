@@ -22,7 +22,7 @@ def test_case_a_rule_parses():
     contract = ExtractedContract.model_validate({"rules": [CASE_A_RULE]})
     rule = contract.rules[0]
     assert isinstance(rule, LatePenaltyRule)
-    assert rule.percent == Decimal("10")
+    assert rule.percent == Decimal(10)
     assert rule.deadline == date(2026, 10, 15)
 
 

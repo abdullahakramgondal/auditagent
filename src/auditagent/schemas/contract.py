@@ -1,6 +1,6 @@
 from datetime import date
 from decimal import Decimal
-from typing import Annotated, Literal, Union
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field
 
@@ -47,7 +47,7 @@ class UnitPriceRule(BaseModel):
 
 
 ContractRule = Annotated[
-    Union[LatePenaltyRule, VolumeDiscountRule, PaymentTermsRule, UnitPriceRule],
+    LatePenaltyRule | VolumeDiscountRule | PaymentTermsRule | UnitPriceRule,
     Field(discriminator="clause_type"),
 ]
 

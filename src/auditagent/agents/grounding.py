@@ -10,16 +10,16 @@ from auditagent.schemas.chunk import Chunk
 MIN_QUOTE_CHARS = 25
 _NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
 _WORD_IN_BRACKETS = r"(?:\([A-Za-z][A-Za-z\- ]*\)\s*)?"  # e.g. "40 (forty) units"
-PERCENT_RE = re.compile(rf"(\d+(?:\.\d+)?)\)?\s*{_WORD_IN_BRACKETS}(?:%|per\s?cent\b)", re.I)
+PERCENT_RE = re.compile(rf"(\d+(?:\.\d+)?)\)?\s*{_WORD_IN_BRACKETS}(?:%|per\s?cent\b)", re.IGNORECASE)
 DAYS_RE = re.compile(
     rf"\(?(\d+)\)?\s*{_WORD_IN_BRACKETS}(?:(?:calendar|business|working|consecutive)\s+)?days?\b"
     r"|\bnet\s*(\d+)\b",
-    re.I,
+    re.IGNORECASE,
 )
 UNITS_RE = re.compile(
     rf"(\d[\d,]*)\)?\s*{_WORD_IN_BRACKETS}(?:or\s+(?:more|above|over|greater)\s+)?"
     r"(?:units?|pieces?|items?|devices?|licen[cs]es?|seats?)\b",
-    re.I,
+    re.IGNORECASE,
 )
 # A defined term that names a date: (the "Delivery Deadline") or "Delivery Date" means ...
 # Only terms ending in Deadline, Date or Day count, so party names such as (the "Vendor") never link two clauses.

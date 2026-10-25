@@ -28,14 +28,14 @@ TIER_DIR = Path(__file__).resolve().parent
 DECOY_PERCENTS = {2, 10}  # late payment charge, liability cap (see make_prompts.DECOYS)
 DECOY_DAYS = {30}  # termination notice
 
-_PKR = re.compile(r"(?<![A-Za-z])(?:PKR|Rs\.?)\s*(\d[\d,]*(?:\.\d+)?)", re.I)
+_PKR = re.compile(r"(?<![A-Za-z])(?:PKR|Rs\.?)\s*(\d[\d,]*(?:\.\d+)?)", re.IGNORECASE)
 _WORDS = (
     "one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|"
     "seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|half"
 )
 _NUMBER_WORDS = re.compile(
     rf"\b(?:{_WORDS})(?:[-\s](?:{_WORDS}))?\s+(?:per\s?cent|percent|(?:calendar\s+|business\s+|working\s+)?days?)\b(?!\s*\(\s*\d)",
-    re.I,
+    re.IGNORECASE,
 )
 
 

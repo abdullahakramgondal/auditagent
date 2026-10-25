@@ -17,7 +17,7 @@ class Finding(BaseModel):
     source: Source
     expected_amount: Decimal | None = Field(default=None, ge=0)
     billed_amount: Decimal | None = Field(default=None, ge=0)
-    difference: Decimal = Field(default=Decimal("0"), ge=0)  # PKR overbilled
+    difference: Decimal = Field(default=Decimal(0), ge=0)  # PKR overbilled
 
 
 class AuditResult(BaseModel):

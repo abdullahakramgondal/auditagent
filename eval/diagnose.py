@@ -10,7 +10,14 @@ Tier B contracts only (data/tier_b/pdf). Sends clause text to the LLM when --ask
 import argparse
 from pathlib import Path
 
-from auditagent.agents.legal_extractor import FORMS, RETRIEVAL_QUERIES, SYSTEM, TOP_K, _prompt, retrieve
+from auditagent.agents.legal_extractor import (
+    FORMS,
+    RETRIEVAL_QUERIES,
+    SYSTEM,
+    TOP_K,
+    _prompt,
+    retrieve,
+)
 from auditagent.ingestion.chunker import chunk_document
 from auditagent.ingestion.embedder import Embedder, SentenceTransformerEmbedder
 from auditagent.ingestion.pdf_parser import normalize_for_match, parse_pdf

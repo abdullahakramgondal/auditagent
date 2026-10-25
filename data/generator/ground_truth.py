@@ -20,14 +20,14 @@ def late_penalty_percent(rule: dict, delivered: date) -> Decimal:
     percent = Decimal(str(rule["percent"]))
 
     if rule["mode"] == "flat_percent":
-        return percent if late > grace else Decimal("0")
+        return percent if late > grace else Decimal(0)
 
     counted = max(0, late - grace)
     pct = percent * counted
     cap = rule.get("cap_percent")
     if cap is not None:
         pct = min(pct, Decimal(str(cap)))
-    return min(pct, Decimal("100"))
+    return min(pct, Decimal(100))
 
 
 def expected_late_penalty(rule: dict, invoice_total, delivered: date) -> Decimal:

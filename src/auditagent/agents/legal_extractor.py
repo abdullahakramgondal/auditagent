@@ -57,14 +57,14 @@ _PERCENT_RE = re.compile(_PERCENT)
 _DISCOUNT_WORD = r"\b(?:discounts?|rebates?|reductions?)\b"
 # Delay or lateness of PAYMENT is a Buyer charge, not a delivery penalty: "late payment", "delays payment",
 # "delay in payment" are skipped, and the clause must also talk about delivery.
-_LATE_WORD = re.compile(r"\b(?:late|delay\w*)\b(?!\s+(?:(?:in|of)\s+)?(?:the\s+)?pay)", re.I)
-_DELIVER_WORD = re.compile(r"\bdeliver\w*\b", re.I)
+_LATE_WORD = re.compile(r"\b(?:late|delay\w*)\b(?!\s+(?:(?:in|of)\s+)?(?:the\s+)?pay)", re.IGNORECASE)
+_DELIVER_WORD = re.compile(r"\bdeliver\w*\b", re.IGNORECASE)
 _DISCOUNT_HINT = re.compile(
-    rf"{_DISCOUNT_WORD}.{{0,200}}{_PERCENT}|{_PERCENT}.{{0,100}}{_DISCOUNT_WORD}", re.I | re.S
+    rf"{_DISCOUNT_WORD}.{{0,200}}{_PERCENT}|{_PERCENT}.{{0,100}}{_DISCOUNT_WORD}", re.IGNORECASE | re.DOTALL
 )
-_UNIT_PRICE_HINT = re.compile(r"\bunit\b.{0,120}\bPKR\s*\d|\bPKR\s*\d.{0,80}\bunit\b", re.I | re.S)
-_INVOICE_WORD = re.compile(r"\binvoices?\b", re.I)
-_PAYMENT_WORD = re.compile(r"\b(?:pay\w*|paid|settle\w*|due)\b", re.I)
+_UNIT_PRICE_HINT = re.compile(r"\bunit\b.{0,120}\bPKR\s*\d|\bPKR\s*\d.{0,80}\bunit\b", re.IGNORECASE | re.DOTALL)
+_INVOICE_WORD = re.compile(r"\binvoices?\b", re.IGNORECASE)
+_PAYMENT_WORD = re.compile(r"\b(?:pay\w*|paid|settle\w*|due)\b", re.IGNORECASE)
 
 FORMS = {
     "late_penalty": LateRulesForm,

@@ -46,7 +46,7 @@ CASE_A_RESULT = {
 
 def test_case_a_invoice_parses():
     invoice = InvoiceData.model_validate(CASE_A_INVOICE)
-    assert invoice.total_amount == Decimal("10000000")
+    assert invoice.total_amount == Decimal(10000000)
     assert invoice.line_items[0].quantity == 10
 
 
@@ -60,7 +60,7 @@ def test_zero_quantity_is_rejected():
 def test_case_a_audit_result_is_valid():
     result = AuditResult.model_validate(CASE_A_RESULT)
     assert result.status == "NON_COMPLIANT"
-    assert result.total_difference == Decimal("1000000")
+    assert result.total_difference == Decimal(1000000)
 
 
 def test_compliant_with_findings_is_rejected():
