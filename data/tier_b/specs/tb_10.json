@@ -1,0 +1,38 @@
+{
+  "case_id": "tb_10",
+  "writer": "chatgpt",
+  "buyer": "Sialkot Data Systems Pvt Ltd",
+  "vendor": "Eastern Networks Pvt Ltd",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-03-15",
+      "mode": "flat_percent",
+      "percent": "6",
+      "grace_days": 0
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 15,
+      "discount_percent": "4.5"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 45
+    }
+  ],
+  "style_notes": [
+    "Volume discount: do not use the word \"discount\" for this term. Call it a reduction, a rebate or another natural name of your own choice."
+  ],
+  "extra_decoys": [
+    "Early payment discount: the Vendor shall allow the Buyer a discount of 1.5% on any invoice that the Buyer pays within seven (7) days of the invoice date."
+  ],
+  "decoy_numbers": {
+    "percent": [
+      1.5
+    ],
+    "days": [
+      7
+    ]
+  }
+}

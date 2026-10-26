@@ -1,0 +1,21 @@
+Write a realistic supply agreement between Margalla Analytics Pvt Ltd (the "Buyer") and Zenith Hardware Pvt Ltd (the "Vendor") for IT equipment, as it would appear in the procurement files of a Pakistani software company.
+
+Length and style
+- About 3,500 to 4,500 words, in formal legal English.
+- Numbered clauses ("1.", "1.1", "2." and so on) with short headings. Include parties, definitions, term, scope of supply, delivery, price, payment, warranty, confidentiality, liability, termination, force majeure, governing law (Pakistan), notices and a signature block.
+- Write every commercial term below in YOUR OWN natural legal wording, in the clause where it belongs. Do not copy my sentences. Write some numbers as words and digits together (for example "thirty (30) days") and others as digits only.
+
+Commercial terms that must each appear exactly once, with exactly these values:
+- Agreed unit price: Ubiquiti UniFi 6 Enterprise Access Point at PKR 38,500 per unit; the invoice must not exceed it.
+- Payment terms: each invoice must be paid within 35 days of the invoice date.
+
+Everything else
+- Do NOT add any other penalty, discount, rebate, price, price list, fee, interest rate or payment deadline beyond the terms above and the decoy clauses below.
+- Include these decoy clauses. They are ordinary boilerplate and must stay exactly as described:
+- A limitation of liability clause capping each party's liability at 10% of the total order value.
+- A late payment charge of 2% per month that the Vendor may charge if the BUYER pays late.
+- Termination by either party on thirty (30) days written notice.
+- A warranty of twelve (12) months from delivery.
+- Support response: the Vendor shall respond to each support request within four (4) business hours; for each full day of delay in responding, the Buyer is entitled to a service credit of 3% of the monthly support fee.
+
+Output only the contract text. No commentary, no markdown tables, no placeholders such as [insert].

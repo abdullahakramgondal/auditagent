@@ -4,7 +4,7 @@ from data.tier_b.make_prompts import DECOYS, SPECS, build_prompt, describe_rule
 
 def test_specs_are_valid_rules_with_unique_ids():
     ids = [s["case_id"] for s in SPECS]
-    assert len(set(ids)) == len(ids) == 8
+    assert len(set(ids)) == len(ids) == 12
     for spec in SPECS:
         rules = [{**r, "source": {"page": 1, "text": "placeholder"}} for r in spec["rules"]]
         ExtractedContract.model_validate({"rules": rules})

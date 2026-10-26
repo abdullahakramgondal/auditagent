@@ -1,0 +1,43 @@
+{
+  "case_id": "tb_12",
+  "writer": "chatgpt",
+  "buyer": "Hunza Cloud Pvt Ltd",
+  "vendor": "Orbit Technology Traders",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-04-30",
+      "mode": "per_day_percent",
+      "percent": "1",
+      "grace_days": 3,
+      "cap_percent": "8"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 50,
+      "discount_percent": "5"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Samsung 990 PRO 2TB NVMe SSD",
+      "agreed_unit_price": "62000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 25
+    }
+  ],
+  "style_notes": [
+    "Late delivery penalty: write the delivery date, the grace period and the penalty percentage with its maximum in three separate, neighbouring sentences of one clause.",
+    "Agreed unit price: state the price in one sentence and, in a separate sentence of the same clause, say that the price is fixed for the term of the agreement and can only change by written amendment."
+  ],
+  "extra_decoys": [
+    "The Buyer may reject non-conforming Equipment by written notice within fifteen (15) days of delivery."
+  ],
+  "decoy_numbers": {
+    "percent": [],
+    "days": [
+      15
+    ]
+  }
+}

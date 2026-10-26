@@ -1,0 +1,26 @@
+{
+  "case_id": "tb_11",
+  "writer": "claude",
+  "buyer": "Margalla Analytics Pvt Ltd",
+  "vendor": "Zenith Hardware Pvt Ltd",
+  "rules": [
+    {
+      "clause_type": "unit_price",
+      "item_name": "Ubiquiti UniFi 6 Enterprise Access Point",
+      "agreed_unit_price": "38500"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 35
+    }
+  ],
+  "extra_decoys": [
+    "Support response: the Vendor shall respond to each support request within four (4) business hours; for each full day of delay in responding, the Buyer is entitled to a service credit of 3% of the monthly support fee."
+  ],
+  "decoy_numbers": {
+    "percent": [
+      3
+    ],
+    "days": []
+  }
+}

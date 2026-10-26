@@ -2,6 +2,7 @@
 
 Run:  python -m data.tier_b.check_contract tb_01
 It reads data/tier_b/pdf/<id>.pdf (exactly what the extractor will see) and data/tier_b/specs/<id>.json.
+Numbers of the standard decoys, and the decoy_numbers a spec declares, are not reported as unexpected.
 A human still decides: this only points at the places worth reading.
 """
 
@@ -138,9 +139,14 @@ def review_text(spec: dict, pages: list[str]) -> dict:
         required.append((label, page))
 
     expected = _expected(spec)
+    declared = spec.get("decoy_numbers", {})
+
+    def decoys(kind: str) -> set[float]:
+        return {float(v) for v in declared.get(kind, [])}
+
     allowed = {
-        "percent": expected["percent"] | DECOY_PERCENTS,
-        "days": expected["days"] | DECOY_DAYS,
+        "percent": expected["percent"] | DECOY_PERCENTS | decoys("percent"),
+        "days": expected["days"] | DECOY_DAYS | decoys("days"),
         "units": expected["units"],
         "amounts": expected["amounts"],
     }

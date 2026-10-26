@@ -4,6 +4,12 @@ Run:  python -m data.tier_b.make_prompts
 Then paste each prompt from data/tier_b/prompts/ into Claude or ChatGPT (not Gemini, which is the
 model under test), save the reply as data/tier_b/contracts/<id>.txt, check it by hand, and export
 it as a PDF. Synthetic data only.
+
+A spec may carry three optional keys:
+  style_notes    extra instructions on HOW the writer words the terms
+  extra_decoys   extra boilerplate clauses with numbers that are NOT rules
+  decoy_numbers  the numbers in those extra decoys, {"percent": [...], "days": [...]}, so that
+                 check_contract does not report them as unexpected rules
 """
 
 import json
@@ -115,6 +121,104 @@ SPECS = [
             _terms(30),
         ],
     },
+    # tb_09 to tb_12: the untouched set (TODO item 58). Run Agent 1 on them ONCE; never edit a
+    # contract after seeing Agent 1's result.
+    {
+        "case_id": "tb_09",
+        "writer": "claude",
+        "buyer": "Karakoram Software Pvt Ltd",
+        "vendor": "Gulberg Computers",
+        "rules": [
+            _late("2027-02-28", "per_day_percent", 2.5, cap=15, grace=4),
+            _volume(30, 7),
+            _price("Dell UltraSharp U2723QE Monitor", 85000),
+            _terms(28),
+        ],
+        "style_notes": [
+            (
+                "Late delivery penalty: do not write the delivery date inside the penalty clause. "
+                "Write it once, in the delivery clause, as a defined term of your own choice (a "
+                "capitalised term in quotation marks and brackets), and in the penalty clause refer "
+                "to the date only by that term."
+            ),
+        ],
+        "extra_decoys": [
+            (
+                "The Buyer shall inspect the Equipment within seven (7) days of delivery; Equipment "
+                "not rejected in writing within that period is deemed accepted."
+            ),
+            (
+                "A restocking fee of 5% of the price of the returned goods applies to undamaged "
+                "Equipment that the Buyer asks to return after acceptance."
+            ),
+        ],
+        "decoy_numbers": {"percent": [5], "days": [7]},
+    },
+    {
+        "case_id": "tb_10",
+        "writer": "chatgpt",
+        "buyer": "Sialkot Data Systems Pvt Ltd",
+        "vendor": "Eastern Networks Pvt Ltd",
+        "rules": [_late("2027-03-15", "flat_percent", 6), _volume(15, 4.5), _terms(45)],
+        "style_notes": [
+            (
+                'Volume discount: do not use the word "discount" for this term. Call it a reduction, '
+                "a rebate or another natural name of your own choice."
+            ),
+        ],
+        "extra_decoys": [
+            (
+                "Early payment discount: the Vendor shall allow the Buyer a discount of 1.5% on any "
+                "invoice that the Buyer pays within seven (7) days of the invoice date."
+            ),
+        ],
+        "decoy_numbers": {"percent": [1.5], "days": [7]},
+    },
+    {
+        "case_id": "tb_11",
+        "writer": "claude",
+        "buyer": "Margalla Analytics Pvt Ltd",
+        "vendor": "Zenith Hardware Pvt Ltd",
+        "rules": [_price("Ubiquiti UniFi 6 Enterprise Access Point", 38500), _terms(35)],
+        "extra_decoys": [
+            (
+                "Support response: the Vendor shall respond to each support request within four (4) "
+                "business hours; for each full day of delay in responding, the Buyer is entitled to a "
+                "service credit of 3% of the monthly support fee."
+            ),
+        ],
+        "decoy_numbers": {"percent": [3], "days": []},
+    },
+    {
+        "case_id": "tb_12",
+        "writer": "chatgpt",
+        "buyer": "Hunza Cloud Pvt Ltd",
+        "vendor": "Orbit Technology Traders",
+        "rules": [
+            _late("2027-04-30", "per_day_percent", 1, cap=8, grace=3),
+            _volume(50, 5),
+            _price("Samsung 990 PRO 2TB NVMe SSD", 62000),
+            _terms(25),
+        ],
+        "style_notes": [
+            (
+                "Late delivery penalty: write the delivery date, the grace period and the penalty "
+                "percentage with its maximum in three separate, neighbouring sentences of one clause."
+            ),
+            (
+                "Agreed unit price: state the price in one sentence and, in a separate sentence of "
+                "the same clause, say that the price is fixed for the term of the agreement and can "
+                "only change by written amendment."
+            ),
+        ],
+        "extra_decoys": [
+            (
+                "The Buyer may reject non-conforming Equipment by written notice within fifteen (15) "
+                "days of delivery."
+            ),
+        ],
+        "decoy_numbers": {"percent": [], "days": [15]},
+    },
 ]
 
 
@@ -150,7 +254,11 @@ def describe_rule(rule: dict) -> str:
 
 def build_prompt(spec: dict) -> str:
     terms = "\n".join(f"- {describe_rule(r)}" for r in spec["rules"])
-    decoys = "\n".join(f"- {d}" for d in DECOYS)
+    decoys = "\n".join(f"- {d}" for d in DECOYS + spec.get("extra_decoys", []))
+    notes = spec.get("style_notes", [])
+    notes_block = ""
+    if notes:
+        notes_block = "\nHow to write these terms\n" + "\n".join(f"- {n}" for n in notes) + "\n"
     return f"""Write a realistic supply agreement between {spec["buyer"]} (the "Buyer") and {spec["vendor"]} (the "Vendor") for IT equipment, as it would appear in the procurement files of a Pakistani software company.
 
 Length and style
@@ -160,7 +268,7 @@ Length and style
 
 Commercial terms that must each appear exactly once, with exactly these values:
 {terms}
-
+{notes_block}
 Everything else
 - Do NOT add any other penalty, discount, rebate, price, price list, fee, interest rate or payment deadline beyond the terms above and the decoy clauses below.
 - Include these decoy clauses. They are ordinary boilerplate and must stay exactly as described:

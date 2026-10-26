@@ -1,0 +1,45 @@
+{
+  "case_id": "tb_09",
+  "writer": "claude",
+  "buyer": "Karakoram Software Pvt Ltd",
+  "vendor": "Gulberg Computers",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-02-28",
+      "mode": "per_day_percent",
+      "percent": "2.5",
+      "grace_days": 4,
+      "cap_percent": "15"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 30,
+      "discount_percent": "7"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Dell UltraSharp U2723QE Monitor",
+      "agreed_unit_price": "85000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 28
+    }
+  ],
+  "style_notes": [
+    "Late delivery penalty: do not write the delivery date inside the penalty clause. Write it once, in the delivery clause, as a defined term of your own choice (a capitalised term in quotation marks and brackets), and in the penalty clause refer to the date only by that term."
+  ],
+  "extra_decoys": [
+    "The Buyer shall inspect the Equipment within seven (7) days of delivery; Equipment not rejected in writing within that period is deemed accepted.",
+    "A restocking fee of 5% of the price of the returned goods applies to undamaged Equipment that the Buyer asks to return after acceptance."
+  ],
+  "decoy_numbers": {
+    "percent": [
+      5
+    ],
+    "days": [
+      7
+    ]
+  }
+}
