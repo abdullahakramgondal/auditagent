@@ -12,6 +12,7 @@ from auditagent.agents.grounding import (
     days_in,
     locate_quote,
     number_in,
+    percent_count,
     percent_in,
     shares_defined_term,
     units_in,
@@ -91,13 +92,15 @@ TASKS = {
         "Ignore liability caps, termination rights, and late PAYMENT charges that apply to the Buyer. "
         "mode is flat_percent when one percentage applies once, and per_day_percent when a percentage "
         "applies for each day of delay. "
-        "The quote must contain EVERY sentence that states a value of the rule: the delivery date, the grace "
-        "period, the percentage and the cap. When they are in neighbouring sentences of one clause, copy all "
-        "of those sentences together as one passage, in the order they appear in the contract; never quote "
-        "only the sentence with the percentage. "
-        "If the penalty clause only refers to the date by a defined term (a capitalised term that another "
-        "clause defines), copy the sentence that states the date into deadline_quote; otherwise repeat the "
-        "quote in deadline_quote."
+        "The quote must be ONE continuous passage copied exactly from ONE clause. It must contain every "
+        "sentence of that clause that states the percentage, the cap or the grace period; when these sit "
+        "in neighbouring sentences, copy them together in the order they appear, and never quote only "
+        "the sentence with the percentage. Never join passages from different clauses and never use "
+        "'...' in a quote. "
+        "deadline_quote is the sentence that states the delivery date. If the date is written in the "
+        "same clause as the penalty, copy that sentence there (it may also be part of the quote). If the "
+        "penalty clause only refers to the date by a defined term (a capitalised term that another "
+        "clause defines), copy the sentence from that other clause."
     ),
     "volume_discount": (
         "Find rules that give the Buyer a DISCOUNT when it orders at least a minimum number of units."
@@ -186,7 +189,7 @@ def _rule_fields(kind: str, form) -> dict:
 
 def _fact_problems(kind: str, form) -> list[str]:
     """Numbers the model reported must really be written in its own quote, in the right role.
-    (The late-penalty deadline is checked separately: its date may sit in another clause.)"""
+    (The late-penalty deadline is checked separately: its date may sit in another sentence or clause.)"""
     quote = form.quote
     problems = []
 
@@ -198,6 +201,14 @@ def _fact_problems(kind: str, form) -> list[str]:
         need("percent", form.percent, percent_in)
         if form.cap_percent is not None:
             need("cap_percent", form.cap_percent, percent_in)
+            # One number cannot play two roles: a cap equal to the percentage must be written twice
+            # (the model once invented a 10% cap for a flat 10% penalty).
+            same_number = Decimal(str(form.cap_percent)) == Decimal(str(form.percent))
+            if same_number and percent_count(form.percent, quote) < 2:
+                problems.append(
+                    f"cap_percent {form.cap_percent} is the same number as percent "
+                    "and is written only once in the quote"
+                )
         if form.grace_days > 0:
             need("grace_days", form.grace_days, days_in)
     elif kind == "volume_discount":
@@ -212,12 +223,18 @@ def _fact_problems(kind: str, form) -> list[str]:
     return problems
 
 
-def _check_deadline(form, chunks: list[Chunk]) -> tuple[str | None, dict | None]:
+def _check_deadline(
+    form, chunks: list[Chunk], penalty_chunk: Chunk
+) -> tuple[str | None, dict | None]:
     """Prove the deadline date. Returns (problem, source of the date when it is outside the penalty quote).
 
-    The date is accepted if it is written in the penalty quote itself. Otherwise it must be written in a
-    second quote that really exists in the contract AND that quote must define a date term (for example
-    (the "Delivery Deadline")) which the penalty quote uses. This keeps decoy clauses from borrowing a date.
+    The date is accepted in three cases:
+      1. it is written in the penalty quote itself;
+      2. it is written in the deadline quote and that passage is in the SAME clause (chunk) as the
+         penalty quote, for example the neighbouring sentence "the delivery date is 15 January 2027";
+      3. it is written in the deadline quote of ANOTHER clause, and that clause defines a date term
+         (for example (the "Delivery Deadline")) which the penalty quote uses.
+    The deadline quote must really exist in the contract. Case 3 keeps decoy clauses from borrowing a date.
     """
     try:
         deadline = date.fromisoformat(form.deadline)
@@ -226,15 +243,18 @@ def _check_deadline(form, chunks: list[Chunk]) -> tuple[str | None, dict | None]
     if date_in(deadline, form.quote):
         return None, None
     missing = f"deadline {form.deadline} is not written in the quote"
-    holder = locate_quote(chunks, form.deadline_quote)
+    holder = locate_quote(chunks, form.deadline_quote, penalty_chunk.chunk_id)
     if holder is None or not date_in(deadline, form.deadline_quote):
         return missing, None
+    source = {"page": holder.page_start, "text": normalize_for_match(form.deadline_quote)}
+    if holder.chunk_id == penalty_chunk.chunk_id:
+        return None, source
     if not shares_defined_term(form.deadline_quote, form.quote):
         return (
             f"{missing}, and the quote does not use a date term defined where the date is written",
             None,
         )
-    return None, {"page": holder.page_start, "text": normalize_for_match(form.deadline_quote)}
+    return None, source
 
 
 class LegalExtractor:
@@ -295,7 +315,7 @@ class LegalExtractor:
         problems = _fact_problems(kind, item)
         deadline_source = None
         if kind == "late_penalty":
-            problem, deadline_source = _check_deadline(item, chunks)
+            problem, deadline_source = _check_deadline(item, chunks, chunk)
             if problem:
                 problems.insert(0, problem)
         if problems:
@@ -321,5 +341,7 @@ class LegalExtractor:
     def _result(self, rules, issues) -> AgentOneResult:
         """Wrap the rules and issues together with the name of the model that was used."""
         return AgentOneResult(
-            contract=ExtractedContract(rules=rules), issues=issues, llm_model=self._provider.model
+            contract=ExtractedContract(rules=rules),
+            issues=issues,
+            llm_model=self._provider.model,
         )

@@ -1,0 +1,87 @@
+{
+  "case_id": "tb_05",
+  "seconds": 13.5,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "payment_terms",
+          "net_days": 21,
+          "source": {
+            "page": 4,
+            "text": "The Buyer shall pay each valid invoice within twenty-one (21) days after the date shown on that invoice."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "48dc7f885d80-050",
+        "48dc7f885d80-048",
+        "48dc7f885d80-041",
+        "48dc7f885d80-032",
+        "48dc7f885d80-049",
+        "48dc7f885d80-108",
+        "48dc7f885d80-034",
+        "48dc7f885d80-069",
+        "48dc7f885d80-029",
+        "48dc7f885d80-060",
+        "48dc7f885d80-067"
+      ],
+      "seconds": 2.8,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "48dc7f885d80-043",
+        "48dc7f885d80-010",
+        "48dc7f885d80-042",
+        "48dc7f885d80-022",
+        "48dc7f885d80-007",
+        "48dc7f885d80-047",
+        "48dc7f885d80-066",
+        "48dc7f885d80-004"
+      ],
+      "seconds": 2.1,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "48dc7f885d80-049",
+        "48dc7f885d80-048",
+        "48dc7f885d80-070",
+        "48dc7f885d80-050",
+        "48dc7f885d80-051",
+        "48dc7f885d80-044",
+        "48dc7f885d80-046",
+        "48dc7f885d80-047"
+      ],
+      "seconds": 1.8,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall pay each valid invoice within twenty-one (21) days after the date shown on that invoice.\",\n      \"chunk_id\": \"48dc7f885d80-049\",\n      \"net_days\": 21\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "48dc7f885d80-043",
+        "48dc7f885d80-004",
+        "48dc7f885d80-007",
+        "48dc7f885d80-001",
+        "48dc7f885d80-042",
+        "48dc7f885d80-060",
+        "48dc7f885d80-016",
+        "48dc7f885d80-010"
+      ],
+      "seconds": 5.1,
+      "raw": "{\n  \"rules\": []\n}"
+    }
+  ]
+}

@@ -80,6 +80,12 @@ def percent_in(value, text: str) -> bool:
     return Decimal(str(value)) in _values(PERCENT_RE, text)
 
 
+def percent_count(value, text: str) -> int:
+    """How many times `value` is written as a percentage (10%, 10 percent) in `text`."""
+    wanted = Decimal(str(value))
+    return sum(Decimal(match.group(1)) == wanted for match in PERCENT_RE.finditer(text))
+
+
 def days_in(value, text: str) -> bool:
     """True if `value` is written as a number of days (30 days, Net 30, (30) calendar days)."""
     return Decimal(str(value)) in _values(DAYS_RE, text)

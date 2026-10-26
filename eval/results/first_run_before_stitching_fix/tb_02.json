@@ -1,0 +1,101 @@
+{
+  "case_id": "tb_02",
+  "seconds": 22.6,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2026-12-05",
+          "mode": "per_day_percent",
+          "percent": "1.5",
+          "cap_percent": "12.0",
+          "grace_days": 0,
+          "source": {
+            "page": 4,
+            "text": "If the Vendor delivers any Equipment after 5 December 2026, a penalty shall accrue against the Vendor for every day of delay beyond that date, at the rate of 1.5% of the invoice value of the Equipment so delayed per day. The aggregate penalty payable in respect of any delivery shall in no circumstances exceed 12% of that invoice value."
+          },
+          "deadline_source": null
+        },
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 40,
+          "discount_percent": "6.0",
+          "source": {
+            "page": 5,
+            "text": "9.3 Where the Buyer places a single Purchase Order for forty (40) or more units of Equipment, the Vendor shall allow the Buyer a discount of 6% on the price of that Purchase Order, and the invoice shall show the discounted amount."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "47ecfbc52d49-036",
+        "47ecfbc52d49-038",
+        "47ecfbc52d49-037",
+        "47ecfbc52d49-058",
+        "47ecfbc52d49-063",
+        "47ecfbc52d49-041",
+        "47ecfbc52d49-055",
+        "47ecfbc52d49-103",
+        "47ecfbc52d49-022",
+        "47ecfbc52d49-033",
+        "47ecfbc52d49-021"
+      ],
+      "seconds": 2.3,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"If the Vendor delivers any Equipment after 5 December 2026, a penalty shall accrue against the Vendor for every day of delay beyond that date, at the rate of 1.5% of the invoice value of the Equipment so delayed per day. The aggregate penalty payable in respect of any delivery shall in no circumstances exceed 12% of that invoice value.\",\n      \"chunk_id\": \"47ecfbc52d49-036\",\n      \"deadline_quote\": \"If the Vendor delivers any Equipment after 5 December 2026, a penalty shall accrue against the Vendor for every day of delay beyond that date, at the rate of 1.5% of the invoice value of the Equipment so delayed per day. The aggregate penalty payable in respect of any delivery shall in no circumstances exceed 12% of that invoice value.\",\n      \"deadline\": \"2026-12-05\",\n      \"mode\": \"per_day_percent\",\n      \"percent\": 1.5,\n      \"cap_percent\": 12,\n      \"grace_days\": 0\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "47ecfbc52d49-052",
+        "47ecfbc52d49-020",
+        "47ecfbc52d49-051",
+        "47ecfbc52d49-016",
+        "47ecfbc52d49-036",
+        "47ecfbc52d49-039",
+        "47ecfbc52d49-050",
+        "47ecfbc52d49-133"
+      ],
+      "seconds": 2.7,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"9.3 Where the Buyer places a single Purchase Order for forty (40) or more units of Equipment, the Vendor shall allow the Buyer a discount of 6% on the price of that Purchase Order, and the invoice shall show the discounted amount.\",\n      \"chunk_id\": \"47ecfbc52d49-052\",\n      \"min_quantity\": 40,\n      \"discount_percent\": 6\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "47ecfbc52d49-054",
+        "47ecfbc52d49-057",
+        "47ecfbc52d49-056",
+        "47ecfbc52d49-022",
+        "47ecfbc52d49-036",
+        "47ecfbc52d49-058",
+        "47ecfbc52d49-037",
+        "47ecfbc52d49-055"
+      ],
+      "seconds": 3.6,
+      "raw": "{\"rules\": []}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "47ecfbc52d49-050",
+        "47ecfbc52d49-051",
+        "47ecfbc52d49-052",
+        "47ecfbc52d49-059",
+        "47ecfbc52d49-133",
+        "47ecfbc52d49-062",
+        "47ecfbc52d49-015",
+        "47ecfbc52d49-053"
+      ],
+      "seconds": 12.1,
+      "raw": "{\"rules\": []}"
+    }
+  ]
+}

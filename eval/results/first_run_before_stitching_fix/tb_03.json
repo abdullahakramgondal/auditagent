@@ -1,0 +1,105 @@
+{
+  "case_id": "tb_03",
+  "seconds": 17.1,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 20,
+          "discount_percent": "4.0",
+          "source": {
+            "page": 5,
+            "text": "9.3 Where the Buyer places a single Purchase Order for twenty (20) or more units of Equipment, the Vendor shall allow the Buyer a discount of 4% on the price of that Purchase Order, and the invoice shall show the discounted amount."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 30,
+          "source": {
+            "page": 5,
+            "text": "The Buyer shall settle each undisputed invoice within 30 days of the invoice date, by bank transfer or crossed cheque to the account that the Vendor has notified to the Buyer in writing."
+          }
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "Cisco Catalyst 9300 Switch",
+          "agreed_unit_price": "540000.0",
+          "source": {
+            "page": 5,
+            "text": "The Parties have agreed that the Cisco Catalyst 9300 Switch shall be supplied at a unit price of PKR 540,000, and the Vendor shall not invoice the Buyer for that item at any amount higher than that unit price, whatever the market conditions at the time of the Purchase Order or of delivery."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "98b6d34c0bee-036",
+        "98b6d34c0bee-037",
+        "98b6d34c0bee-058",
+        "98b6d34c0bee-063",
+        "98b6d34c0bee-040",
+        "98b6d34c0bee-055",
+        "98b6d34c0bee-103",
+        "98b6d34c0bee-108",
+        "98b6d34c0bee-033",
+        "98b6d34c0bee-021",
+        "98b6d34c0bee-022"
+      ],
+      "seconds": 7.5,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "98b6d34c0bee-051",
+        "98b6d34c0bee-020",
+        "98b6d34c0bee-052",
+        "98b6d34c0bee-016",
+        "98b6d34c0bee-055",
+        "98b6d34c0bee-049",
+        "98b6d34c0bee-053",
+        "98b6d34c0bee-038"
+      ],
+      "seconds": 4.3,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"9.3 Where the Buyer places a single Purchase Order for twenty (20) or more units of Equipment, the Vendor shall allow the Buyer a discount of 4% on the price of that Purchase Order, and the invoice shall show the discounted amount.\",\n      \"chunk_id\": \"98b6d34c0bee-051\",\n      \"min_quantity\": 20,\n      \"discount_percent\": 4\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "98b6d34c0bee-056",
+        "98b6d34c0bee-054",
+        "98b6d34c0bee-057",
+        "98b6d34c0bee-022",
+        "98b6d34c0bee-058",
+        "98b6d34c0bee-036",
+        "98b6d34c0bee-108",
+        "98b6d34c0bee-025"
+      ],
+      "seconds": 1.2,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall settle each undisputed invoice within 30 days of the invoice date, by bank transfer or crossed cheque to the account that the Vendor has notified to the Buyer in writing.\",\n      \"chunk_id\": \"98b6d34c0bee-056\",\n      \"net_days\": 30\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "98b6d34c0bee-049",
+        "98b6d34c0bee-052",
+        "98b6d34c0bee-051",
+        "98b6d34c0bee-050",
+        "98b6d34c0bee-059",
+        "98b6d34c0bee-062",
+        "98b6d34c0bee-015",
+        "98b6d34c0bee-133"
+      ],
+      "seconds": 2.4,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Parties have agreed that the Cisco Catalyst 9300 Switch shall be supplied at a unit price of PKR 540,000, and the Vendor shall not invoice the Buyer for that item at any amount higher than that unit price, whatever the market conditions at the time of the Purchase Order or of delivery.\",\n      \"chunk_id\": \"98b6d34c0bee-050\",\n      \"item_name\": \"Cisco Catalyst 9300 Switch\",\n      \"agreed_unit_price\": 540000\n    }\n  ]\n}"
+    }
+  ]
+}

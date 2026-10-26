@@ -1,0 +1,118 @@
+{
+  "case_id": "tb_08",
+  "seconds": 11.4,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2026-12-31",
+          "mode": "flat_percent",
+          "percent": "15.0",
+          "cap_percent": null,
+          "grace_days": 0,
+          "source": {
+            "page": 3,
+            "text": "6.4 All Equipment required under an Order must be delivered no later than 31 December 2026. Where the Vendor delivers after that date, a single late-delivery penalty equal to 15% of the invoice value for the delayed delivery shall apply. The Parties agree that this is one penalty for the relevant late delivery, not a recurring or daily amount."
+          },
+          "deadline_source": null
+        },
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 10,
+          "discount_percent": "2.0",
+          "source": {
+            "page": 4,
+            "text": "8.2 Where a single Order contains ten (10) or more units, a volume reduction of 2% shall be applied to the Equipment value for that Order."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 30,
+          "source": {
+            "page": 5,
+            "text": "9.1 The Buyer shall pay each valid and undisputed Invoice within 30 days of the invoice date."
+          }
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "Fortinet FortiGate 100F Firewall",
+          "agreed_unit_price": "620000.0",
+          "source": {
+            "page": 4,
+            "text": "8.1 The agreed unit amount for each Fortinet FortiGate 100F Firewall is PKR 620,000 per unit, and the Vendor\u2019s invoice shall not state a unit amount above that figure."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "511ef38f36cf-031",
+        "511ef38f36cf-052",
+        "511ef38f36cf-033",
+        "511ef38f36cf-027",
+        "511ef38f36cf-035",
+        "511ef38f36cf-046",
+        "511ef38f36cf-032",
+        "511ef38f36cf-053",
+        "511ef38f36cf-030",
+        "511ef38f36cf-050",
+        "511ef38f36cf-028"
+      ],
+      "seconds": 2.3,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.4 All Equipment required under an Order must be delivered no later than 31 December 2026. Where the Vendor delivers after that date, a single late-delivery penalty equal to 15% of the invoice value for the delayed delivery shall apply. The Parties agree that this is one penalty for the relevant late delivery, not a recurring or daily amount.\",\n      \"chunk_id\": \"511ef38f36cf-031\",\n      \"deadline_quote\": \"6.4 All Equipment required under an Order must be delivered no later than 31 December 2026. Where the Vendor delivers after that date, a single late-delivery penalty equal to 15% of the invoice value for the delayed delivery shall apply.\",\n      \"deadline\": \"2026-12-31\",\n      \"mode\": \"flat_percent\",\n      \"percent\": 15,\n      \"cap_percent\": null,\n      \"grace_days\": 0\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "511ef38f36cf-044",
+        "511ef38f36cf-007",
+        "511ef38f36cf-042",
+        "511ef38f36cf-117",
+        "511ef38f36cf-032",
+        "511ef38f36cf-052",
+        "511ef38f36cf-049",
+        "511ef38f36cf-046"
+      ],
+      "seconds": 3.4,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"8.2 Where a single Order contains ten (10) or more units, a volume reduction of 2% shall be applied to the Equipment value for that Order.\",\n      \"chunk_id\": \"511ef38f36cf-044\",\n      \"min_quantity\": 10,\n      \"discount_percent\": 2\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "511ef38f36cf-050",
+        "511ef38f36cf-053",
+        "511ef38f36cf-052",
+        "511ef38f36cf-045",
+        "511ef38f36cf-031",
+        "511ef38f36cf-047",
+        "511ef38f36cf-042",
+        "511ef38f36cf-049"
+      ],
+      "seconds": 2.4,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"9.1 The Buyer shall pay each valid and undisputed Invoice within 30 days of the invoice date.\",\n      \"chunk_id\": \"511ef38f36cf-050\",\n      \"net_days\": 30\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "511ef38f36cf-043",
+        "511ef38f36cf-003",
+        "511ef38f36cf-042",
+        "511ef38f36cf-044",
+        "511ef38f36cf-006",
+        "511ef38f36cf-001",
+        "511ef38f36cf-061",
+        "511ef38f36cf-002"
+      ],
+      "seconds": 1.7,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"8.1 The agreed unit amount for each Fortinet FortiGate 100F Firewall is PKR 620,000 per unit, and the Vendor\u2019s invoice shall not state a unit amount above that figure.\",\n      \"chunk_id\": \"511ef38f36cf-043\",\n      \"item_name\": \"Fortinet FortiGate 100F Firewall\",\n      \"agreed_unit_price\": 620000\n    }\n  ]\n}"
+    }
+  ]
+}

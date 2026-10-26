@@ -225,7 +225,7 @@ def test_quoting_only_the_penalty_sentence_is_refused_because_the_date_and_grace
     result, _ = run([reply(partial), reply(), reply(), reply()], document=doc(MULTI_PAGES))
     assert result.contract.rules == []
     reason = issue_for(result, "late_penalty").reason
-    assert "deadline" in reason and "grace_days 7" in reason
+    assert "grace_days 7" in reason and "deadline" not in reason
 
 
 def test_wrong_chunk_id_does_not_matter_the_real_location_is_used():

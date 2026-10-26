@@ -1,0 +1,121 @@
+{
+  "case_id": "tb_04",
+  "seconds": 32.7,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2026-10-31",
+          "mode": "flat_percent",
+          "percent": "10.0",
+          "cap_percent": null,
+          "grace_days": 2,
+          "source": {
+            "page": 3,
+            "text": "5.3 Where the Vendor delivers the Equipment under the Initial Order after the Delivery Deadline, the Vendor shall pay to the Buyer, as a genuine pre-estimate of the Buyer's loss and not as a penalty in the nature of a continuing charge, a sum equal to 10% of the invoice value of the Equipment so delivered. This amount is payable once only in respect of the late delivery, and does not increase with the length of the delay. No such sum shall be payable where the delay does not exceed the first 2 days after the Delivery Deadline."
+          },
+          "deadline_source": {
+            "page": 3,
+            "text": "5.1 The Vendor shall deliver the Equipment under the Initial Order to the Delivery Location, at its own cost and risk, on or before 31 October 2026 (the \"Delivery Deadline\")."
+          }
+        },
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 100,
+          "discount_percent": "12.0",
+          "source": {
+            "page": 4,
+            "text": "7.2 Where the Buyer places a single Purchase Order for 100 or more Units, the Vendor shall allow the Buyer a volume discount of twelve per cent (12%) on the Order Value of that Purchase Order, and the discount shall be shown as a separate deduction on the Invoice."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 60,
+          "source": {
+            "page": 5,
+            "text": "The Buyer shall pay each Invoice that is correct and undisputed within a period of sixty (60) days reckoned from the date of the Invoice."
+          }
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "Lenovo ThinkPad T14 Laptop",
+          "agreed_unit_price": "275000.0",
+          "source": {
+            "page": 4,
+            "text": "7.1 The price payable by the Buyer for each Unit of the Lenovo ThinkPad T14 Laptop shall be PKR 275,000 (the \"Agreed Unit Price\"). No Invoice issued by the Vendor shall charge any sum in excess of the Agreed Unit Price per Unit, and any amount invoiced above that figure shall not be payable by the Buyer."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "097f980c4216-028",
+        "097f980c4216-055",
+        "097f980c4216-029",
+        "097f980c4216-030",
+        "097f980c4216-044",
+        "097f980c4216-086",
+        "097f980c4216-095",
+        "097f980c4216-065",
+        "097f980c4216-026",
+        "097f980c4216-027",
+        "097f980c4216-021"
+      ],
+      "seconds": 4.8,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"5.3 Where the Vendor delivers the Equipment under the Initial Order after the Delivery Deadline, the Vendor shall pay to the Buyer, as a genuine pre-estimate of the Buyer's loss and not as a penalty in the nature of a continuing charge, a sum equal to 10% of the invoice value of the Equipment so delivered. This amount is payable once only in respect of the late delivery, and does not increase with the length of the delay. No such sum shall be payable where the delay does not exceed the first 2 days after the Delivery Deadline.\",\n      \"chunk_id\": \"097f980c4216-028\",\n      \"deadline_quote\": \"5.1 The Vendor shall deliver the Equipment under the Initial Order to the Delivery Location, at its own cost and risk, on or before 31 October 2026 (the \\\"Delivery Deadline\\\").\",\n      \"deadline\": \"2026-10-31\",\n      \"mode\": \"flat_percent\",\n      \"percent\": 10,\n      \"cap_percent\": null,\n      \"grace_days\": 2\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "097f980c4216-042",
+        "097f980c4216-043",
+        "097f980c4216-052",
+        "097f980c4216-028",
+        "097f980c4216-017",
+        "097f980c4216-037",
+        "097f980c4216-021",
+        "097f980c4216-020"
+      ],
+      "seconds": 2.0,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"7.2 Where the Buyer places a single Purchase Order for 100 or more Units, the Vendor shall allow the Buyer a volume discount of twelve per cent (12%) on the Order Value of that Purchase Order, and the discount shall be shown as a separate deduction on the Invoice.\",\n      \"chunk_id\": \"097f980c4216-042\",\n      \"min_quantity\": 100,\n      \"discount_percent\": 12\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "097f980c4216-053",
+        "097f980c4216-051",
+        "097f980c4216-028",
+        "097f980c4216-055",
+        "097f980c4216-054",
+        "097f980c4216-101",
+        "097f980c4216-027",
+        "097f980c4216-036"
+      ],
+      "seconds": 19.5,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall pay each Invoice that is correct and undisputed within a period of sixty (60) days reckoned from the date of the Invoice.\",\n      \"chunk_id\": \"097f980c4216-053\",\n      \"net_days\": 60\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "097f980c4216-043",
+        "097f980c4216-041",
+        "097f980c4216-042",
+        "097f980c4216-028",
+        "097f980c4216-052",
+        "097f980c4216-006",
+        "097f980c4216-056",
+        "097f980c4216-005"
+      ],
+      "seconds": 4.5,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"7.1 The price payable by the Buyer for each Unit of the Lenovo ThinkPad T14 Laptop shall be PKR 275,000 (the \\\"Agreed Unit Price\\\"). No Invoice issued by the Vendor shall charge any sum in excess of the Agreed Unit Price per Unit, and any amount invoiced above that figure shall not be payable by the Buyer.\",\n      \"chunk_id\": \"097f980c4216-041\",\n      \"item_name\": \"Lenovo ThinkPad T14 Laptop\",\n      \"agreed_unit_price\": 275000\n    }\n  ]\n}"
+    }
+  ]
+}

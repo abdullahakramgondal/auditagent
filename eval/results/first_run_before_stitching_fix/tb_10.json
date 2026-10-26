@@ -1,0 +1,117 @@
+{
+  "case_id": "tb_10",
+  "seconds": 35.3,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2027-03-15",
+          "mode": "flat_percent",
+          "percent": "6.0",
+          "cap_percent": null,
+          "grace_days": 0,
+          "source": {
+            "page": 3,
+            "text": "6.2 Delivery deadline. The Vendor must ensure that all Equipment under an order is delivered no later than 15 March 2027. If the Vendor delivers after that date, a single late-delivery penalty equal to 6% of the invoice value for the affected delivery shall apply. This is the sole contractual penalty for late delivery under this Agreement, and it shall not be multiplied by the number of days of delay or treated as a recurring charge."
+          },
+          "deadline_source": null
+        },
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 15,
+          "discount_percent": "4.5",
+          "source": {
+            "page": 3,
+            "text": "Where a single purchase order covers fifteen (15) or more units, the aggregate price for the Equipment in that order shall be reduced by 4.5%."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 45,
+          "source": {
+            "page": 4,
+            "text": "Each valid invoice shall be paid by the Buyer within 45 days of its invoice date"
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 7,
+          "source": {
+            "page": 4,
+            "text": "The Vendor shall allow the Buyer a reduction of 1.5% against any invoice settled by the Buyer within seven (7) days after the date appearing on that invoice."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "4776cb3b5ef1-033",
+        "4776cb3b5ef1-051",
+        "4776cb3b5ef1-039",
+        "4776cb3b5ef1-046",
+        "4776cb3b5ef1-031",
+        "4776cb3b5ef1-040",
+        "4776cb3b5ef1-036",
+        "4776cb3b5ef1-038",
+        "4776cb3b5ef1-032",
+        "4776cb3b5ef1-013",
+        "4776cb3b5ef1-034"
+      ],
+      "seconds": 7.8,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.2 Delivery deadline. The Vendor must ensure that all Equipment under an order is delivered no later than 15 March 2027. If the Vendor delivers after that date, a single late-delivery penalty equal to 6% of the invoice value for the affected delivery shall apply. This is the sole contractual penalty for late delivery under this Agreement, and it shall not be multiplied by the number of days of delay or treated as a recurring charge.\",\n      \"chunk_id\": \"4776cb3b5ef1-033\",\n      \"deadline_quote\": \"6.2 Delivery deadline. The Vendor must ensure that all Equipment under an order is delivered no later than 15 March 2027. If the Vendor delivers after that date, a single late-delivery penalty equal to 6% of the invoice value for the affected delivery shall apply. This is the sole contractual penalty for late delivery under this Agreement, and it shall not be multiplied by the number of days of delay or treated as a recurring charge.\",\n      \"deadline\": \"2027-03-15\",\n      \"mode\": \"flat_percent\",\n      \"percent\": 6,\n      \"cap_percent\": null,\n      \"grace_days\": 0\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "4776cb3b5ef1-042",
+        "4776cb3b5ef1-041",
+        "4776cb3b5ef1-040",
+        "4776cb3b5ef1-014",
+        "4776cb3b5ef1-013",
+        "4776cb3b5ef1-046",
+        "4776cb3b5ef1-050",
+        "4776cb3b5ef1-137"
+      ],
+      "seconds": 18.1,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"Where a single purchase order covers fifteen (15) or more units, the aggregate price for the Equipment in that order shall be reduced by 4.5%.\",\n      \"chunk_id\": \"4776cb3b5ef1-042\",\n      \"min_quantity\": 15,\n      \"discount_percent\": 4.5\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "4776cb3b5ef1-049",
+        "4776cb3b5ef1-047",
+        "4776cb3b5ef1-046",
+        "4776cb3b5ef1-033",
+        "4776cb3b5ef1-053",
+        "4776cb3b5ef1-051",
+        "4776cb3b5ef1-050",
+        "4776cb3b5ef1-008"
+      ],
+      "seconds": 3.6,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"Each valid invoice shall be paid by the Buyer within 45 days of its invoice date\",\n      \"chunk_id\": \"4776cb3b5ef1-049\",\n      \"net_days\": 45\n    },\n    {\n      \"quote\": \"The Vendor shall allow the Buyer a reduction of 1.5% against any invoice settled by the Buyer within seven (7) days after the date appearing on that invoice.\",\n      \"chunk_id\": \"4776cb3b5ef1-046\",\n      \"net_days\": 7\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "4776cb3b5ef1-042",
+        "4776cb3b5ef1-041",
+        "4776cb3b5ef1-132",
+        "4776cb3b5ef1-040",
+        "4776cb3b5ef1-018",
+        "4776cb3b5ef1-001",
+        "4776cb3b5ef1-014",
+        "4776cb3b5ef1-009"
+      ],
+      "seconds": 3.8,
+      "raw": "{\"rules\": []}"
+    }
+  ]
+}

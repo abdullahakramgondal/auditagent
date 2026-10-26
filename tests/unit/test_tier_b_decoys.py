@@ -37,8 +37,10 @@ def test_declared_decoy_numbers_are_not_reported_as_unexpected():
         "decoy_numbers": {"percent": [1.5], "days": [7]},
     }
     pages = [
-        ("Each invoice shall be paid within forty-five (45) days of the invoice date. "
-        "A discount of 1.5% applies to an invoice paid within seven (7) days.")
+        (
+            "Each invoice shall be paid within forty-five (45) days of the invoice date. "
+            "A discount of 1.5% applies to an invoice paid within seven (7) days."
+        )
     ]
     assert review_text(spec, pages)["unexpected"] == []
     undeclared = {"rules": spec["rules"]}

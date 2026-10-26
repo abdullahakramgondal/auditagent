@@ -1,5 +1,6 @@
 {
   "tier": "a",
+  "provider": "gemini",
   "model": "gemini-3.1-flash-lite",
   "contracts": 31,
   "summary": {
@@ -109,8 +110,8 @@
       "quote_accuracy": 0.931
     }
   },
-  "avg_seconds": 24.6,
-  "median_seconds": 17.3,
+  "avg_seconds": 36.3,
+  "median_seconds": 26.9,
   "avg_calls": 4.0,
   "problems": [],
   "issues": []

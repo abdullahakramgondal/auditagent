@@ -1,0 +1,100 @@
+{
+  "case_id": "tb_01",
+  "seconds": 22.8,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2026-11-20",
+          "mode": "flat_percent",
+          "percent": "8.0",
+          "cap_percent": null,
+          "grace_days": 5,
+          "source": {
+            "page": 4,
+            "text": "6.4 Time is of the essence for delivery. Should the Vendor deliver any Equipment after 20 November 2026, it shall pay to the Buyer a penalty equal to 8% of the invoice value of the Equipment so delivered. The Parties agree that no penalty shall accrue in respect of the first five (5) days of delay following that date, but that, once such five (5) day period has been exceeded, the penalty shall become payable in the amount stated above. The penalty is a single, one-time amount and does not increase with the length of the delay, and the Buyer may deduct it from any sum due to the Vendor."
+          },
+          "deadline_source": null
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 45,
+          "source": {
+            "page": 5,
+            "text": "10.2 The Buyer shall pay each undisputed invoice within 45 days of the invoice date, by bank transfer or crossed cheque to the account of the Vendor notified in writing to the Buyer."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "d919be12b4af-036",
+        "d919be12b4af-057",
+        "d919be12b4af-037",
+        "d919be12b4af-062",
+        "d919be12b4af-038",
+        "d919be12b4af-033",
+        "d919be12b4af-046",
+        "d919be12b4af-102",
+        "d919be12b4af-022",
+        "d919be12b4af-021",
+        "d919be12b4af-023"
+      ],
+      "seconds": 5.7,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.4 Time is of the essence for delivery. Should the Vendor deliver any Equipment after 20 November 2026, it shall pay to the Buyer a penalty equal to 8% of the invoice value of the Equipment so delivered. The Parties agree that no penalty shall accrue in respect of the first five (5) days of delay following that date, but that, once such five (5) day period has been exceeded, the penalty shall become payable in the amount stated above. The penalty is a single, one-time amount and does not increase with the length of the delay, and the Buyer may deduct it from any sum due to the Vendor.\",\n      \"chunk_id\": \"d919be12b4af-036\",\n      \"deadline_quote\": \"6.4 Time is of the essence for delivery. Should the Vendor deliver any Equipment after 20 November 2026, it shall pay to the Buyer a penalty equal to 8% of the invoice value of the Equipment so delivered. The Parties agree that no penalty shall accrue in respect of the first five (5) days of delay following that date, but that, once such five (5) day period has been exceeded, the penalty shall become payable in the amount stated above. The penalty is a single, one-time amount and does not increase with the length of the delay, and the Buyer may deduct it from any sum due to the Vendor.\",\n      \"deadline\": \"2026-11-20\",\n      \"mode\": \"flat_percent\",\n      \"percent\": 8,\n      \"cap_percent\": null,\n      \"grace_days\": 5\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "d919be12b4af-020",
+        "d919be12b4af-016",
+        "d919be12b4af-051",
+        "d919be12b4af-052",
+        "d919be12b4af-132",
+        "d919be12b4af-094",
+        "d919be12b4af-050",
+        "d919be12b4af-039"
+      ],
+      "seconds": 6.6,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "d919be12b4af-055",
+        "d919be12b4af-053",
+        "d919be12b4af-057",
+        "d919be12b4af-036",
+        "d919be12b4af-056",
+        "d919be12b4af-022",
+        "d919be12b4af-041",
+        "d919be12b4af-037"
+      ],
+      "seconds": 6.3,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"10.2 The Buyer shall pay each undisputed invoice within 45 days of the invoice date, by bank transfer or crossed cheque to the account of the Vendor notified in writing to the Buyer.\",\n      \"chunk_id\": \"d919be12b4af-055\",\n      \"net_days\": 45\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "d919be12b4af-051",
+        "d919be12b4af-050",
+        "d919be12b4af-058",
+        "d919be12b4af-094",
+        "d919be12b4af-015",
+        "d919be12b4af-132",
+        "d919be12b4af-052",
+        "d919be12b4af-061"
+      ],
+      "seconds": 2.1,
+      "raw": "{\"rules\": []}"
+    }
+  ]
+}
