@@ -1,0 +1,37 @@
+{
+  "case_id": "tb_13",
+  "writer": "claude",
+  "buyer": "Cholistan Tech Solutions Pvt Ltd",
+  "vendor": "Defence Road Electronics",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-05-14",
+      "mode": "flat_percent",
+      "percent": "12",
+      "grace_days": 6
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 60,
+      "discount_percent": "8"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 40
+    }
+  ],
+  "style_notes": [
+    "Late delivery penalty: do not write the delivery date inside the penalty clause. Write it only in the definitions clause, in the form \"Term\" means <date>, using a capitalised term of your own choice, and in the penalty clause refer to the date only by that term.",
+    "Payment terms: write the period as a net period, for example Net 40, and not as \"within 40 days\"."
+  ],
+  "extra_decoys": [
+    "The Vendor shall acknowledge each purchase order in writing within fourteen (14) days of receiving it."
+  ],
+  "decoy_numbers": {
+    "percent": [],
+    "days": [
+      14
+    ]
+  }
+}

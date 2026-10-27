@@ -1,0 +1,37 @@
+{
+  "case_id": "tb_16",
+  "writer": "chatgpt",
+  "buyer": "Nawaz Cloud Technologies Pvt Ltd",
+  "vendor": "Summit Hardware Pvt Ltd",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-07-31",
+      "mode": "flat_percent",
+      "percent": "7.5",
+      "grace_days": 0
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 35,
+      "discount_percent": "6.5"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 55
+    }
+  ],
+  "style_notes": [
+    "Late delivery penalty: call it liquidated damages and do not use the word \"penalty\" for this term.",
+    "Volume discount: do not use the words \"discount\", \"rebate\" or \"reduction\" for this term. Call it a price adjustment, a credit or another natural name of your own choice."
+  ],
+  "extra_decoys": [
+    "The Buyer may withhold 5% of the value of each invoice as retention until acceptance testing of the Equipment has been completed."
+  ],
+  "decoy_numbers": {
+    "percent": [
+      5
+    ],
+    "days": []
+  }
+}

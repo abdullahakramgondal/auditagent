@@ -1,0 +1,26 @@
+Write a realistic supply agreement between Cholistan Tech Solutions Pvt Ltd (the "Buyer") and Defence Road Electronics (the "Vendor") for IT equipment, as it would appear in the procurement files of a Pakistani software company.
+
+Length and style
+- About 3,500 to 4,500 words, in formal legal English.
+- Numbered clauses ("1.", "1.1", "2." and so on) with short headings. Include parties, definitions, term, scope of supply, delivery, price, payment, warranty, confidentiality, liability, termination, force majeure, governing law (Pakistan), notices and a signature block.
+- Write every commercial term below in YOUR OWN natural legal wording, in the clause where it belongs. Do not copy my sentences. Write some numbers as words and digits together (for example "thirty (30) days") and others as digits only.
+
+Commercial terms that must each appear exactly once, with exactly these values:
+- Late delivery penalty: if the Vendor delivers after 14 May 2027, a penalty of 12% of the invoice value applies (one single penalty). The first 6 days of delay carry no penalty.
+- Volume discount: an order of 60 or more units in a single order receives a 8% discount.
+- Payment terms: each invoice must be paid within 40 days of the invoice date.
+
+How to write these terms
+- Late delivery penalty: do not write the delivery date inside the penalty clause. Write it only in the definitions clause, in the form "Term" means <date>, using a capitalised term of your own choice, and in the penalty clause refer to the date only by that term.
+- Payment terms: write the period as a net period, for example Net 40, and not as "within 40 days".
+
+Everything else
+- Do NOT add any other penalty, discount, rebate, price, price list, fee, interest rate or payment deadline beyond the terms above and the decoy clauses below.
+- Include these decoy clauses. They are ordinary boilerplate and must stay exactly as described:
+- A limitation of liability clause capping each party's liability at 10% of the total order value.
+- A late payment charge of 2% per month that the Vendor may charge if the BUYER pays late.
+- Termination by either party on thirty (30) days written notice.
+- A warranty of twelve (12) months from delivery.
+- The Vendor shall acknowledge each purchase order in writing within fourteen (14) days of receiving it.
+
+Output only the contract text. No commentary, no markdown tables, no placeholders such as [insert].

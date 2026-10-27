@@ -121,8 +121,8 @@ SPECS = [
             _terms(30),
         ],
     },
-    # tb_09 to tb_12: the untouched set (TODO item 58). Run Agent 1 on them ONCE; never edit a
-    # contract after seeing Agent 1's result.
+    # tb_09 to tb_12: written on Day 14. They were looked at while fixing Agent 1, so they are no
+    # longer an untouched set.
     {
         "case_id": "tb_09",
         "writer": "claude",
@@ -218,6 +218,120 @@ SPECS = [
             ),
         ],
         "decoy_numbers": {"percent": [], "days": [15]},
+    },
+    # tb_13 to tb_16: the next untouched set (TODO item 58). Freeze the contracts in git, run Agent 1
+    # on them ONCE, and never edit a contract after seeing the result. tb_14 is expected to be
+    # refused today: a cross-reference to the date clause is not a link Agent 1 can prove yet.
+    {
+        "case_id": "tb_13",
+        "writer": "claude",
+        "buyer": "Cholistan Tech Solutions Pvt Ltd",
+        "vendor": "Defence Road Electronics",
+        "rules": [
+            _late("2027-05-14", "flat_percent", 12, grace=6),
+            _volume(60, 8),
+            _terms(40),
+        ],
+        "style_notes": [
+            (
+                "Late delivery penalty: do not write the delivery date inside the penalty clause. "
+                'Write it only in the definitions clause, in the form "Term" means <date>, using a '
+                "capitalised term of your own choice, and in the penalty clause refer to the date "
+                "only by that term."
+            ),
+            (
+                "Payment terms: write the period as a net period, for example Net 40, and not as "
+                '"within 40 days".'
+            ),
+        ],
+        "extra_decoys": [
+            (
+                "The Vendor shall acknowledge each purchase order in writing within fourteen (14) "
+                "days of receiving it."
+            ),
+        ],
+        "decoy_numbers": {"percent": [], "days": [14]},
+    },
+    {
+        "case_id": "tb_14",
+        "writer": "chatgpt",
+        "buyer": "Jhelum Digital Pvt Ltd",
+        "vendor": "Citadel IT Supplies",
+        "rules": [
+            _late("2027-06-10", "per_day_percent", 0.75, cap=6),
+            _price("Dell Latitude 5440 Laptop", 148000),
+            _terms(50),
+        ],
+        "style_notes": [
+            (
+                "Late delivery penalty: write the delivery date once, in the delivery clause, and do "
+                "not define a term for it. In the penalty clause refer to it only by a cross-reference "
+                'such as "the date stated in clause 5.2" (use the real clause number).'
+            ),
+        ],
+        "extra_decoys": [
+            (
+                "If the Buyer cancels a confirmed order within five (5) days before the scheduled "
+                "delivery, a cancellation charge of 4% of the order value is payable by the Buyer."
+            ),
+        ],
+        "decoy_numbers": {"percent": [4], "days": [5]},
+    },
+    {
+        "case_id": "tb_15",
+        "writer": "claude",
+        "buyer": "Kalam Systems Pvt Ltd",
+        "vendor": "Pioneer Network Traders",
+        "rules": [
+            _price("Cisco Meraki MR46 Access Point", 92000),
+            _volume(20, 3),
+            _terms(15),
+        ],
+        "style_notes": [
+            (
+                "Agreed unit price: do not state the price in the price clause. State it only in a "
+                "Price Schedule headed Schedule 1, placed after the last numbered clause and before "
+                "the signature block, as plain lines in the form Item: <name> and Unit price: PKR "
+                "<amount> per unit. In the price clause say only that unit prices are set out in "
+                "Schedule 1 and that an invoice shall not exceed them."
+            ),
+        ],
+        "extra_decoys": [
+            (
+                "The Vendor shall replace defective Equipment within five (5) days of written "
+                "notice from the Buyer."
+            ),
+        ],
+        "decoy_numbers": {"percent": [], "days": [5]},
+    },
+    {
+        "case_id": "tb_16",
+        "writer": "chatgpt",
+        "buyer": "Nawaz Cloud Technologies Pvt Ltd",
+        "vendor": "Summit Hardware Pvt Ltd",
+        "rules": [
+            _late("2027-07-31", "flat_percent", 7.5),
+            _volume(35, 6.5),
+            _terms(55),
+        ],
+        "style_notes": [
+            (
+                "Late delivery penalty: call it liquidated damages and do not use the word "
+                '"penalty" for this term.'
+            ),
+            (
+                'Volume discount: do not use the words "discount", "rebate" or "reduction" for this '
+                "term. Call it a price adjustment, a credit or another natural name of your own "
+                "choice."
+            ),
+        ],
+        "extra_decoys": [
+            (
+                "The Buyer may withhold 5% of the value of each invoice as retention until "
+                "acceptance testing of the Equipment has been completed."
+            ),
+        ],
+        "decoy_numbers": {"percent": [5], "days": []},
     },
 ]
 

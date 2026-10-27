@@ -1,0 +1,34 @@
+{
+  "case_id": "tb_15",
+  "writer": "claude",
+  "buyer": "Kalam Systems Pvt Ltd",
+  "vendor": "Pioneer Network Traders",
+  "rules": [
+    {
+      "clause_type": "unit_price",
+      "item_name": "Cisco Meraki MR46 Access Point",
+      "agreed_unit_price": "92000"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 20,
+      "discount_percent": "3"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 15
+    }
+  ],
+  "style_notes": [
+    "Agreed unit price: do not state the price in the price clause. State it only in a Price Schedule headed Schedule 1, placed after the last numbered clause and before the signature block, as plain lines in the form Item: <name> and Unit price: PKR <amount> per unit. In the price clause say only that unit prices are set out in Schedule 1 and that an invoice shall not exceed them."
+  ],
+  "extra_decoys": [
+    "The Vendor shall replace defective Equipment within five (5) days of written notice from the Buyer."
+  ],
+  "decoy_numbers": {
+    "percent": [],
+    "days": [
+      5
+    ]
+  }
+}

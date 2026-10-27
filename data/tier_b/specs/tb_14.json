@@ -1,0 +1,39 @@
+{
+  "case_id": "tb_14",
+  "writer": "chatgpt",
+  "buyer": "Jhelum Digital Pvt Ltd",
+  "vendor": "Citadel IT Supplies",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-06-10",
+      "mode": "per_day_percent",
+      "percent": "0.75",
+      "grace_days": 0,
+      "cap_percent": "6"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Dell Latitude 5440 Laptop",
+      "agreed_unit_price": "148000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 50
+    }
+  ],
+  "style_notes": [
+    "Late delivery penalty: write the delivery date once, in the delivery clause, and do not define a term for it. In the penalty clause refer to it only by a cross-reference such as \"the date stated in clause 5.2\" (use the real clause number)."
+  ],
+  "extra_decoys": [
+    "If the Buyer cancels a confirmed order within five (5) days before the scheduled delivery, a cancellation charge of 4% of the order value is payable by the Buyer."
+  ],
+  "decoy_numbers": {
+    "percent": [
+      4
+    ],
+    "days": [
+      5
+    ]
+  }
+}
