@@ -1,0 +1,52 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "code_hash": "d2f601bf6e8f",
+  "cases": 31,
+  "ran_now": 31,
+  "reused": 0,
+  "reused_from_old_code": 0,
+  "summary": {
+    "invoice": {
+      "docs": 31,
+      "correct": 31,
+      "wrong": 0,
+      "refused": 0,
+      "correct_with_issues": 0,
+      "field_ok": 217,
+      "field_n": 217,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    },
+    "purchase_order": {
+      "docs": 31,
+      "correct": 31,
+      "wrong": 0,
+      "refused": 0,
+      "correct_with_issues": 0,
+      "field_ok": 155,
+      "field_n": 155,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    },
+    "ALL": {
+      "docs": 62,
+      "correct": 62,
+      "wrong": 0,
+      "refused": 0,
+      "correct_with_issues": 0,
+      "field_ok": 372,
+      "field_n": 372,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    }
+  },
+  "avg_seconds": 11.0,
+  "median_seconds": 5.3,
+  "avg_calls": 2.0,
+  "wrong_values": [],
+  "issues": []
+}

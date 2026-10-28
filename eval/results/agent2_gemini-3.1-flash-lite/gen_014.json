@@ -1,0 +1,60 @@
+{
+  "case_id": "gen_014",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 3.7,
+  "llm_calls": 2,
+  "invoice_result": {
+    "invoice": {
+      "invoice_number": "INV-5014",
+      "invoice_date": "2026-10-07",
+      "delivery_date": "2026-10-02",
+      "due_date": "2026-11-11",
+      "line_items": [
+        {
+          "item_name": "Microsoft 365 Business License",
+          "quantity": 3,
+          "unit_price": "30000.0",
+          "line_total": "90000.0"
+        }
+      ],
+      "adjustments": [],
+      "total_amount": "90000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "po_result": {
+    "purchase_order": {
+      "po_number": "PO-2026-114",
+      "po_date": "2026-08-03",
+      "delivery_due_date": "2026-09-15",
+      "line_items": [
+        {
+          "item_name": "Microsoft 365 Business License",
+          "quantity": 3,
+          "unit_price": "30000.0",
+          "line_total": "90000.0"
+        }
+      ],
+      "total_amount": "90000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 1.4,
+      "raw": "{\n  \"invoice_number\": \"INV-5014\",\n  \"invoice_date\": \"2026-10-07\",\n  \"delivery_date\": \"2026-10-02\",\n  \"due_date\": \"2026-11-11\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Microsoft 365 Business License\",\n      \"quantity\": 3,\n      \"unit_price\": 30000.0,\n      \"line_total\": 90000.0\n    }\n  ],\n  \"adjustments\": [],\n  \"total_amount\": 90000.0\n}"
+    },
+    {
+      "task": "Fill in the purchase order form from the document below. Lis",
+      "chunk_ids": [],
+      "seconds": 2.2,
+      "raw": "{\n  \"po_number\": \"PO-2026-114\",\n  \"po_date\": \"2026-08-03\",\n  \"delivery_due_date\": \"2026-09-15\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Microsoft 365 Business License\",\n      \"quantity\": 3,\n      \"unit_price\": 30000,\n      \"line_total\": 90000\n    }\n  ],\n  \"total_amount\": 90000\n}"
+    }
+  ]
+}

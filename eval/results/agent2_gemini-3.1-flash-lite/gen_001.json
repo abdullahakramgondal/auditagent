@@ -1,0 +1,60 @@
+{
+  "case_id": "gen_001",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 83.9,
+  "llm_calls": 2,
+  "invoice_result": {
+    "invoice": {
+      "invoice_number": "INV-5001",
+      "invoice_date": "2026-10-20",
+      "delivery_date": "2026-10-15",
+      "due_date": null,
+      "line_items": [
+        {
+          "item_name": "APC Smart-UPS 3000VA",
+          "quantity": 3,
+          "unit_price": "270000.0",
+          "line_total": "810000.0"
+        }
+      ],
+      "adjustments": [],
+      "total_amount": "810000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "po_result": {
+    "purchase_order": {
+      "po_number": "PO-2026-101",
+      "po_date": "2026-08-27",
+      "delivery_due_date": "2026-10-19",
+      "line_items": [
+        {
+          "item_name": "APC Smart-UPS 3000VA",
+          "quantity": 3,
+          "unit_price": "270000.0",
+          "line_total": "810000.0"
+        }
+      ],
+      "total_amount": "810000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 1.6,
+      "raw": "{\n  \"invoice_number\": \"INV-5001\",\n  \"invoice_date\": \"2026-10-20\",\n  \"delivery_date\": \"2026-10-15\",\n  \"due_date\": null,\n  \"line_items\": [\n    {\n      \"item_name\": \"APC Smart-UPS 3000VA\",\n      \"quantity\": 3,\n      \"unit_price\": 270000,\n      \"line_total\": 810000\n    }\n  ],\n  \"adjustments\": [],\n  \"total_amount\": 810000\n}"
+    },
+    {
+      "task": "Fill in the purchase order form from the document below. Lis",
+      "chunk_ids": [],
+      "seconds": 82.3,
+      "raw": "{\n  \"po_number\": \"PO-2026-101\",\n  \"po_date\": \"2026-08-27\",\n  \"delivery_due_date\": \"2026-10-19\",\n  \"line_items\": [\n    {\n      \"item_name\": \"APC Smart-UPS 3000VA\",\n      \"quantity\": 3,\n      \"unit_price\": 270000,\n      \"line_total\": 810000\n    }\n  ],\n  \"total_amount\": 810000\n}"
+    }
+  ]
+}

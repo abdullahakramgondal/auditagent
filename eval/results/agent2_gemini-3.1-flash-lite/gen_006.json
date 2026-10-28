@@ -1,0 +1,65 @@
+{
+  "case_id": "gen_006",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 2.7,
+  "llm_calls": 2,
+  "invoice_result": {
+    "invoice": {
+      "invoice_number": "INV-5006",
+      "invoice_date": "2026-09-28",
+      "delivery_date": "2026-09-27",
+      "due_date": null,
+      "line_items": [
+        {
+          "item_name": "HP LaserJet Enterprise Printer",
+          "quantity": 48,
+          "unit_price": "140000.0",
+          "line_total": "6720000.0"
+        }
+      ],
+      "adjustments": [
+        {
+          "label": "Less: volume discount",
+          "amount": "-336000.0"
+        }
+      ],
+      "total_amount": "6384000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "po_result": {
+    "purchase_order": {
+      "po_number": "PO-2026-106",
+      "po_date": "2026-08-29",
+      "delivery_due_date": "2026-09-28",
+      "line_items": [
+        {
+          "item_name": "HP LaserJet Enterprise Printer",
+          "quantity": 48,
+          "unit_price": "140000.0",
+          "line_total": "6720000.0"
+        }
+      ],
+      "total_amount": "6720000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 1.1,
+      "raw": "{\n  \"invoice_number\": \"INV-5006\",\n  \"invoice_date\": \"2026-09-28\",\n  \"delivery_date\": \"2026-09-27\",\n  \"due_date\": null,\n  \"line_items\": [\n    {\n      \"item_name\": \"HP LaserJet Enterprise Printer\",\n      \"quantity\": 48,\n      \"unit_price\": 140000,\n      \"line_total\": 6720000\n    }\n  ],\n  \"adjustments\": [\n    {\n      \"label\": \"Less: volume discount\",\n      \"amount\": -336000\n    }\n  ],\n  \"total_amount\": 6384000\n}"
+    },
+    {
+      "task": "Fill in the purchase order form from the document below. Lis",
+      "chunk_ids": [],
+      "seconds": 1.5,
+      "raw": "{\n  \"po_number\": \"PO-2026-106\",\n  \"po_date\": \"2026-08-29\",\n  \"delivery_due_date\": \"2026-09-28\",\n  \"line_items\": [\n    {\n      \"item_name\": \"HP LaserJet Enterprise Printer\",\n      \"quantity\": 48,\n      \"unit_price\": 140000,\n      \"line_total\": 6720000\n    }\n  ],\n  \"total_amount\": 6720000\n}"
+    }
+  ]
+}

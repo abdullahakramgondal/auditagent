@@ -1,0 +1,60 @@
+{
+  "case_id": "gen_013",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 3.8,
+  "llm_calls": 2,
+  "invoice_result": {
+    "invoice": {
+      "invoice_number": "INV-5013",
+      "invoice_date": "2026-10-28",
+      "delivery_date": "2026-10-25",
+      "due_date": null,
+      "line_items": [
+        {
+          "item_name": "Dell PowerEdge R750 Server",
+          "quantity": 8,
+          "unit_price": "2180000.0",
+          "line_total": "17440000.0"
+        }
+      ],
+      "adjustments": [],
+      "total_amount": "17440000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "po_result": {
+    "purchase_order": {
+      "po_number": "PO-2026-113",
+      "po_date": "2026-09-06",
+      "delivery_due_date": "2026-10-24",
+      "line_items": [
+        {
+          "item_name": "Dell PowerEdge R750 Server",
+          "quantity": 8,
+          "unit_price": "2180000.0",
+          "line_total": "17440000.0"
+        }
+      ],
+      "total_amount": "17440000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 1.7,
+      "raw": "{\n  \"invoice_number\": \"INV-5013\",\n  \"invoice_date\": \"2026-10-28\",\n  \"delivery_date\": \"2026-10-25\",\n  \"due_date\": null,\n  \"line_items\": [\n    {\n      \"item_name\": \"Dell PowerEdge R750 Server\",\n      \"quantity\": 8,\n      \"unit_price\": 2180000.0,\n      \"line_total\": 17440000.0\n    }\n  ],\n  \"adjustments\": [],\n  \"total_amount\": 17440000.0\n}"
+    },
+    {
+      "task": "Fill in the purchase order form from the document below. Lis",
+      "chunk_ids": [],
+      "seconds": 1.9,
+      "raw": "{\n  \"po_number\": \"PO-2026-113\",\n  \"po_date\": \"2026-09-06\",\n  \"delivery_due_date\": \"2026-10-24\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Dell PowerEdge R750 Server\",\n      \"quantity\": 8,\n      \"unit_price\": 2180000.0,\n      \"line_total\": 17440000.0\n    }\n  ],\n  \"total_amount\": 17440000.0\n}"
+    }
+  ]
+}

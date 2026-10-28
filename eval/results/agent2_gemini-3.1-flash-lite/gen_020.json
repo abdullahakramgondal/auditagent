@@ -1,0 +1,60 @@
+{
+  "case_id": "gen_020",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 5.5,
+  "llm_calls": 2,
+  "invoice_result": {
+    "invoice": {
+      "invoice_number": "INV-5020",
+      "invoice_date": "2026-10-14",
+      "delivery_date": "2026-10-09",
+      "due_date": null,
+      "line_items": [
+        {
+          "item_name": "Lenovo ThinkPad T14 Laptop",
+          "quantity": 43,
+          "unit_price": "260000.0",
+          "line_total": "11180000.0"
+        }
+      ],
+      "adjustments": [],
+      "total_amount": "11180000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "po_result": {
+    "purchase_order": {
+      "po_number": "PO-2026-120",
+      "po_date": "2026-08-26",
+      "delivery_due_date": "2026-10-13",
+      "line_items": [
+        {
+          "item_name": "Lenovo ThinkPad T14 Laptop",
+          "quantity": 43,
+          "unit_price": "260000.0",
+          "line_total": "11180000.0"
+        }
+      ],
+      "total_amount": "11180000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 4.3,
+      "raw": "{\n  \"invoice_number\": \"INV-5020\",\n  \"invoice_date\": \"2026-10-14\",\n  \"delivery_date\": \"2026-10-09\",\n  \"due_date\": null,\n  \"line_items\": [\n    {\n      \"item_name\": \"Lenovo ThinkPad T14 Laptop\",\n      \"quantity\": 43,\n      \"unit_price\": 260000,\n      \"line_total\": 11180000\n    }\n  ],\n  \"adjustments\": [],\n  \"total_amount\": 11180000\n}"
+    },
+    {
+      "task": "Fill in the purchase order form from the document below. Lis",
+      "chunk_ids": [],
+      "seconds": 1.1,
+      "raw": "{\n  \"po_number\": \"PO-2026-120\",\n  \"po_date\": \"2026-08-26\",\n  \"delivery_due_date\": \"2026-10-13\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Lenovo ThinkPad T14 Laptop\",\n      \"quantity\": 43,\n      \"unit_price\": 260000,\n      \"line_total\": 11180000\n    }\n  ],\n  \"total_amount\": 11180000\n}"
+    }
+  ]
+}
