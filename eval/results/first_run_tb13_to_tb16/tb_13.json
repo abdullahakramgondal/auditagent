@@ -1,0 +1,113 @@
+{
+  "case_id": "tb_13",
+  "code_hash": "465dfa301051",
+  "seconds": 20.1,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2027-05-14",
+          "mode": "flat_percent",
+          "percent": "12.0",
+          "cap_percent": null,
+          "grace_days": 6,
+          "source": {
+            "page": 3,
+            "text": "4.2 If the Vendor delivers the Equipment, or any part of it, after the Delivery Deadline, the Vendor shall pay the Buyer a single penalty equal to 12% of the invoice value of the Equipment so delivered late. No penalty shall accrue in respect of the first six (6) days of delay, so that the penalty becomes payable only where delivery is completed after that initial period of grace has elapsed."
+          },
+          "deadline_source": {
+            "page": 1,
+            "text": "\u201cDelivery Deadline\u201d means 14 May 2027."
+          }
+        },
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 60,
+          "discount_percent": "8.0",
+          "source": {
+            "page": 3,
+            "text": "6.2 Where the Buyer places a single Purchase Order for sixty (60) or more units of Equipment, the Vendor shall allow the Buyer a discount of 8% on the price of that Purchase Order."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 40,
+          "source": {
+            "page": 4,
+            "text": "7.2 Payment terms under this Agreement are Net 40, the net period running from the date appearing on the invoice."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "5c4cd39684b9-020",
+        "5c4cd39684b9-021",
+        "5c4cd39684b9-039",
+        "5c4cd39684b9-025",
+        "5c4cd39684b9-022",
+        "5c4cd39684b9-034",
+        "5c4cd39684b9-019",
+        "5c4cd39684b9-067",
+        "5c4cd39684b9-015",
+        "5c4cd39684b9-004",
+        "5c4cd39684b9-042"
+      ],
+      "seconds": 1.7,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"4.2 If the Vendor delivers the Equipment, or any part of it, after the Delivery Deadline, the Vendor shall pay the Buyer a single penalty equal to 12% of the invoice value of the Equipment so delivered late. No penalty shall accrue in respect of the first six (6) days of delay, so that the penalty becomes payable only where delivery is completed after that initial period of grace has elapsed.\",\n      \"chunk_id\": \"5c4cd39684b9-020\",\n      \"deadline_quote\": \"\u201cDelivery Deadline\u201d means 14 May 2027.\",\n      \"deadline\": \"2027-05-14\",\n      \"mode\": \"flat_percent\",\n      \"percent\": 12,\n      \"cap_percent\": null,\n      \"grace_days\": 6\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "5c4cd39684b9-032",
+        "5c4cd39684b9-030",
+        "5c4cd39684b9-031",
+        "5c4cd39684b9-013",
+        "5c4cd39684b9-033",
+        "5c4cd39684b9-012",
+        "5c4cd39684b9-089",
+        "5c4cd39684b9-020"
+      ],
+      "seconds": 5.9,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.2 Where the Buyer places a single Purchase Order for sixty (60) or more units of Equipment, the Vendor shall allow the Buyer a discount of 8% on the price of that Purchase Order.\",\n      \"chunk_id\": \"5c4cd39684b9-032\",\n      \"min_quantity\": 60,\n      \"discount_percent\": 8\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "5c4cd39684b9-035",
+        "5c4cd39684b9-037",
+        "5c4cd39684b9-020",
+        "5c4cd39684b9-039",
+        "5c4cd39684b9-038",
+        "5c4cd39684b9-015",
+        "5c4cd39684b9-063",
+        "5c4cd39684b9-067"
+      ],
+      "seconds": 8.5,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"7.2 Payment terms under this Agreement are Net 40, the net period running from the date appearing on the invoice.\",\n      \"chunk_id\": \"5c4cd39684b9-037\",\n      \"net_days\": 40\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "5c4cd39684b9-031",
+        "5c4cd39684b9-032",
+        "5c4cd39684b9-033",
+        "5c4cd39684b9-030",
+        "5c4cd39684b9-005",
+        "5c4cd39684b9-013",
+        "5c4cd39684b9-089",
+        "5c4cd39684b9-040"
+      ],
+      "seconds": 0.9,
+      "raw": "{\"rules\": []}"
+    }
+  ]
+}

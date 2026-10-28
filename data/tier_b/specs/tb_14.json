@@ -9,7 +9,7 @@
       "deadline": "2027-06-10",
       "mode": "per_day_percent",
       "percent": "0.75",
-      "grace_days": 0,
+      "grace_days": 3,
       "cap_percent": "6"
     },
     {

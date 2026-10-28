@@ -1,0 +1,103 @@
+{
+  "case_id": "tb_14",
+  "code_hash": "465dfa301051",
+  "seconds": 22.4,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "payment_terms",
+          "net_days": 50,
+          "source": {
+            "page": 3,
+            "text": "The Buyer shall pay each valid invoice within 50 days of its invoice date"
+          }
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "Dell Latitude 5440 Laptop",
+          "agreed_unit_price": "148000.0",
+          "source": {
+            "page": 3,
+            "text": "The unit price for a Dell Latitude 5440 Laptop shall be PKR 148,000, and the invoice shall not exceed that amount for each unit."
+          }
+        }
+      ]
+    },
+    "issues": [
+      {
+        "clause_type": "late_penalty",
+        "reason": "deadline 2027-06-10 is not written in the quote, and the quote does not use a date term defined where the date is written",
+        "quote": "If delivery takes place after the date stated in clause 5.2, the first three (3) days of delay shall carry no penalty. For each day thereafter, a single daily penalty of 0.75% of the applicable invoice value shall apply. The total penalty for that delay shall not exceed 6% of the applicable invoice value."
+      }
+    ],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "ed096824931c-033",
+        "ed096824931c-051",
+        "ed096824931c-025",
+        "ed096824931c-110",
+        "ed096824931c-049",
+        "ed096824931c-030",
+        "ed096824931c-026",
+        "ed096824931c-059",
+        "ed096824931c-027",
+        "ed096824931c-013",
+        "ed096824931c-034"
+      ],
+      "seconds": 2.1,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"If delivery takes place after the date stated in clause 5.2, the first three (3) days of delay shall carry no penalty. For each day thereafter, a single daily penalty of 0.75% of the applicable invoice value shall apply. The total penalty for that delay shall not exceed 6% of the applicable invoice value.\",\n      \"chunk_id\": \"ed096824931c-033\",\n      \"deadline_quote\": \"The Equipment covered by the relevant purchase order shall be delivered no later than 10 June 2027.\",\n      \"deadline\": \"2027-06-10\",\n      \"mode\": \"per_day_percent\",\n      \"percent\": 0.75,\n      \"cap_percent\": 6.0,\n      \"grace_days\": 3\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "ed096824931c-042",
+        "ed096824931c-041",
+        "ed096824931c-014",
+        "ed096824931c-050",
+        "ed096824931c-046",
+        "ed096824931c-043",
+        "ed096824931c-013",
+        "ed096824931c-135"
+      ],
+      "seconds": 12.1,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "ed096824931c-049",
+        "ed096824931c-047",
+        "ed096824931c-033",
+        "ed096824931c-051",
+        "ed096824931c-050",
+        "ed096824931c-046",
+        "ed096824931c-008",
+        "ed096824931c-052"
+      ],
+      "seconds": 1.8,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall pay each valid invoice within 50 days of its invoice date\",\n      \"chunk_id\": \"ed096824931c-049\",\n      \"net_days\": 50\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "ed096824931c-042",
+        "ed096824931c-043",
+        "ed096824931c-041",
+        "ed096824931c-135",
+        "ed096824931c-018",
+        "ed096824931c-008",
+        "ed096824931c-050",
+        "ed096824931c-073"
+      ],
+      "seconds": 2.6,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The unit price for a Dell Latitude 5440 Laptop shall be PKR 148,000, and the invoice shall not exceed that amount for each unit.\",\n      \"chunk_id\": \"ed096824931c-043\",\n      \"item_name\": \"Dell Latitude 5440 Laptop\",\n      \"agreed_unit_price\": 148000\n    }\n  ]\n}"
+    }
+  ]
+}

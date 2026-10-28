@@ -1,0 +1,102 @@
+{
+  "case_id": "tb_06",
+  "code_hash": "465dfa301051",
+  "seconds": 259.0,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2027-01-15",
+          "mode": "per_day_percent",
+          "percent": "0.5",
+          "cap_percent": "5.0",
+          "grace_days": 7,
+          "source": {
+            "page": 4,
+            "text": "7.3 For purposes of the agreed delivery arrangement, the delivery date relevant to the delay mechanism in this clause is 15 January 2027. The first seven (7) days of delay after that date shall be free of a delivery penalty. For each subsequent day of delay, the Vendor shall be liable to the Buyer for a penalty calculated at 0.5% of the invoice value, subject to an aggregate maximum of 5% of that invoice value."
+          },
+          "deadline_source": null
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "HP LaserJet Enterprise Printer",
+          "agreed_unit_price": "130000.0",
+          "source": {
+            "page": 3,
+            "text": "6.1 The agreed unit price for an HP LaserJet Enterprise Printer is PKR 130,000 per unit, and no invoice issued by the Vendor may state a higher unit price for that product."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "23fa51759483-041",
+        "23fa51759483-060",
+        "23fa51759483-040",
+        "23fa51759483-048",
+        "23fa51759483-051",
+        "23fa51759483-058",
+        "23fa51759483-125",
+        "23fa51759483-042",
+        "23fa51759483-038",
+        "23fa51759483-030",
+        "23fa51759483-039"
+      ],
+      "seconds": 2.9,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"7.3 For purposes of the agreed delivery arrangement, the delivery date relevant to the delay mechanism in this clause is 15 January 2027. The first seven (7) days of delay after that date shall be free of a delivery penalty. For each subsequent day of delay, the Vendor shall be liable to the Buyer for a penalty calculated at 0.5% of the invoice value, subject to an aggregate maximum of 5% of that invoice value.\",\n      \"chunk_id\": \"23fa51759483-041\",\n      \"deadline_quote\": \"7.3 For purposes of the agreed delivery arrangement, the delivery date relevant to the delay mechanism in this clause is 15 January 2027.\",\n      \"deadline\": \"2027-01-15\",\n      \"mode\": \"per_day_percent\",\n      \"percent\": 0.5,\n      \"cap_percent\": 5.0,\n      \"grace_days\": 7\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "23fa51759483-033",
+        "23fa51759483-031",
+        "23fa51759483-005",
+        "23fa51759483-037",
+        "23fa51759483-032",
+        "23fa51759483-036",
+        "23fa51759483-081",
+        "23fa51759483-060"
+      ],
+      "seconds": 204.1,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "23fa51759483-041",
+        "23fa51759483-058",
+        "23fa51759483-060",
+        "23fa51759483-059",
+        "23fa51759483-037",
+        "23fa51759483-031",
+        "23fa51759483-036",
+        "23fa51759483-115"
+      ],
+      "seconds": 1.0,
+      "raw": "{\"rules\": []}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "23fa51759483-032",
+        "23fa51759483-033",
+        "23fa51759483-031",
+        "23fa51759483-005",
+        "23fa51759483-008",
+        "23fa51759483-001",
+        "23fa51759483-139",
+        "23fa51759483-037"
+      ],
+      "seconds": 46.9,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.1 The agreed unit price for an HP LaserJet Enterprise Printer is PKR 130,000 per unit, and no invoice issued by the Vendor may state a higher unit price for that product.\",\n      \"chunk_id\": \"23fa51759483-032\",\n      \"item_name\": \"HP LaserJet Enterprise Printer\",\n      \"agreed_unit_price\": 130000\n    }\n  ]\n}"
+    }
+  ]
+}

@@ -14,3 +14,10 @@
 15. Where a value may come from is a design choice: the quote itself, a neighbouring sentence of the same clause, or another clause that defines a term the quote uses. Every time I widened it, I added a test that the decoy still fails.
 16. The same wrong value in two different contracts is a habit of the model, not bad luck. I wrote a deterministic check for it (a cap equal to the percentage must be written twice) instead of changing the prompt again.
 17. "Saved result reused" next to every contract means nothing was run. rmdir /s /q is a cmd command; in PowerShell I use Remove-Item -Recurse -Force. Twice I mistook an old cache for a new result, so I check that every contract says "done in".
+# Day 15 notes (my own words)
+18. A result saved on disk must say which code made it. I now store a hash of the Agent 1 code in every saved result and refuse to reuse a result from other code. The report says "ran now 16", so I can see how many contracts really ran. Twice before I mistook an old cache for a new result.
+19. "The model is wrong" and "my checker cannot prove it" are different problems. On tb_14 and tb_16 the model gave the right answer; grounding had no way to link "clause 5.2" to the date clause. I fixed the checker, not the prompt.
+20. A link between two clauses must be written in the contract: a defined term or a clause number. I never guess a link, and a wrong clause number is refused.
+21. The same wrong value in four runs (a cap on a flat penalty) is a habit of the model. The scope says only a per-day penalty has a cap, so the cap is dropped by a rule in the code. It does not change the money maths.
+22. I wrote my predictions before the run (tb_14 and tb_16 refused, the tb_16 hint misses, tb_13 correct). They were all right. Writing the guess first shows me what I really understand, and what I only hoped.
+23. A batch of unseen contracts is used up by the first fix. I keep the first-run result of every batch (12 of 13, then 10 of 12, no wrong rule) and I keep one fresh batch for the final evaluation.

@@ -1,4 +1,4 @@
-"""A cap that is the same number as the percentage must be written twice in the quote (TODO item 47)."""
+"""Only a per-day penalty has a cap. A per-day cap equal to the percentage needs two mentions."""
 
 import json
 from decimal import Decimal
@@ -16,6 +16,10 @@ FLAT_Q = (
 PER_DAY_Q = (
     "If the Vendor delivers the goods after 15 October 2026, a penalty of 8% of the invoice value "
     "shall apply for each day of delay, up to a maximum of 8% of that invoice value."
+)
+PER_DAY_ONCE_Q = (
+    "If the Vendor delivers the goods after 15 October 2026, a penalty of 8% of the invoice value "
+    "shall apply for each day of delay."
 )
 
 
@@ -57,12 +61,17 @@ def test_percent_count_counts_every_mention_of_the_value():
     assert percent_count(2.5, "2.5 percent now and 2.5% later") == 2
 
 
-def test_a_flat_penalty_with_an_invented_cap_equal_to_the_percentage_is_refused():
-    """Regression (tb_04, and tb_01 earlier): the model reported cap_percent 10 for a flat 10% penalty."""
+def test_a_flat_penalty_ignores_a_cap_equal_to_the_percentage():
+    """Regression (tb_01, tb_04): the model reported cap_percent 10 for a flat 10% penalty."""
     result = extract(rule(FLAT_Q, cap_percent=10.0), FLAT_Q)
-    assert result.contract.rules == []
-    issue = next(i for i in result.issues if i.clause_type == "late_penalty")
-    assert "same number as percent" in issue.reason
+    assert result.issues == []
+    assert result.contract.rules[0].cap_percent is None
+
+
+def test_a_flat_penalty_ignores_any_other_cap_too():
+    result = extract(rule(FLAT_Q, cap_percent=12.0), FLAT_Q)
+    assert result.issues == []
+    assert result.contract.rules[0].cap_percent is None
 
 
 def test_a_flat_penalty_without_a_cap_is_accepted():
@@ -71,7 +80,15 @@ def test_a_flat_penalty_without_a_cap_is_accepted():
     assert result.contract.rules[0].cap_percent is None
 
 
-def test_a_cap_equal_to_the_percentage_is_accepted_when_the_quote_writes_it_twice():
+def test_a_per_day_cap_equal_to_the_percentage_written_once_is_refused():
+    late_rule = rule(PER_DAY_ONCE_Q, mode="per_day_percent", percent=8, cap_percent=8.0)
+    result = extract(late_rule, PER_DAY_ONCE_Q)
+    assert result.contract.rules == []
+    issue = next(i for i in result.issues if i.clause_type == "late_penalty")
+    assert "same number as percent" in issue.reason
+
+
+def test_a_per_day_cap_equal_to_the_percentage_is_accepted_when_the_quote_writes_it_twice():
     late_rule = rule(PER_DAY_Q, mode="per_day_percent", percent=8, cap_percent=8.0)
     result = extract(late_rule, PER_DAY_Q)
     assert result.issues == []

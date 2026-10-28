@@ -1,0 +1,103 @@
+{
+  "case_id": "tb_16",
+  "code_hash": "465dfa301051",
+  "seconds": 121.1,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 35,
+          "discount_percent": "6.5",
+          "source": {
+            "page": 3,
+            "text": "If a single accepted purchase order covers 35 or more units of Equipment, the Buyer shall receive a price adjustment equal to 6.5% of the otherwise applicable amount for the eligible units in that order."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 55,
+          "source": {
+            "page": 4,
+            "text": "The Buyer shall pay each correctly issued and undisputed invoice within 55 days of the invoice date, subject to the retention and dispute provisions of this Agreement."
+          }
+        }
+      ]
+    },
+    "issues": [
+      {
+        "clause_type": "late_penalty",
+        "reason": "deadline 2027-07-31 is not written in the quote, and the quote does not use a date term defined where the date is written",
+        "quote": "5.8 Delay and liquidated damages. Where the Vendor delivers the relevant Equipment after the delivery date specified in clause 5.2, the Vendor shall owe the Buyer liquidated damages equal to 7.5% of the invoice value for that delayed delivery. The Parties acknowledge that this amount is intended as a single agreed sum for the relevant delay and not as a recurring daily amount."
+      }
+    ],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "2c98cb489864-032",
+        "2c98cb489864-051",
+        "2c98cb489864-052",
+        "2c98cb489864-024",
+        "2c98cb489864-033",
+        "2c98cb489864-026",
+        "2c98cb489864-031",
+        "2c98cb489864-027",
+        "2c98cb489864-025",
+        "2c98cb489864-048",
+        "2c98cb489864-049"
+      ],
+      "seconds": 2.7,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"5.8 Delay and liquidated damages. Where the Vendor delivers the relevant Equipment after the delivery date specified in clause 5.2, the Vendor shall owe the Buyer liquidated damages equal to 7.5% of the invoice value for that delayed delivery. The Parties acknowledge that this amount is intended as a single agreed sum for the relevant delay and not as a recurring daily amount.\",\n      \"chunk_id\": \"2c98cb489864-032\",\n      \"deadline_quote\": \"For orders governed by this Agreement, the Vendor shall arrange delivery so that the relevant Equipment reaches the delivery location no later than 31 July 2027, unless the applicable purchase order specifies an earlier date or the Parties agree a different date in a signed written amendment.\",\n      \"deadline\": \"2027-07-31\",\n      \"mode\": \"flat_percent\",\n      \"percent\": 7.5,\n      \"cap_percent\": null,\n      \"grace_days\": 0\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "2c98cb489864-043",
+        "2c98cb489864-041",
+        "2c98cb489864-042",
+        "2c98cb489864-039",
+        "2c98cb489864-051",
+        "2c98cb489864-047",
+        "2c98cb489864-010",
+        "2c98cb489864-045"
+      ],
+      "seconds": 35.6,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"If a single accepted purchase order covers 35 or more units of Equipment, the Buyer shall receive a price adjustment equal to 6.5% of the otherwise applicable amount for the eligible units in that order.\",\n      \"chunk_id\": \"2c98cb489864-043\",\n      \"min_quantity\": 35,\n      \"discount_percent\": 6.5\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "2c98cb489864-049",
+        "2c98cb489864-047",
+        "2c98cb489864-051",
+        "2c98cb489864-032",
+        "2c98cb489864-053",
+        "2c98cb489864-042",
+        "2c98cb489864-050",
+        "2c98cb489864-046"
+      ],
+      "seconds": 7.2,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall pay each correctly issued and undisputed invoice within 55 days of the invoice date, subject to the retention and dispute provisions of this Agreement.\",\n      \"chunk_id\": \"2c98cb489864-049\",\n      \"net_days\": 55\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "2c98cb489864-043",
+        "2c98cb489864-008",
+        "2c98cb489864-042",
+        "2c98cb489864-041",
+        "2c98cb489864-032",
+        "2c98cb489864-045",
+        "2c98cb489864-039",
+        "2c98cb489864-112"
+      ],
+      "seconds": 71.8,
+      "raw": "{\"rules\": []}"
+    }
+  ]
+}

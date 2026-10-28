@@ -1,0 +1,97 @@
+{
+  "case_id": "tb_07",
+  "code_hash": "465dfa301051",
+  "seconds": 54.6,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 25,
+          "discount_percent": "3.5",
+          "source": {
+            "page": 3,
+            "text": "6.2 Where a single Purchase Order covers twenty-five (25) or more units, the aggregate price for the units in that order shall reflect a volume discount of 3.5%."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 14,
+          "source": {
+            "page": 3,
+            "text": "7.2 The Buyer shall settle each properly issued invoice within fourteen (14) days from the date appearing on that invoice."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "dc8a0132dadb-039",
+        "dc8a0132dadb-118",
+        "dc8a0132dadb-052",
+        "dc8a0132dadb-046",
+        "dc8a0132dadb-042",
+        "dc8a0132dadb-050",
+        "dc8a0132dadb-009",
+        "dc8a0132dadb-048",
+        "dc8a0132dadb-047",
+        "dc8a0132dadb-072",
+        "dc8a0132dadb-043"
+      ],
+      "seconds": 19.3,
+      "raw": "{\"rules\": []}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "dc8a0132dadb-031",
+        "dc8a0132dadb-030",
+        "dc8a0132dadb-015",
+        "dc8a0132dadb-023",
+        "dc8a0132dadb-029",
+        "dc8a0132dadb-034",
+        "dc8a0132dadb-017",
+        "dc8a0132dadb-038"
+      ],
+      "seconds": 12.9,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.2 Where a single Purchase Order covers twenty-five (25) or more units, the aggregate price for the units in that order shall reflect a volume discount of 3.5%.\",\n      \"chunk_id\": \"dc8a0132dadb-031\",\n      \"min_quantity\": 25,\n      \"discount_percent\": 3.5\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "dc8a0132dadb-037",
+        "dc8a0132dadb-035",
+        "dc8a0132dadb-036",
+        "dc8a0132dadb-039",
+        "dc8a0132dadb-038",
+        "dc8a0132dadb-034",
+        "dc8a0132dadb-118",
+        "dc8a0132dadb-074"
+      ],
+      "seconds": 1.1,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"7.2 The Buyer shall settle each properly issued invoice within fourteen (14) days from the date appearing on that invoice.\",\n      \"chunk_id\": \"dc8a0132dadb-037\",\n      \"net_days\": 14\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "dc8a0132dadb-031",
+        "dc8a0132dadb-030",
+        "dc8a0132dadb-017",
+        "dc8a0132dadb-029",
+        "dc8a0132dadb-009",
+        "dc8a0132dadb-004",
+        "dc8a0132dadb-001",
+        "dc8a0132dadb-104"
+      ],
+      "seconds": 17.7,
+      "raw": "{\"rules\": []}"
+    }
+  ]
+}

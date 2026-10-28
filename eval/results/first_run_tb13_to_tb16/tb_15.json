@@ -1,0 +1,106 @@
+{
+  "case_id": "tb_15",
+  "code_hash": "465dfa301051",
+  "seconds": 98.7,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 20,
+          "discount_percent": "3.0",
+          "source": {
+            "page": 4,
+            "text": "6.3 Where the Buyer places a single Purchase Order for twenty (20) or more units of Equipment, the Vendor shall allow the Buyer a discount of 3% on the price of that Purchase Order."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 15,
+          "source": {
+            "page": 4,
+            "text": "The Buyer shall settle each invoice that is correct and undisputed in full within fifteen (15) days of the date appearing on that invoice"
+          }
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "Cisco Meraki MR46 Access Point",
+          "agreed_unit_price": "92000.0",
+          "source": {
+            "page": 8,
+            "text": "Item: Cisco Meraki MR46 Access Point Unit price: PKR 92,000 per unit"
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "3fa517df8405-042",
+        "3fa517df8405-026",
+        "3fa517df8405-037",
+        "3fa517df8405-023",
+        "3fa517df8405-066",
+        "3fa517df8405-036",
+        "3fa517df8405-022",
+        "3fa517df8405-039",
+        "3fa517df8405-040",
+        "3fa517df8405-015",
+        "3fa517df8405-045"
+      ],
+      "seconds": 1.4,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "3fa517df8405-035",
+        "3fa517df8405-032",
+        "3fa517df8405-033",
+        "3fa517df8405-034",
+        "3fa517df8405-036",
+        "3fa517df8405-013",
+        "3fa517df8405-012",
+        "3fa517df8405-005"
+      ],
+      "seconds": 2.9,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.3 Where the Buyer places a single Purchase Order for twenty (20) or more units of Equipment, the Vendor shall allow the Buyer a discount of 3% on the price of that Purchase Order.\",\n      \"chunk_id\": \"3fa517df8405-035\",\n      \"min_quantity\": 20,\n      \"discount_percent\": 3\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "3fa517df8405-040",
+        "3fa517df8405-038",
+        "3fa517df8405-041",
+        "3fa517df8405-042",
+        "3fa517df8405-062",
+        "3fa517df8405-039",
+        "3fa517df8405-033",
+        "3fa517df8405-066"
+      ],
+      "seconds": 88.3,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall settle each invoice that is correct and undisputed in full within fifteen (15) days of the date appearing on that invoice\",\n      \"chunk_id\": \"3fa517df8405-040\",\n      \"net_days\": 15\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "3fa517df8405-033",
+        "3fa517df8405-035",
+        "3fa517df8405-034",
+        "3fa517df8405-036",
+        "3fa517df8405-005",
+        "3fa517df8405-032",
+        "3fa517df8405-090",
+        "3fa517df8405-043"
+      ],
+      "seconds": 2.9,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"Item: Cisco Meraki MR46 Access Point Unit price: PKR 92,000 per unit\",\n      \"chunk_id\": \"3fa517df8405-090\",\n      \"item_name\": \"Cisco Meraki MR46 Access Point\",\n      \"agreed_unit_price\": 92000\n    }\n  ]\n}"
+    }
+  ]
+}

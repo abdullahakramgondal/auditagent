@@ -6,6 +6,8 @@
       "recall@1": 1.0,
       "recall@3": 1.0,
       "recall@5": 1.0,
+      "recall@8": 1.0,
+      "sent": 1.0,
       "decoy_top1": 0
     },
     "volume_discount": {
@@ -13,6 +15,8 @@
       "recall@1": 1.0,
       "recall@3": 1.0,
       "recall@5": 1.0,
+      "recall@8": 1.0,
+      "sent": 1.0,
       "decoy_top1": 0
     },
     "payment_terms": {
@@ -20,20 +24,26 @@
       "recall@1": 1.0,
       "recall@3": 1.0,
       "recall@5": 1.0,
+      "recall@8": 1.0,
+      "sent": 1.0,
       "decoy_top1": 0
     },
     "unit_price": {
       "n": 10,
-      "recall@1": 0.6,
+      "recall@1": 0.9,
       "recall@3": 1.0,
       "recall@5": 1.0,
+      "recall@8": 1.0,
+      "sent": 1.0,
       "decoy_top1": 0
     },
     "ALL": {
       "n": 58,
-      "recall@1": 0.931,
+      "recall@1": 0.983,
       "recall@3": 1.0,
       "recall@5": 1.0,
+      "recall@8": 1.0,
+      "sent": 1.0,
       "decoy_top1": 0
     }
   },

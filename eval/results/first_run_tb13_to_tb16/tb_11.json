@@ -1,0 +1,97 @@
+{
+  "case_id": "tb_11",
+  "code_hash": "465dfa301051",
+  "seconds": 42.5,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "payment_terms",
+          "net_days": 35,
+          "source": {
+            "page": 4,
+            "text": "The Buyer shall pay each invoice that is correct and undisputed within thirty-five (35) days from the date appearing on the invoice"
+          }
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "Ubiquiti UniFi 6 Enterprise Access Point",
+          "agreed_unit_price": "38500.0",
+          "source": {
+            "page": 3,
+            "text": "6.1 The Parties agree that the Ubiquiti UniFi 6 Enterprise Access Point shall be supplied to the Buyer at a fixed rate of Pakistani Rupees thirty-eight thousand five hundred (PKR 38,500) for each unit, and the Vendor shall ensure that no invoice raised under this Agreement for that product states a unit rate higher than the agreed amount."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "c3ff5e573cdd-036",
+        "c3ff5e573cdd-022",
+        "c3ff5e573cdd-071",
+        "c3ff5e573cdd-070",
+        "c3ff5e573cdd-019",
+        "c3ff5e573cdd-030",
+        "c3ff5e573cdd-031",
+        "c3ff5e573cdd-033",
+        "c3ff5e573cdd-018",
+        "c3ff5e573cdd-034",
+        "c3ff5e573cdd-046"
+      ],
+      "seconds": 2.3,
+      "raw": "{\n  \"rules\": []\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "c3ff5e573cdd-029",
+        "c3ff5e573cdd-030",
+        "c3ff5e573cdd-012",
+        "c3ff5e573cdd-031",
+        "c3ff5e573cdd-011",
+        "c3ff5e573cdd-028",
+        "c3ff5e573cdd-094",
+        "c3ff5e573cdd-044"
+      ],
+      "seconds": 3.4,
+      "raw": "{\"rules\": []}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "c3ff5e573cdd-034",
+        "c3ff5e573cdd-032",
+        "c3ff5e573cdd-047",
+        "c3ff5e573cdd-036",
+        "c3ff5e573cdd-035",
+        "c3ff5e573cdd-046",
+        "c3ff5e573cdd-044",
+        "c3ff5e573cdd-065"
+      ],
+      "seconds": 7.5,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall pay each invoice that is correct and undisputed within thirty-five (35) days from the date appearing on the invoice\",\n      \"chunk_id\": \"c3ff5e573cdd-034\",\n      \"net_days\": 35\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "c3ff5e573cdd-030",
+        "c3ff5e573cdd-028",
+        "c3ff5e573cdd-029",
+        "c3ff5e573cdd-037",
+        "c3ff5e573cdd-012",
+        "c3ff5e573cdd-005",
+        "c3ff5e573cdd-031",
+        "c3ff5e573cdd-071"
+      ],
+      "seconds": 26.0,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.1 The Parties agree that the Ubiquiti UniFi 6 Enterprise Access Point shall be supplied to the Buyer at a fixed rate of Pakistani Rupees thirty-eight thousand five hundred (PKR 38,500) for each unit, and the Vendor shall ensure that no invoice raised under this Agreement for that product states a unit rate higher than the agreed amount.\",\n      \"chunk_id\": \"c3ff5e573cdd-028\",\n      \"item_name\": \"Ubiquiti UniFi 6 Enterprise Access Point\",\n      \"agreed_unit_price\": 38500\n    }\n  ]\n}"
+    }
+  ]
+}

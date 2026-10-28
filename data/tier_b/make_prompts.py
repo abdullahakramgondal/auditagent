@@ -258,7 +258,7 @@ SPECS = [
         "buyer": "Jhelum Digital Pvt Ltd",
         "vendor": "Citadel IT Supplies",
         "rules": [
-            _late("2027-06-10", "per_day_percent", 0.75, cap=6),
+            _late("2027-06-10", "per_day_percent", 0.75, cap=6, grace=3),
             _price("Dell Latitude 5440 Laptop", 148000),
             _terms(50),
         ],

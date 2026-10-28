@@ -28,6 +28,8 @@ UNITS_RE = re.compile(
 _DEFINED_DATE_TERM_RE = re.compile(
     r'"((?:[A-Z][A-Za-z]* ){0,3}(?:Deadline|Date|Day))"(?=\s*\)|\s+(?:shall\s+)?means\b)'
 )
+# A reference to a numbered clause: "the date stated in clause 5.2", "section 3".
+_CLAUSE_REF_RE = re.compile(r"\b(?:clauses?|sections?)\s+(\d+(?:\.\d+)*)", re.IGNORECASE)
 _MONTHS = (
     "january",
     "february",
@@ -132,6 +134,20 @@ def shares_defined_term(definition: str, usage: str) -> bool:
     """True if `usage` uses a date term that `definition` defines (case matters: defined terms are capitalised)."""
     folded = _fold(usage)
     return any(term in folded for term in defined_terms(definition))
+
+
+def clause_refs(text: str) -> set[str]:
+    """The clause numbers the text refers to: "the date stated in clause 5.2." gives {"5.2"}."""
+    return set(_CLAUSE_REF_RE.findall(text))
+
+
+def is_clause(chunk: Chunk, number: str) -> bool:
+    """True if the chunk is the clause with this number, that is its heading starts with it.
+
+    "5.2" matches the headings "5.2 Delivery" and "5.2. Delivery" but not "5.2.1 Sub-clause",
+    "5.20 Other" or "15.2 Other".
+    """
+    return re.match(rf"\s*{re.escape(number)}(?:\.(?!\d)|\s|$)", chunk.heading) is not None
 
 
 def locate_quote(chunks: list[Chunk], quote: str, cited_id: str | None = None) -> Chunk | None:

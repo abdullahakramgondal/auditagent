@@ -8,8 +8,10 @@ from pydantic import TypeAdapter, ValidationError
 
 from auditagent.agents.grounding import (
     DAYS_RE,
+    clause_refs,
     date_in,
     days_in,
+    is_clause,
     locate_quote,
     number_in,
     percent_count,
@@ -52,10 +54,11 @@ RETRIEVAL_QUERIES = {
 # Safety net: if the model returns nothing but these patterns appear in the clauses it was shown,
 # the empty answer is suspicious and must become a review issue, never silence.
 # The words may come in either order ("a penalty of 8% ... days of delay", "PKR 1,150,000 per unit"),
-# and contracts say "volume reduction" as well as "discount". eval.hint_check measures all of this.
+# and contracts say "volume reduction" or "price adjustment" as well as "discount".
+# eval.hint_check measures all of this on every contract without a model.
 _PERCENT = r"\d+(?:\.\d+)?\s*%"
 _PERCENT_RE = re.compile(_PERCENT)
-_DISCOUNT_WORD = r"\b(?:discounts?|rebates?|reductions?)\b"
+_DISCOUNT_WORD = r"\b(?:discounts?|rebates?|reductions?|adjustments?)\b"
 # Delay or lateness of PAYMENT is a Buyer charge, not a delivery penalty: "late payment", "delays payment",
 # "delay in payment" are skipped, and the clause must also talk about delivery.
 _LATE_WORD = re.compile(
@@ -161,15 +164,27 @@ def _prompt(kind: str, chunks: list[Chunk]) -> str:
     )
 
 
+def _effective_cap(form):
+    """The cap that counts: only a per-day penalty has one (scope.md: a flat percentage has no cap).
+
+    The model sometimes reports a cap equal to the percentage for a flat penalty (tb_01, tb_04).
+    It is ignored: for a flat penalty it changes nothing in the money maths.
+    """
+    if form.mode == "flat_percent" or form.cap_percent is None:
+        return None
+    return form.cap_percent
+
+
 def _rule_fields(kind: str, form) -> dict:
     """The model's form as the fields of a rule (numbers as Decimal, without the source)."""
     if kind == "late_penalty":
+        cap = _effective_cap(form)
         return {
             "clause_type": kind,
             "deadline": form.deadline,
             "mode": form.mode,
             "percent": Decimal(str(form.percent)),
-            "cap_percent": None if form.cap_percent is None else Decimal(str(form.cap_percent)),
+            "cap_percent": None if cap is None else Decimal(str(cap)),
             "grace_days": form.grace_days,
         }
     if kind == "volume_discount":
@@ -199,14 +214,15 @@ def _fact_problems(kind: str, form) -> list[str]:
 
     if kind == "late_penalty":
         need("percent", form.percent, percent_in)
-        if form.cap_percent is not None:
-            need("cap_percent", form.cap_percent, percent_in)
-            # One number cannot play two roles: a cap equal to the percentage must be written twice
-            # (the model once invented a 10% cap for a flat 10% penalty).
-            same_number = Decimal(str(form.cap_percent)) == Decimal(str(form.percent))
+        cap = _effective_cap(form)
+        if cap is not None:
+            need("cap_percent", cap, percent_in)
+            # One number cannot play two roles: a per-day cap equal to the percentage must be
+            # written twice in the quote.
+            same_number = Decimal(str(cap)) == Decimal(str(form.percent))
             if same_number and percent_count(form.percent, quote) < 2:
                 problems.append(
-                    f"cap_percent {form.cap_percent} is the same number as percent "
+                    f"cap_percent {cap} is the same number as percent "
                     "and is written only once in the quote"
                 )
         if form.grace_days > 0:
@@ -228,13 +244,16 @@ def _check_deadline(
 ) -> tuple[str | None, dict | None]:
     """Prove the deadline date. Returns (problem, source of the date when it is outside the penalty quote).
 
-    The date is accepted in three cases:
+    The date is accepted in four cases:
       1. it is written in the penalty quote itself;
       2. it is written in the deadline quote and that passage is in the SAME clause (chunk) as the
          penalty quote, for example the neighbouring sentence "the delivery date is 15 January 2027";
       3. it is written in the deadline quote of ANOTHER clause, and that clause defines a date term
-         (for example (the "Delivery Deadline")) which the penalty quote uses.
-    The deadline quote must really exist in the contract. Case 3 keeps decoy clauses from borrowing a date.
+         (for example (the "Delivery Deadline")) which the penalty quote uses;
+      4. it is written in the deadline quote of ANOTHER clause, and the penalty quote refers to that
+         clause by its number ("the date stated in clause 5.2").
+    The deadline quote must really exist in the contract. Cases 3 and 4 keep a decoy clause from
+    borrowing a date: the link has to be written in the contract itself.
     """
     try:
         deadline = date.fromisoformat(form.deadline)
@@ -249,12 +268,16 @@ def _check_deadline(
     source = {"page": holder.page_start, "text": normalize_for_match(form.deadline_quote)}
     if holder.chunk_id == penalty_chunk.chunk_id:
         return None, source
-    if not shares_defined_term(form.deadline_quote, form.quote):
-        return (
-            f"{missing}, and the quote does not use a date term defined where the date is written",
-            None,
-        )
-    return None, source
+    cites_the_clause = any(is_clause(holder, number) for number in clause_refs(form.quote))
+    if shares_defined_term(form.deadline_quote, form.quote) or cites_the_clause:
+        return None, source
+    return (
+        (
+            f"{missing}, and the quote neither uses a date term defined where the date is written "
+            "nor refers to the clause that holds it"
+        ),
+        None,
+    )
 
 
 class LegalExtractor:

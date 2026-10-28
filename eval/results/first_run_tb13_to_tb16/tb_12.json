@@ -1,0 +1,119 @@
+{
+  "case_id": "tb_12",
+  "code_hash": "465dfa301051",
+  "seconds": 19.8,
+  "llm_calls": 4,
+  "gold_sources": {},
+  "result": {
+    "contract": {
+      "rules": [
+        {
+          "clause_type": "late_penalty",
+          "deadline": "2027-04-30",
+          "mode": "per_day_percent",
+          "percent": "1.0",
+          "cap_percent": "8.0",
+          "grace_days": 3,
+          "source": {
+            "page": 3,
+            "text": "6.2 Delivery deadline. All Equipment covered by the relevant order must be delivered on or before 30 April 2027. The first three (3) days after that date shall be a penalty-free grace period. For each subsequent day of delay, a single daily penalty of 1% of the applicable invoice value shall accrue, subject to an overall maximum of 8% of that invoice value."
+          },
+          "deadline_source": null
+        },
+        {
+          "clause_type": "volume_discount",
+          "min_quantity": 50,
+          "discount_percent": "5.0",
+          "source": {
+            "page": 3,
+            "text": "Where a single accepted purchase order includes fifty (50) or more units, the price of the Equipment covered by that order shall be reduced by 5%."
+          }
+        },
+        {
+          "clause_type": "payment_terms",
+          "net_days": 25,
+          "source": {
+            "page": 4,
+            "text": "The Buyer shall pay each valid invoice within 25 days of the invoice date"
+          }
+        },
+        {
+          "clause_type": "unit_price",
+          "item_name": "Samsung 990 PRO 2TB NVMe SSD",
+          "agreed_unit_price": "62000.0",
+          "source": {
+            "page": 3,
+            "text": "The unit price for a Samsung 990 PRO 2TB NVMe SSD shall be PKR 62,000, and the invoice for that item shall not exceed that amount per unit."
+          }
+        }
+      ]
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Find rules where the VENDOR is penalised for LATE DELIVERY o",
+      "chunk_ids": [
+        "28d42f4b806f-034",
+        "28d42f4b806f-052",
+        "28d42f4b806f-032",
+        "28d42f4b806f-013",
+        "28d42f4b806f-040",
+        "28d42f4b806f-059",
+        "28d42f4b806f-033",
+        "28d42f4b806f-024",
+        "28d42f4b806f-035",
+        "28d42f4b806f-050",
+        "28d42f4b806f-008"
+      ],
+      "seconds": 4.8,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"6.2 Delivery deadline. All Equipment covered by the relevant order must be delivered on or before 30 April 2027. The first three (3) days after that date shall be a penalty-free grace period. For each subsequent day of delay, a single daily penalty of 1% of the applicable invoice value shall accrue, subject to an overall maximum of 8% of that invoice value.\",\n      \"chunk_id\": \"28d42f4b806f-034\",\n      \"deadline_quote\": \"All Equipment covered by the relevant order must be delivered on or before 30 April 2027.\",\n      \"deadline\": \"2027-04-30\",\n      \"mode\": \"per_day_percent\",\n      \"percent\": 1,\n      \"cap_percent\": 8,\n      \"grace_days\": 3\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that give the Buyer a DISCOUNT when it orders at ",
+      "chunk_ids": [
+        "28d42f4b806f-043",
+        "28d42f4b806f-041",
+        "28d42f4b806f-042",
+        "28d42f4b806f-014",
+        "28d42f4b806f-013",
+        "28d42f4b806f-047",
+        "28d42f4b806f-101",
+        "28d42f4b806f-135"
+      ],
+      "seconds": 8.4,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"Where a single accepted purchase order includes fifty (50) or more units, the price of the Equipment covered by that order shall be reduced by 5%.\",\n      \"chunk_id\": \"28d42f4b806f-043\",\n      \"min_quantity\": 50,\n      \"discount_percent\": 5\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that say within how many DAYS an invoice must be ",
+      "chunk_ids": [
+        "28d42f4b806f-050",
+        "28d42f4b806f-048",
+        "28d42f4b806f-034",
+        "28d42f4b806f-051",
+        "28d42f4b806f-054",
+        "28d42f4b806f-008",
+        "28d42f4b806f-052",
+        "28d42f4b806f-049"
+      ],
+      "seconds": 1.0,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The Buyer shall pay each valid invoice within 25 days of the invoice date\",\n      \"chunk_id\": \"28d42f4b806f-050\",\n      \"net_days\": 25\n    }\n  ]\n}"
+    },
+    {
+      "task": "Find rules that fix the agreed price PER UNIT of a named ite",
+      "chunk_ids": [
+        "28d42f4b806f-043",
+        "28d42f4b806f-042",
+        "28d42f4b806f-041",
+        "28d42f4b806f-044",
+        "28d42f4b806f-135",
+        "28d42f4b806f-018",
+        "28d42f4b806f-009",
+        "28d42f4b806f-052"
+      ],
+      "seconds": 1.7,
+      "raw": "{\n  \"rules\": [\n    {\n      \"quote\": \"The unit price for a Samsung 990 PRO 2TB NVMe SSD shall be PKR 62,000, and the invoice for that item shall not exceed that amount per unit.\",\n      \"chunk_id\": \"28d42f4b806f-044\",\n      \"item_name\": \"Samsung 990 PRO 2TB NVMe SSD\",\n      \"agreed_unit_price\": 62000\n    }\n  ]\n}"
+    }
+  ]
+}

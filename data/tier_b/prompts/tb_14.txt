@@ -6,7 +6,7 @@ Length and style
 - Write every commercial term below in YOUR OWN natural legal wording, in the clause where it belongs. Do not copy my sentences. Write some numbers as words and digits together (for example "thirty (30) days") and others as digits only.
 
 Commercial terms that must each appear exactly once, with exactly these values:
-- Late delivery penalty: for each day of delay after 10 June 2027, a penalty of 0.75% of the invoice value applies, up to a maximum total of 6%.
+- Late delivery penalty: for each day of delay after 10 June 2027, a penalty of 0.75% of the invoice value applies, up to a maximum total of 6%. The first 3 days of delay carry no penalty.
 - Agreed unit price: Dell Latitude 5440 Laptop at PKR 148,000 per unit; the invoice must not exceed it.
 - Payment terms: each invoice must be paid within 50 days of the invoice date.
 
