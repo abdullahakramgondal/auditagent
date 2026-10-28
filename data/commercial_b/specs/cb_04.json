@@ -1,0 +1,25 @@
+{
+  "case_id": "cb_04",
+  "kind": "purchase_order",
+  "writer": "chatgpt",
+  "shape": "month-first and ordinal dates",
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "document": {
+    "po_number": "PO-2026-0788",
+    "po_date": "2026-10-12",
+    "delivery_due_date": "2026-11-20",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 60F Firewall",
+        "quantity": 6,
+        "unit_price": "215000",
+        "line_total": "1290000"
+      }
+    ],
+    "total_amount": "1290000"
+  },
+  "style_notes": [
+    "Write the order date as \"October 12, 2026\" (month first) and the required delivery date as \"20th November 2026\" (with an ordinal)."
+  ]
+}

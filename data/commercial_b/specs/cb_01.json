@@ -1,0 +1,27 @@
+{
+  "case_id": "cb_01",
+  "kind": "invoice",
+  "writer": "claude",
+  "shape": "other labels (Tax Invoice No, Date of Supply, Payment Due By, Amount Payable)",
+  "buyer": "Lahore Software House Pvt Ltd",
+  "vendor": "Tech Supplies Pvt Ltd",
+  "document": {
+    "invoice_number": "TI-2026-0417",
+    "invoice_date": "2026-11-03",
+    "delivery_date": "2026-10-30",
+    "due_date": "2026-12-03",
+    "line_items": [
+      {
+        "item_name": "Dell PowerEdge R650 Server",
+        "quantity": 3,
+        "unit_price": "1250000",
+        "line_total": "3750000"
+      }
+    ],
+    "adjustments": [],
+    "total_amount": "3750000"
+  },
+  "style_notes": [
+    "Use exactly these labels for the values: Tax Invoice No, Date of Issue, Date of Supply, Payment Due By and Amount Payable."
+  ]
+}

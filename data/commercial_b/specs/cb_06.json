@@ -1,0 +1,25 @@
+{
+  "case_id": "cb_06",
+  "kind": "purchase_order",
+  "writer": "chatgpt",
+  "shape": "an item name wrapped over two lines",
+  "buyer": "Karakoram Software Pvt Ltd",
+  "vendor": "Gulberg Computers",
+  "document": {
+    "po_number": "PO-2026-0903",
+    "po_date": "2026-10-20",
+    "delivery_due_date": "2026-11-25",
+    "line_items": [
+      {
+        "item_name": "Samsung 32-inch 4K UHD Smart Monitor with Height-Adjustable Stand",
+        "quantity": 12,
+        "unit_price": "58000",
+        "line_total": "696000"
+      }
+    ],
+    "total_amount": "696000"
+  },
+  "style_notes": [
+    "Print the item description over two lines: the first part of the description and the numbers on the first line, the rest of the description on the line below. Together the two lines must read as the exact item name given."
+  ]
+}

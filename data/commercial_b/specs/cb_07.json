@@ -1,0 +1,27 @@
+{
+  "case_id": "cb_07",
+  "kind": "invoice",
+  "writer": "claude",
+  "shape": "payment terms (Net 30 days) instead of a due date",
+  "buyer": "Hunza Cloud Pvt Ltd",
+  "vendor": "Orbit Technology Traders",
+  "document": {
+    "invoice_number": "SI-2026-0191",
+    "invoice_date": "2026-11-12",
+    "delivery_date": "2026-11-09",
+    "due_date": null,
+    "line_items": [
+      {
+        "item_name": "Ubiquiti UniFi Dream Machine Pro",
+        "quantity": 5,
+        "unit_price": "78000",
+        "line_total": "390000"
+      }
+    ],
+    "adjustments": [],
+    "total_amount": "390000"
+  },
+  "style_notes": [
+    "Do not print a payment due date. State the terms as: Net 30 days."
+  ]
+}

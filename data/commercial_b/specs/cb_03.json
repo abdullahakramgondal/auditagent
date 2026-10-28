@@ -1,0 +1,32 @@
+{
+  "case_id": "cb_03",
+  "kind": "invoice",
+  "writer": "claude",
+  "shape": "discount written as a percentage line",
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Alpha Hardware Traders",
+  "document": {
+    "invoice_number": "INV-77310",
+    "invoice_date": "2026-11-05",
+    "delivery_date": "2026-11-02",
+    "due_date": "2026-12-05",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkCentre M70q Desktop",
+        "quantity": 25,
+        "unit_price": "142000",
+        "line_total": "3550000"
+      }
+    ],
+    "adjustments": [
+      {
+        "label": "Trade discount (5%)",
+        "amount": "-177500"
+      }
+    ],
+    "total_amount": "3372500"
+  },
+  "style_notes": [
+    "Show the discount on its own line under the items, with exactly this label: Trade discount (5%), and the amount in PKR with a minus sign."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "case_id": "cb_05",
+  "kind": "invoice",
+  "writer": "claude",
+  "shape": "a sales tax line under the items",
+  "buyer": "Five Rivers Technologies Pvt Ltd",
+  "vendor": "Crescent Systems Pvt Ltd",
+  "document": {
+    "invoice_number": "INV-2026-5521",
+    "invoice_date": "2026-11-10",
+    "delivery_date": "2026-11-08",
+    "due_date": "2026-12-10",
+    "line_items": [
+      {
+        "item_name": "HP ProBook 450 G10 Laptop",
+        "quantity": 10,
+        "unit_price": "185000",
+        "line_total": "1850000"
+      },
+      {
+        "item_name": "HP 65W Laptop Charger",
+        "quantity": 10,
+        "unit_price": "4500",
+        "line_total": "45000"
+      }
+    ],
+    "adjustments": [
+      {
+        "label": "Sales Tax (18%)",
+        "amount": "341100"
+      }
+    ],
+    "total_amount": "2236100"
+  },
+  "style_notes": [
+    "Under the items print a line labelled Subtotal, then the tax line, then the total."
+  ]
+}

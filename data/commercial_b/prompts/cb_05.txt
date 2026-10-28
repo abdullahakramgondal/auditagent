@@ -1,0 +1,25 @@
+Write the text of a invoice from Crescent Systems Pvt Ltd (the "Vendor") to Five Rivers Technologies Pvt Ltd (the "Buyer"), for IT equipment, as a Pakistani IT supplier would print it.
+
+Format
+- Plain text only: no markdown, no bold, no tables drawn with | or - characters.
+- One page, about 15 to 30 lines. One line per item row: the description and the numbers on the same line, separated by at least two spaces, unless the notes say otherwise.
+- Label every value with a natural label of your own choice; do not copy my wording. Dates may be written in any natural format unless the notes say otherwise.
+
+Values that must each appear exactly once, exactly as given:
+- Invoice number: INV-2026-5521 (write it exactly as given)
+- Invoice issue date: 10 November 2026
+- Delivery date: 8 November 2026
+- Payment due date: 10 December 2026
+- Item (write the name exactly as given): HP ProBook 450 G10 Laptop; quantity 10; unit price PKR 185,000; amount PKR 1,850,000
+- Item (write the name exactly as given): HP 65W Laptop Charger; quantity 10; unit price PKR 4,500; amount PKR 45,000
+- The items add up to PKR 1,895,000 before the adjustments below.
+- Adjustment line under the items, labelled exactly 'Sales Tax (18%)', amount PKR 341,100 (it is added)
+- Total: PKR 2,236,100
+
+Notes on how to print it
+- Under the items print a line labelled Subtotal, then the tax line, then the total.
+
+Everything else
+- Do NOT add any other amount, tax, discount, fee, deposit, date or reference number. No phone numbers, NTN or bank account numbers. A footer line is allowed but must not contain numbers.
+
+Output only the document text. No commentary, no placeholders such as [insert].

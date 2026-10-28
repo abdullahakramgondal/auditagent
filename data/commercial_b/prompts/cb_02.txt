@@ -1,0 +1,24 @@
+Write the text of a purchase order from Metro IT Distributors (the "Vendor") to Punjab Digital Solutions Pvt Ltd (the "Buyer"), for IT equipment, as a Pakistani IT supplier would print it.
+
+Format
+- Plain text only: no markdown, no bold, no tables drawn with | or - characters.
+- One page, about 15 to 30 lines. One line per item row: the description and the numbers on the same line, separated by at least two spaces, unless the notes say otherwise.
+- Label every value with a natural label of your own choice; do not copy my wording. Dates may be written in any natural format unless the notes say otherwise.
+
+Values that must each appear exactly once, exactly as given:
+- Order number: PO/IT/2026/0231 (write it exactly as given)
+- Order date: 12 October 2026
+- Required delivery date: 20 November 2026
+- Item (write the name exactly as given): Cisco Catalyst 9200 Switch; quantity 2; unit price PKR 480,000; amount PKR 960,000
+- Item (write the name exactly as given): Cisco SFP-10G-SR Transceiver; quantity 8; unit price PKR 32,500; amount PKR 260,000
+- Item (write the name exactly as given): APC Smart-UPS 1500VA; quantity 4; unit price PKR 118,000; amount PKR 472,000
+- Item (write the name exactly as given): Cat6 Patch Panel 24 Port; quantity 6; unit price PKR 14,500; amount PKR 87,000
+- Total: PKR 1,779,000
+
+Notes on how to print it
+- The order has four item rows. Print each row on one line.
+
+Everything else
+- Do NOT add any other amount, tax, discount, fee, deposit, date or reference number. No phone numbers, NTN or bank account numbers. A footer line is allowed but must not contain numbers.
+
+Output only the document text. No commentary, no placeholders such as [insert].

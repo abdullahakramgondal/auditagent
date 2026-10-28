@@ -1,0 +1,33 @@
+{
+  "case_id": "cb_08",
+  "kind": "invoice",
+  "writer": "chatgpt",
+  "shape": "quantity column first, amounts written as Rs.",
+  "buyer": "Sialkot Data Systems Pvt Ltd",
+  "vendor": "Eastern Networks Pvt Ltd",
+  "document": {
+    "invoice_number": "KT-INV-3306",
+    "invoice_date": "2026-11-15",
+    "delivery_date": "2026-11-12",
+    "due_date": "2026-12-15",
+    "line_items": [
+      {
+        "item_name": "Cisco Meraki MX68 Security Appliance",
+        "quantity": 4,
+        "unit_price": "325000",
+        "line_total": "1300000"
+      },
+      {
+        "item_name": "Meraki 3-Year Enterprise License",
+        "quantity": 10,
+        "unit_price": "42000",
+        "line_total": "420000"
+      }
+    ],
+    "adjustments": [],
+    "total_amount": "1720000"
+  },
+  "style_notes": [
+    "In the items table put the quantity first, then the description, then the rate and the amount, and write every amount as Rs. instead of PKR (for example Rs. 42,000)."
+  ]
+}

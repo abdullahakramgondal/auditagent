@@ -1,0 +1,23 @@
+Write the text of a invoice from Eastern Networks Pvt Ltd (the "Vendor") to Sialkot Data Systems Pvt Ltd (the "Buyer"), for IT equipment, as a Pakistani IT supplier would print it.
+
+Format
+- Plain text only: no markdown, no bold, no tables drawn with | or - characters.
+- One page, about 15 to 30 lines. One line per item row: the description and the numbers on the same line, separated by at least two spaces, unless the notes say otherwise.
+- Label every value with a natural label of your own choice; do not copy my wording. Dates may be written in any natural format unless the notes say otherwise.
+
+Values that must each appear exactly once, exactly as given:
+- Invoice number: KT-INV-3306 (write it exactly as given)
+- Invoice issue date: 15 November 2026
+- Delivery date: 12 November 2026
+- Payment due date: 15 December 2026
+- Item (write the name exactly as given): Cisco Meraki MX68 Security Appliance; quantity 4; unit price PKR 325,000; amount PKR 1,300,000
+- Item (write the name exactly as given): Meraki 3-Year Enterprise License; quantity 10; unit price PKR 42,000; amount PKR 420,000
+- Total: PKR 1,720,000
+
+Notes on how to print it
+- In the items table put the quantity first, then the description, then the rate and the amount, and write every amount as Rs. instead of PKR (for example Rs. 42,000).
+
+Everything else
+- Do NOT add any other amount, tax, discount, fee, deposit, date or reference number. No phone numbers, NTN or bank account numbers. A footer line is allowed but must not contain numbers.
+
+Output only the document text. No commentary, no placeholders such as [insert].

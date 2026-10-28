@@ -1,0 +1,22 @@
+Write the text of a invoice from Orbit Technology Traders (the "Vendor") to Hunza Cloud Pvt Ltd (the "Buyer"), for IT equipment, as a Pakistani IT supplier would print it.
+
+Format
+- Plain text only: no markdown, no bold, no tables drawn with | or - characters.
+- One page, about 15 to 30 lines. One line per item row: the description and the numbers on the same line, separated by at least two spaces, unless the notes say otherwise.
+- Label every value with a natural label of your own choice; do not copy my wording. Dates may be written in any natural format unless the notes say otherwise.
+
+Values that must each appear exactly once, exactly as given:
+- Invoice number: SI-2026-0191 (write it exactly as given)
+- Invoice issue date: 12 November 2026
+- Delivery date: 9 November 2026
+- No payment due date is printed (see the notes).
+- Item (write the name exactly as given): Ubiquiti UniFi Dream Machine Pro; quantity 5; unit price PKR 78,000; amount PKR 390,000
+- Total: PKR 390,000
+
+Notes on how to print it
+- Do not print a payment due date. State the terms as: Net 30 days.
+
+Everything else
+- Do NOT add any other amount, tax, discount, fee, deposit, date or reference number. No phone numbers, NTN or bank account numbers. A footer line is allowed but must not contain numbers.
+
+Output only the document text. No commentary, no placeholders such as [insert].

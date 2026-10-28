@@ -21,3 +21,10 @@
 21. The same wrong value in four runs (a cap on a flat penalty) is a habit of the model. The scope says only a per-day penalty has a cap, so the cap is dropped by a rule in the code. It does not change the money maths.
 22. I wrote my predictions before the run (tb_14 and tb_16 refused, the tb_16 hint misses, tb_13 correct). They were all right. Writing the guess first shows me what I really understand, and what I only hoped.
 23. A batch of unseen contracts is used up by the first fix. I keep the first-run result of every batch (12 of 13, then 10 of 12, no wrong rule) and I keep one fresh batch for the final evaluation.
+
+# Day 16 notes (my own words)
+24. A value must be proven where the document puts it, not just somewhere on the page. A date has to sit on a line with its own label. If the model swaps the invoice date and the delivery date, both dates are still on the page, but the delivery date decides the late penalty, so a swap must be refused.
+25. A wrong invoice is information for the audit, not a program error. If a row does not equal quantity times price, or the total does not equal the rows plus the adjustments, I return the data with an issue. If a value cannot be proven at all, I return no document and the reason.
+26. "None" is also a claim. If the model says there is no delivery date but the document shows a date next to its label, I refuse it for review. It is the same idea as Agent 1's empty answer: silence is not an answer.
+27. 62 of 62 on documents that my own generator wrote proves the plumbing and the three layouts, not the real world. It is the same lesson as Agent 1 on Day 9. The real test is messy documents that I did not generate.
+28. The code hash covers shared folders, so changing a schema for Agent 2 made Agent 1 run again. That cost a few minutes, but a saved result can never be older than the code it claims to come from.

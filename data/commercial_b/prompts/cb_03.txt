@@ -1,0 +1,24 @@
+Write the text of a invoice from Alpha Hardware Traders (the "Vendor") to Ravi Code Labs Pvt Ltd (the "Buyer"), for IT equipment, as a Pakistani IT supplier would print it.
+
+Format
+- Plain text only: no markdown, no bold, no tables drawn with | or - characters.
+- One page, about 15 to 30 lines. One line per item row: the description and the numbers on the same line, separated by at least two spaces, unless the notes say otherwise.
+- Label every value with a natural label of your own choice; do not copy my wording. Dates may be written in any natural format unless the notes say otherwise.
+
+Values that must each appear exactly once, exactly as given:
+- Invoice number: INV-77310 (write it exactly as given)
+- Invoice issue date: 5 November 2026
+- Delivery date: 2 November 2026
+- Payment due date: 5 December 2026
+- Item (write the name exactly as given): Lenovo ThinkCentre M70q Desktop; quantity 25; unit price PKR 142,000; amount PKR 3,550,000
+- The items add up to PKR 3,550,000 before the adjustments below.
+- Adjustment line under the items, labelled exactly 'Trade discount (5%)', amount PKR 177,500 (it is deducted: print it with a minus sign)
+- Total: PKR 3,372,500
+
+Notes on how to print it
+- Show the discount on its own line under the items, with exactly this label: Trade discount (5%), and the amount in PKR with a minus sign.
+
+Everything else
+- Do NOT add any other amount, tax, discount, fee, deposit, date or reference number. No phone numbers, NTN or bank account numbers. A footer line is allowed but must not contain numbers.
+
+Output only the document text. No commentary, no placeholders such as [insert].

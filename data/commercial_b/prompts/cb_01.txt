@@ -1,0 +1,22 @@
+Write the text of a invoice from Tech Supplies Pvt Ltd (the "Vendor") to Lahore Software House Pvt Ltd (the "Buyer"), for IT equipment, as a Pakistani IT supplier would print it.
+
+Format
+- Plain text only: no markdown, no bold, no tables drawn with | or - characters.
+- One page, about 15 to 30 lines. One line per item row: the description and the numbers on the same line, separated by at least two spaces, unless the notes say otherwise.
+- Label every value with a natural label of your own choice; do not copy my wording. Dates may be written in any natural format unless the notes say otherwise.
+
+Values that must each appear exactly once, exactly as given:
+- Invoice number: TI-2026-0417 (write it exactly as given)
+- Invoice issue date: 3 November 2026
+- Delivery date: 30 October 2026
+- Payment due date: 3 December 2026
+- Item (write the name exactly as given): Dell PowerEdge R650 Server; quantity 3; unit price PKR 1,250,000; amount PKR 3,750,000
+- Total: PKR 3,750,000
+
+Notes on how to print it
+- Use exactly these labels for the values: Tax Invoice No, Date of Issue, Date of Supply, Payment Due By and Amount Payable.
+
+Everything else
+- Do NOT add any other amount, tax, discount, fee, deposit, date or reference number. No phone numbers, NTN or bank account numbers. A footer line is allowed but must not contain numbers.
+
+Output only the document text. No commentary, no placeholders such as [insert].
