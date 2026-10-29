@@ -1,0 +1,40 @@
+{
+  "case_id": "cb_08",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 2.6,
+  "result": {
+    "invoice": {
+      "invoice_number": "KT-INV-3306",
+      "invoice_date": "2026-11-15",
+      "delivery_date": "2026-11-12",
+      "due_date": "2026-12-15",
+      "line_items": [
+        {
+          "item_name": "Cisco Meraki MX68 Security Appliance",
+          "quantity": 4,
+          "unit_price": "325000.0",
+          "line_total": "1300000.0"
+        },
+        {
+          "item_name": "Meraki 3-Year Enterprise License",
+          "quantity": 10,
+          "unit_price": "42000.0",
+          "line_total": "420000.0"
+        }
+      ],
+      "adjustments": [],
+      "total_amount": "1720000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 2.6,
+      "raw": "{\n  \"invoice_number\": \"KT-INV-3306\",\n  \"invoice_date\": \"2026-11-15\",\n  \"delivery_date\": \"2026-11-12\",\n  \"due_date\": \"2026-12-15\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Cisco Meraki MX68 Security Appliance\",\n      \"quantity\": 4,\n      \"unit_price\": 325000,\n      \"line_total\": 1300000\n    },\n    {\n      \"item_name\": \"Meraki 3-Year Enterprise License\",\n      \"quantity\": 10,\n      \"unit_price\": 42000,\n      \"line_total\": 420000\n    }\n  ],\n  \"adjustments\": [],\n  \"total_amount\": 1720000\n}"
+    }
+  ]
+}

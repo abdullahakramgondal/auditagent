@@ -1,0 +1,45 @@
+{
+  "case_id": "cb_05",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 2.7,
+  "result": {
+    "invoice": {
+      "invoice_number": "INV-2026-5521",
+      "invoice_date": "2026-11-10",
+      "delivery_date": "2026-11-08",
+      "due_date": "2026-12-10",
+      "line_items": [
+        {
+          "item_name": "HP ProBook 450 G10 Laptop",
+          "quantity": 10,
+          "unit_price": "185000.0",
+          "line_total": "1850000.0"
+        },
+        {
+          "item_name": "HP 65W Laptop Charger",
+          "quantity": 10,
+          "unit_price": "4500.0",
+          "line_total": "45000.0"
+        }
+      ],
+      "adjustments": [
+        {
+          "label": "Sales Tax (18%)",
+          "amount": "341100.0"
+        }
+      ],
+      "total_amount": "2236100.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 2.6,
+      "raw": "{\n  \"invoice_number\": \"INV-2026-5521\",\n  \"invoice_date\": \"2026-11-10\",\n  \"delivery_date\": \"2026-11-08\",\n  \"due_date\": \"2026-12-10\",\n  \"line_items\": [\n    {\n      \"item_name\": \"HP ProBook 450 G10 Laptop\",\n      \"quantity\": 10,\n      \"unit_price\": 185000,\n      \"line_total\": 1850000\n    },\n    {\n      \"item_name\": \"HP 65W Laptop Charger\",\n      \"quantity\": 10,\n      \"unit_price\": 4500,\n      \"line_total\": 45000\n    }\n  ],\n  \"adjustments\": [\n    {\n      \"label\": \"Sales Tax (18%)\",\n      \"amount\": 341100\n    }\n  ],\n  \"total_amount\": 2236100\n}"
+    }
+  ]
+}

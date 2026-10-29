@@ -1,0 +1,24 @@
+{
+  "case_id": "cb_07",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 1.3,
+  "result": {
+    "invoice": null,
+    "issues": [
+      {
+        "clause_type": "due_date",
+        "reason": "due_date 2026-12-12 is not written on a line labelled for it",
+        "quote": ""
+      }
+    ],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 1.2,
+      "raw": "{\n  \"invoice_number\": \"SI-2026-0191\",\n  \"invoice_date\": \"2026-11-12\",\n  \"delivery_date\": \"2026-11-09\",\n  \"due_date\": \"2026-12-12\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Ubiquiti UniFi Dream Machine Pro\",\n      \"quantity\": 5,\n      \"unit_price\": 78000,\n      \"line_total\": 390000\n    }\n  ],\n  \"adjustments\": [],\n  \"total_amount\": 390000\n}"
+    }
+  ]
+}

@@ -28,3 +28,10 @@
 26. "None" is also a claim. If the model says there is no delivery date but the document shows a date next to its label, I refuse it for review. It is the same idea as Agent 1's empty answer: silence is not an answer.
 27. 62 of 62 on documents that my own generator wrote proves the plumbing and the three layouts, not the real world. It is the same lesson as Agent 1 on Day 9. The real test is messy documents that I did not generate.
 28. The code hash covers shared folders, so changing a schema for Agent 2 made Agent 1 run again. That cost a few minutes, but a saved result can never be older than the code it claims to come from.
+
+# Day 18 notes (my own words)
+29. A wait that nobody sees looks like a frozen program. Now every retry says what failed and how long it waits. On the same day Gemini was unavailable for hours, and I could tell it was the provider and not my code.
+30. A value that the model computed is not a value that the document wrote. On cb_07 the invoice only said "Net 30 days" and the model added 30 days to the invoice date. The date was probably right, and I still refuse it, because the audit must rest on what is written. If I need Net 30, I will read the terms and let the code compute the date.
+31. Eight documents with one new shape each showed three real gaps (a label, a wrapped item name, a computed date) and each gap has one cause. If I had put all eight shapes in one document, I would not know which one broke it.
+32. Refused is not the same as wrong. 5 correct, 3 refused and 0 wrong means the system stayed careful: it asks a human instead of guessing. The recall of 0.62 is the price, and Week 4 turns every refusal into a review reason.
+33. I wrote down what I expected before the run, and I was right about four of the five refusals. The surprise (cb_07) taught me more than all the correct guesses.

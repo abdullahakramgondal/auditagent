@@ -7,15 +7,28 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
 *.egg-info/
+.coverage
+htmlcov/
+dist/
+build/
 
 # Project data / generated
 chroma_db/
 data/generated/
 *.db
+*.log
+
+# Eval caches (live caches, rebuilt by the eval scripts).
+# first_run_* folders are NOT matched here: they stay in git on purpose.
+eval/results/agent1_*/
+eval/results/agent2_*/
 
 # OS
 Thumbs.db
 .DS_Store
 
-eval/results/agent1_*/
+# Local AI instructions (not for GitHub)
+Claude.md
+AuditAgent AI Front End Architecture Audit & Layout Playbook.md

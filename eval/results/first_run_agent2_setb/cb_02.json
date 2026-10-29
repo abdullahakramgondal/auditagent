@@ -1,0 +1,50 @@
+{
+  "case_id": "cb_02",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 48.2,
+  "result": {
+    "purchase_order": {
+      "po_number": "PO/IT/2026/0231",
+      "po_date": "2026-10-12",
+      "delivery_due_date": "2026-11-20",
+      "line_items": [
+        {
+          "item_name": "Cisco Catalyst 9200 Switch",
+          "quantity": 2,
+          "unit_price": "480000.0",
+          "line_total": "960000.0"
+        },
+        {
+          "item_name": "Cisco SFP-10G-SR Transceiver",
+          "quantity": 8,
+          "unit_price": "32500.0",
+          "line_total": "260000.0"
+        },
+        {
+          "item_name": "APC Smart-UPS 1500VA",
+          "quantity": 4,
+          "unit_price": "118000.0",
+          "line_total": "472000.0"
+        },
+        {
+          "item_name": "Cat6 Patch Panel 24 Port",
+          "quantity": 6,
+          "unit_price": "14500.0",
+          "line_total": "87000.0"
+        }
+      ],
+      "total_amount": "1779000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the purchase order form from the document below. Lis",
+      "chunk_ids": [],
+      "seconds": 48.2,
+      "raw": "{\n  \"po_number\": \"PO/IT/2026/0231\",\n  \"po_date\": \"2026-10-12\",\n  \"delivery_due_date\": \"2026-11-20\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Cisco Catalyst 9200 Switch\",\n      \"quantity\": 2,\n      \"unit_price\": 480000,\n      \"line_total\": 960000\n    },\n    {\n      \"item_name\": \"Cisco SFP-10G-SR Transceiver\",\n      \"quantity\": 8,\n      \"unit_price\": 32500,\n      \"line_total\": 260000\n    },\n    {\n      \"item_name\": \"APC Smart-UPS 1500VA\",\n      \"quantity\": 4,\n      \"unit_price\": 118000,\n      \"line_total\": 472000\n    },\n    {\n      \"item_name\": \"Cat6 Patch Panel 24 Port\",\n      \"quantity\": 6,\n      \"unit_price\": 14500,\n      \"line_total\": 87000\n    }\n  ],\n  \"total_amount\": 1779000\n}"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "case_id": "cb_04",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 97.3,
+  "result": {
+    "purchase_order": {
+      "po_number": "PO-2026-0788",
+      "po_date": "2026-10-12",
+      "delivery_due_date": "2026-11-20",
+      "line_items": [
+        {
+          "item_name": "Fortinet FortiGate 60F Firewall",
+          "quantity": 6,
+          "unit_price": "215000.0",
+          "line_total": "1290000.0"
+        }
+      ],
+      "total_amount": "1290000.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the purchase order form from the document below. Lis",
+      "chunk_ids": [],
+      "seconds": 97.2,
+      "raw": "{\n  \"po_number\": \"PO-2026-0788\",\n  \"po_date\": \"2026-10-12\",\n  \"delivery_due_date\": \"2026-11-20\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Fortinet FortiGate 60F Firewall\",\n      \"quantity\": 6,\n      \"unit_price\": 215000,\n      \"line_total\": 1290000\n    }\n  ],\n  \"total_amount\": 1290000\n}"
+    }
+  ]
+}

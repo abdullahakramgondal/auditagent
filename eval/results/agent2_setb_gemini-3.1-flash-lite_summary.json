@@ -1,0 +1,117 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "code_hash": "d2f601bf6e8f",
+  "ran_now": 4,
+  "reused": 4,
+  "reused_from_old_code": 0,
+  "documents": [
+    {
+      "case": "cb_01",
+      "kind": "invoice",
+      "status": "refused",
+      "shape": "other labels (Tax Invoice No, Date of Supply, Payment Due By, Amount Payable)"
+    },
+    {
+      "case": "cb_02",
+      "kind": "purchase_order",
+      "status": "correct",
+      "shape": "four item rows"
+    },
+    {
+      "case": "cb_03",
+      "kind": "invoice",
+      "status": "correct",
+      "shape": "discount written as a percentage line"
+    },
+    {
+      "case": "cb_04",
+      "kind": "purchase_order",
+      "status": "correct",
+      "shape": "month-first and ordinal dates"
+    },
+    {
+      "case": "cb_05",
+      "kind": "invoice",
+      "status": "correct",
+      "shape": "a sales tax line under the items"
+    },
+    {
+      "case": "cb_06",
+      "kind": "purchase_order",
+      "status": "refused",
+      "shape": "an item name wrapped over two lines"
+    },
+    {
+      "case": "cb_07",
+      "kind": "invoice",
+      "status": "refused",
+      "shape": "payment terms (Net 30 days) instead of a due date"
+    },
+    {
+      "case": "cb_08",
+      "kind": "invoice",
+      "status": "correct",
+      "shape": "quantity column first, amounts written as Rs."
+    }
+  ],
+  "summary": {
+    "invoice": {
+      "docs": 5,
+      "correct": 3,
+      "wrong": 0,
+      "refused": 2,
+      "correct_with_issues": 0,
+      "field_ok": 21,
+      "field_n": 21,
+      "recall": 0.6,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    },
+    "purchase_order": {
+      "docs": 3,
+      "correct": 2,
+      "wrong": 0,
+      "refused": 1,
+      "correct_with_issues": 0,
+      "field_ok": 10,
+      "field_n": 10,
+      "recall": 0.667,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    },
+    "ALL": {
+      "docs": 8,
+      "correct": 5,
+      "wrong": 0,
+      "refused": 3,
+      "correct_with_issues": 0,
+      "field_ok": 31,
+      "field_n": 31,
+      "recall": 0.625,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    }
+  },
+  "wrong_values": [],
+  "issues": [
+    [
+      "cb_01",
+      "REFUSED",
+      "delivery_date",
+      "delivery_date 2026-10-30 is not written on a line labelled for it"
+    ],
+    [
+      "cb_06",
+      "REFUSED",
+      "line_items",
+      "item 'Samsung 32-inch 4K UHD Smart Monitor with Height-Adjustable Stand' is not written in the document"
+    ],
+    [
+      "cb_07",
+      "REFUSED",
+      "due_date",
+      "due_date 2026-12-12 is not written on a line labelled for it"
+    ]
+  ]
+}

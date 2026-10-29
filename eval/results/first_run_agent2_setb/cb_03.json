@@ -1,0 +1,39 @@
+{
+  "case_id": "cb_03",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 13.6,
+  "result": {
+    "invoice": {
+      "invoice_number": "INV-77310",
+      "invoice_date": "2026-11-05",
+      "delivery_date": "2026-11-02",
+      "due_date": "2026-12-05",
+      "line_items": [
+        {
+          "item_name": "Lenovo ThinkCentre M70q Desktop",
+          "quantity": 25,
+          "unit_price": "142000.0",
+          "line_total": "3550000.0"
+        }
+      ],
+      "adjustments": [
+        {
+          "label": "Trade discount (5%)",
+          "amount": "-177500.0"
+        }
+      ],
+      "total_amount": "3372500.0",
+      "currency": "PKR"
+    },
+    "issues": [],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 13.6,
+      "raw": "{\n  \"invoice_number\": \"INV-77310\",\n  \"invoice_date\": \"2026-11-05\",\n  \"delivery_date\": \"2026-11-02\",\n  \"due_date\": \"2026-12-05\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Lenovo ThinkCentre M70q Desktop\",\n      \"quantity\": 25,\n      \"unit_price\": 142000,\n      \"line_total\": 3550000\n    }\n  ],\n  \"adjustments\": [\n    {\n      \"label\": \"Trade discount (5%)\",\n      \"amount\": -177500\n    }\n  ],\n  \"total_amount\": 3372500\n}"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "cb_01",
+  "code_hash": "d2f601bf6e8f",
+  "seconds": 61.1,
+  "result": {
+    "invoice": null,
+    "issues": [
+      {
+        "clause_type": "delivery_date",
+        "reason": "delivery_date 2026-10-30 is not written on a line labelled for it",
+        "quote": ""
+      }
+    ],
+    "llm_model": "gemini-3.1-flash-lite"
+  },
+  "raw_answers": [
+    {
+      "task": "Fill in the invoice form from the document below. List every",
+      "chunk_ids": [],
+      "seconds": 61.1,
+      "raw": "{\n  \"invoice_number\": \"TI-2026-0417\",\n  \"invoice_date\": \"2026-11-03\",\n  \"delivery_date\": \"2026-10-30\",\n  \"due_date\": \"2026-12-03\",\n  \"line_items\": [\n    {\n      \"item_name\": \"Dell PowerEdge R650 Server\",\n      \"quantity\": 3,\n      \"unit_price\": 1250000.0,\n      \"line_total\": 3750000.0\n    }\n  ],\n  \"adjustments\": [],\n  \"total_amount\": 3750000.0\n}"
+    }
+  ]
+}
