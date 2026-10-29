@@ -1,15 +1,15 @@
 {
   "provider": "gemini",
   "model": "gemini-3.1-flash-lite",
-  "code_hash": "d2f601bf6e8f",
-  "ran_now": 4,
-  "reused": 4,
+  "code_hash": "1c87fd207aca",
+  "ran_now": 8,
+  "reused": 0,
   "reused_from_old_code": 0,
   "documents": [
     {
       "case": "cb_01",
       "kind": "invoice",
-      "status": "refused",
+      "status": "correct",
       "shape": "other labels (Tax Invoice No, Date of Supply, Payment Due By, Amount Payable)"
     },
     {
@@ -39,7 +39,7 @@
     {
       "case": "cb_06",
       "kind": "purchase_order",
-      "status": "refused",
+      "status": "correct",
       "shape": "an item name wrapped over two lines"
     },
     {
@@ -58,55 +58,43 @@
   "summary": {
     "invoice": {
       "docs": 5,
-      "correct": 3,
+      "correct": 4,
       "wrong": 0,
-      "refused": 2,
+      "refused": 1,
       "correct_with_issues": 0,
-      "field_ok": 21,
-      "field_n": 21,
-      "recall": 0.6,
+      "field_ok": 28,
+      "field_n": 28,
+      "recall": 0.8,
       "precision": 1.0,
       "field_accuracy": 1.0
     },
     "purchase_order": {
       "docs": 3,
-      "correct": 2,
+      "correct": 3,
       "wrong": 0,
-      "refused": 1,
+      "refused": 0,
       "correct_with_issues": 0,
-      "field_ok": 10,
-      "field_n": 10,
-      "recall": 0.667,
+      "field_ok": 15,
+      "field_n": 15,
+      "recall": 1.0,
       "precision": 1.0,
       "field_accuracy": 1.0
     },
     "ALL": {
       "docs": 8,
-      "correct": 5,
+      "correct": 7,
       "wrong": 0,
-      "refused": 3,
+      "refused": 1,
       "correct_with_issues": 0,
-      "field_ok": 31,
-      "field_n": 31,
-      "recall": 0.625,
+      "field_ok": 43,
+      "field_n": 43,
+      "recall": 0.875,
       "precision": 1.0,
       "field_accuracy": 1.0
     }
   },
   "wrong_values": [],
   "issues": [
-    [
-      "cb_01",
-      "REFUSED",
-      "delivery_date",
-      "delivery_date 2026-10-30 is not written on a line labelled for it"
-    ],
-    [
-      "cb_06",
-      "REFUSED",
-      "line_items",
-      "item 'Samsung 32-inch 4K UHD Smart Monitor with Height-Adjustable Stand' is not written in the document"
-    ],
     [
       "cb_07",
       "REFUSED",

@@ -24,6 +24,12 @@ LAYOUT_3 = text_lines(
     "10 x PKR 1,000,000 = PKR 10,000,000\nLess: volume discount: -PKR 550,000\n"
     "Grand Total: PKR 9,450,000"
 )
+WRAPPED = text_lines(
+    "Item Description Quantity Unit Price Line Amount\n"
+    "Samsung 32-inch Monitor 12 PKR 58,000 PKR 696,000\n"
+    "with Stand\nTotal payable: PKR 696,000"
+)
+WRAPPED_NAME = "Samsung 32-inch Monitor with Stand"
 
 
 def test_lines_are_flattened_and_blank_lines_dropped():
@@ -52,6 +58,8 @@ def test_a_date_must_sit_on_a_line_with_its_own_label():
         ("Issued On: 26/10/2026", "invoice_date", date(2026, 10, 26)),
         ("Delivered On: 25-Oct-2026", "delivery_date", date(2026, 10, 25)),
         ("Date of Delivery: 25/10/2026", "delivery_date", date(2026, 10, 25)),
+        ("Date of Supply: 30 October 2026", "delivery_date", date(2026, 10, 30)),
+        ("Supplied On: 30-Oct-2026", "delivery_date", date(2026, 10, 30)),
         ("Pay By: 25/11/2026", "due_date", date(2026, 11, 25)),
         ("Payment Due: 25-Nov-2026 Supplier: Vendor Co", "due_date", date(2026, 11, 25)),
         ("Order Date: 01-Sep-2026", "po_date", date(2026, 9, 1)),
@@ -60,6 +68,11 @@ def test_a_date_must_sit_on_a_line_with_its_own_label():
 )
 def test_the_labels_and_date_formats_of_all_three_layouts_are_read(line, role, day):
     assert date_is_labelled(day, role, text_lines(line))
+
+
+def test_a_supplier_line_is_not_a_delivery_label():
+    lines = text_lines("Supplier: Vendor Co 30 October 2026")
+    assert not date_is_labelled(date(2026, 10, 30), "delivery_date", lines)
 
 
 def test_an_order_date_is_not_the_delivery_due_date():
@@ -93,6 +106,21 @@ def test_a_wrong_quantity_is_named_in_the_problem():
 
 def test_an_item_that_is_not_in_the_document_is_refused():
     assert "not written" in item_problem("Router", 1, 1000.0, 1000.0, LAYOUT_1)
+
+
+def test_an_item_name_wrapped_over_two_lines_is_proven():
+    assert item_problem(WRAPPED_NAME, 12, 58000.0, 696000.0, WRAPPED) is None
+
+
+def test_a_wrapped_name_whose_rest_is_not_on_the_next_line_is_refused():
+    lines = text_lines(
+        "Samsung 32-inch Monitor 12 PKR 58,000 PKR 696,000\nTotal payable: PKR 696,000"
+    )
+    assert "not written" in item_problem(WRAPPED_NAME, 12, 58000.0, 696000.0, lines)
+
+
+def test_a_wrapped_name_with_a_wrong_quantity_names_the_quantity():
+    assert "quantity" in item_problem(WRAPPED_NAME, 11, 58000.0, 696000.0, WRAPPED)
 
 
 def test_an_adjustment_needs_its_label_and_its_amount_on_one_line():

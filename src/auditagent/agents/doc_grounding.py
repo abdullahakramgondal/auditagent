@@ -12,11 +12,12 @@ from auditagent.agents.grounding import date_in, number_in
 from auditagent.ingestion.pdf_parser import normalize_for_match
 
 # The words that label each date. Layouts say "Invoice Date", "Bill Date" or "Issued On";
-# "Delivery Date", "Delivered On" or "Date of Delivery"; "Due Date", "Payment Due" or "Pay By"; and for
-# an order "PO Date", "Order Date" or "Raised On"; "Delivery Due Date", "Required By" or "Deliver By".
+# "Delivery Date", "Delivered On", "Date of Delivery" or "Date of Supply"; "Due Date", "Payment Due" or
+# "Pay By"; and for an order "PO Date", "Order Date" or "Raised On"; "Delivery Due Date", "Required By"
+# or "Deliver By".
 DATE_LABELS = {
     "invoice_date": re.compile(r"\b(?:invoice|bill|issued?|dated)\b", re.IGNORECASE),
-    "delivery_date": re.compile(r"\bdeliver\w*", re.IGNORECASE),
+    "delivery_date": re.compile(r"\b(?:deliver\w*|suppl(?:y|ied))\b", re.IGNORECASE),
     "due_date": re.compile(r"\b(?:due|pay|payable|payment)\b", re.IGNORECASE),
     "po_date": re.compile(r"\b(?:po|purchase\s+order|order|raised|issued?|dated)\b", re.IGNORECASE),
     "delivery_due_date": re.compile(r"\b(?:deliver\w*|required)\b", re.IGNORECASE),
@@ -54,14 +55,37 @@ def total_is_written(value: float, lines: list[str]) -> bool:
     return any(_TOTAL_LABEL.search(line) and number_in(value, line) for line in lines)
 
 
+def _name_rows(wanted: str, lines: list[str]) -> list[str]:
+    """The rows (a line and the next one) where the item name is written, whole or wrapped.
+
+    A wrapped name has its first words in line i (before the numbers) and the rest at the START of line i+1.
+    """
+    words = wanted.split()
+    rows = []
+    for i, line in enumerate(lines):
+        low = line.lower()
+        row = " ".join(lines[i : i + 2])
+        if wanted in low:
+            rows.append(row)
+        elif i + 1 < len(lines):
+            following = lines[i + 1].lower()
+            for k in range(1, len(words)):
+                head, tail = " ".join(words[:k]), " ".join(words[k:])
+                if head in low and following.startswith(tail):
+                    rows.append(row)
+                    break
+    return rows
+
+
 def item_problem(name: str, quantity: int, unit_price: float, line_total: float, lines: list[str]):
     """Why this item row cannot be proven, or None if it can.
 
     The name, the quantity, the unit price and the amount must be written on the row of the item. A layout
-    may print the numbers on the line below the name, so the line after the name is part of the row.
+    may print the numbers on the line below the name, so the line after the name is part of the row. A name
+    may also wrap: its first words sit on the numbers line and the rest at the start of the next line.
     """
     wanted = normalize_for_match(name).lower()
-    rows = [" ".join(lines[i : i + 2]) for i, line in enumerate(lines) if wanted in line.lower()]
+    rows = _name_rows(wanted, lines)
     if not rows:
         return f"item {name!r} is not written in the document"
     checks = (("quantity", quantity), ("unit price", unit_price), ("amount", line_total))
