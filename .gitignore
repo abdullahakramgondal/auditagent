@@ -24,6 +24,7 @@ data/generated/
 # first_run_* folders are NOT matched here: they stay in git on purpose.
 eval/results/agent1_*/
 eval/results/agent2_*/
+eval/results/pipeline_*/
 
 # OS
 Thumbs.db
