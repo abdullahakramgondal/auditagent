@@ -21,12 +21,16 @@ class Finding(BaseModel):
 
 
 class AuditResult(BaseModel):
-    """Final report for one contract + PO + invoice set."""
+    """Final report for one contract + PO + invoice set.
+
+    The amounts are None only when the audit could not run (a NEEDS_REVIEW result, for example an
+    invoice that could not be proven from its text).
+    """
 
     status: AuditStatus
-    billed_total: Decimal = Field(ge=0)
-    correct_payable: Decimal = Field(ge=0)
-    total_difference: Decimal = Field(ge=0)
+    billed_total: Decimal | None = Field(default=None, ge=0)
+    correct_payable: Decimal | None = Field(default=None, ge=0)
+    total_difference: Decimal | None = Field(default=None, ge=0)
     findings: list[Finding] = Field(default_factory=list)
     review_reasons: list[str] = Field(default_factory=list)
 
@@ -38,6 +42,9 @@ class AuditResult(BaseModel):
             raise ValueError("NON_COMPLIANT result needs at least one finding")
         if self.status == "NEEDS_REVIEW" and not self.review_reasons:
             raise ValueError("NEEDS_REVIEW result needs at least one review reason")
+        amounts = (self.billed_total, self.correct_payable, self.total_difference)
+        if self.status != "NEEDS_REVIEW" and any(value is None for value in amounts):
+            raise ValueError("only a NEEDS_REVIEW result may have no amounts")
         return self
 
     @model_validator(mode="after")
@@ -47,10 +54,15 @@ class AuditResult(BaseModel):
         total_difference is always the sum of the findings. It also equals billed minus correct
         payable, unless a review reason says that something on the invoice is not explained.
         """
+        if self.total_difference is None:
+            return self
         if self.total_difference != sum((f.difference for f in self.findings), Decimal(0)):
             raise ValueError("total_difference must equal the sum of the finding differences")
-        if not self.review_reasons and (
-            self.billed_total - self.correct_payable != self.total_difference
+        if (
+            self.billed_total is not None
+            and self.correct_payable is not None
+            and not self.review_reasons
+            and self.billed_total - self.correct_payable != self.total_difference
         ):
             raise ValueError("total_difference must equal billed_total minus correct_payable")
         return self
