@@ -2,7 +2,7 @@
   "tier": "a",
   "provider": "gemini",
   "model": "gemini-3.1-flash-lite",
-  "code_hash": "025ab1b02e2a",
+  "code_hash": "98c0f0a278ce",
   "contracts": 31,
   "ran_now": 31,
   "reused": 0,
@@ -114,8 +114,8 @@
       "quote_accuracy": 0.931
     }
   },
-  "avg_seconds": 14.8,
-  "median_seconds": 14.8,
+  "avg_seconds": 16.3,
+  "median_seconds": 14.2,
   "avg_calls": 4.0,
   "problems": [],
   "issues": []
