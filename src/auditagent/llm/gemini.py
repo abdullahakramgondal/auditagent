@@ -2,6 +2,7 @@
 
 import logging
 
+import httpx
 from google import genai
 from google.genai import errors, types
 from pydantic import BaseModel
@@ -21,7 +22,11 @@ logger = logging.getLogger(__name__)
 
 
 class GeminiProvider:
-    """Gemini through the Google AI Studio API. A rate limit or a temporary outage is retried with a growing wait."""
+    """Gemini through the Google AI Studio API.
+
+    A rate limit, a temporary outage or a call that does not answer within `timeout` seconds is
+    retried with a growing wait (TODO item 81: calls of 130 to 150 s were seen).
+    """
 
     name = "gemini"
 
@@ -32,9 +37,14 @@ class GeminiProvider:
         client=None,
         retry_wait: float = 2.0,
         max_retries: int = 5,
+        timeout: float = 90.0,
     ):
         self.model = model
-        self._client = client or genai.Client(api_key=api_key)
+        self._timeout = timeout
+        self._client = client or genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(timeout=int(timeout * 1000)),  # milliseconds
+        )
         self._retry_wait = retry_wait
         self._max_retries = max_retries
         self.retries = 0  # how many times a call had to be tried again
@@ -81,6 +91,10 @@ class GeminiProvider:
             if exc.code in TRANSIENT_CODES:
                 raise LLMTransientError(f"Gemini {exc.code} ({detail}), temporary") from exc
             raise LLMError(f"Gemini API error {exc.code} ({detail})") from exc
+        except httpx.TimeoutException as exc:
+            raise LLMTransientError(
+                f"Gemini did not answer within {self._timeout:.0f}s, temporary"
+            ) from exc
         return response.text or ""  # empty text fails validation and triggers a retry upstream
 
     def list_models(self) -> list[str]:
