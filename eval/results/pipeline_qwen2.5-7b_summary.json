@@ -1,0 +1,84 @@
+{
+  "provider": "ollama",
+  "model": "qwen2.5:7b",
+  "code_hash": "c20555414bc6",
+  "cases": 3,
+  "ran_now": 3,
+  "reused": 0,
+  "reused_from_old_code": 0,
+  "summary": {
+    "anchor": {
+      "cases": 1,
+      "correct": 0,
+      "review": 1,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 0.0
+    },
+    "ALL": {
+      "cases": 3,
+      "correct": 1,
+      "review": 2,
+      "wrong": 0,
+      "correct_with_reasons": 1,
+      "accuracy": 0.333
+    },
+    "late_flat": {
+      "cases": 1,
+      "correct": 0,
+      "review": 1,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 0.0
+    },
+    "volume_missed": {
+      "cases": 1,
+      "correct": 1,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 1,
+      "accuracy": 1.0
+    }
+  },
+  "avg_seconds": 238.3,
+  "median_seconds": 245.5,
+  "avg_calls": 6.0,
+  "not_clean": [
+    {
+      "case": "case_001",
+      "category": "anchor",
+      "outcome": "review",
+      "checks": {
+        "status": false,
+        "billed_total": true,
+        "correct_payable": false,
+        "total_difference": false,
+        "finding_types": false
+      }
+    },
+    {
+      "case": "gen_010",
+      "category": "late_flat",
+      "outcome": "review",
+      "checks": {
+        "status": false,
+        "billed_total": true,
+        "correct_payable": false,
+        "total_difference": false,
+        "finding_types": false
+      }
+    },
+    {
+      "case": "gen_020",
+      "category": "volume_missed",
+      "outcome": "correct",
+      "checks": {
+        "status": true,
+        "billed_total": true,
+        "correct_payable": true,
+        "total_difference": true,
+        "finding_types": true
+      }
+    }
+  ]
+}

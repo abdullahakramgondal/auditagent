@@ -1,0 +1,131 @@
+{
+  "provider": "ollama",
+  "model": "qwen2.5:3b",
+  "code_hash": "fca98a9039b5",
+  "cases": 5,
+  "ran_now": 5,
+  "reused": 0,
+  "reused_from_old_code": 0,
+  "summary": {
+    "invoice": {
+      "docs": 5,
+      "correct": 1,
+      "wrong": 1,
+      "refused": 3,
+      "correct_with_issues": 0,
+      "field_ok": 13,
+      "field_n": 14,
+      "recall": 0.2,
+      "precision": 0.5,
+      "field_accuracy": 0.929
+    },
+    "purchase_order": {
+      "docs": 5,
+      "correct": 5,
+      "wrong": 0,
+      "refused": 0,
+      "correct_with_issues": 0,
+      "field_ok": 25,
+      "field_n": 25,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    },
+    "ALL": {
+      "docs": 10,
+      "correct": 6,
+      "wrong": 1,
+      "refused": 3,
+      "correct_with_issues": 0,
+      "field_ok": 38,
+      "field_n": 39,
+      "recall": 0.6,
+      "precision": 0.857,
+      "field_accuracy": 0.974
+    }
+  },
+  "avg_seconds": 33.3,
+  "median_seconds": 31.3,
+  "avg_calls": 2.0,
+  "wrong_values": [
+    [
+      "gen_018",
+      "invoice",
+      "adjustments",
+      "[]",
+      "[Adjustment(label='Total', amount=Decimal('4340000.0'))]"
+    ]
+  ],
+  "issues": [
+    [
+      "case_001",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Discount' is not written in the document"
+    ],
+    [
+      "case_001",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Charge' is not written in the document"
+    ],
+    [
+      "case_001",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Credit' is not written in the document"
+    ],
+    [
+      "gen_012",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Discount' is not written in the document"
+    ],
+    [
+      "gen_012",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Charge' is not written in the document"
+    ],
+    [
+      "gen_012",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Credit' is not written in the document"
+    ],
+    [
+      "gen_018",
+      "invoice",
+      "extracted",
+      "total_amount",
+      "The rows and adjustments add up to 8,680,000.00 but the total is 4,340,000.00"
+    ],
+    [
+      "gen_024",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Discount' is not written in the document"
+    ],
+    [
+      "gen_024",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Charge' is not written in the document"
+    ],
+    [
+      "gen_024",
+      "invoice",
+      "REFUSED",
+      "adjustments",
+      "adjustment 'Credit' is not written in the document"
+    ]
+  ]
+}

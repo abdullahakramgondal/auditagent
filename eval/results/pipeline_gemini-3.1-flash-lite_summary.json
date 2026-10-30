@@ -3,8 +3,8 @@
   "model": "gemini-3.1-flash-lite",
   "code_hash": "c20555414bc6",
   "cases": 2,
-  "ran_now": 2,
-  "reused": 0,
+  "ran_now": 0,
+  "reused": 2,
   "reused_from_old_code": 0,
   "summary": {
     "anchor": {

@@ -130,3 +130,6 @@
 - Day 23: pipeline_eval on 31 cases (Gemini): 31 correct, 0 wrong, 0 review, 0 reasons; 6 model calls and median 39.5 s per case (mean 65.5 s: Gemini calls of 100 to 150 s happen). Easy test (own generator): the same lesson as Day 9 and Day 16
 - Item 81: Gemini calls have no timeout (calls of 130 to 150 s seen several times on Day 23). Add a timeout that raises LLMTransientError so it retries
 - Item 36 (open): Gemini floats show "15.0%" in finding descriptions; normalise
+
+- Day 25 regression (Gemini, code after the engine, pipeline and timeout changes): pytest 379; hint_check 0 and 0; Agent 1 Tier A 58 of 58, Tier B 45 of 45; Agent 2 62 of 62 and set B 7 of 8, all 0 wrong. Demo check: gen_001 contract and PO with the cb_07 invoice gives NEEDS_REVIEW with no amounts, as expected
+- Item 82: a 429 (rate limit) needs a longer wait than a 503. Gemini was fast on Day 25 (1 to 2 s per call), so the eval sent more than 15 calls a minute and stopped after 30 s of retries at gen_002. For a long run use --pause 25. For the API: on a 429 wait up to 60 s and say "busy, try again" (items 30 and 81)
