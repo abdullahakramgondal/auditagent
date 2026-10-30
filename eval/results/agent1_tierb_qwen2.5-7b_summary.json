@@ -1,0 +1,283 @@
+{
+  "tier": "b",
+  "provider": "ollama",
+  "model": "qwen2.5:7b",
+  "code_hash": "76b84590641d",
+  "contracts": 16,
+  "ran_now": 16,
+  "reused": 0,
+  "reused_from_old_code": 0,
+  "summary": {
+    "late_penalty": {
+      "gold": 11,
+      "correct": 7,
+      "wrong": 0,
+      "refused": 4,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 5,
+      "pairs": 7,
+      "field_ok": 35,
+      "field_n": 35,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.636,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "volume_discount": {
+      "gold": 11,
+      "correct": 11,
+      "wrong": 0,
+      "refused": 0,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 5,
+      "pairs": 11,
+      "field_ok": 22,
+      "field_n": 22,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "payment_terms": {
+      "gold": 14,
+      "correct": 13,
+      "wrong": 0,
+      "refused": 1,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 2,
+      "pairs": 13,
+      "field_ok": 13,
+      "field_n": 13,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.929,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "unit_price": {
+      "gold": 9,
+      "correct": 6,
+      "wrong": 0,
+      "refused": 3,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 7,
+      "pairs": 6,
+      "field_ok": 12,
+      "field_n": 12,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.667,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    },
+    "ALL": {
+      "gold": 45,
+      "correct": 37,
+      "wrong": 0,
+      "refused": 8,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 19,
+      "pairs": 37,
+      "field_ok": 82,
+      "field_n": 82,
+      "page_ok": 0,
+      "page_n": 0,
+      "quote_ok": 0,
+      "quote_n": 0,
+      "recall": 0.822,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": null,
+      "quote_accuracy": null
+    }
+  },
+  "avg_seconds": 313.3,
+  "median_seconds": 300.5,
+  "avg_calls": 4.2,
+  "problems": [
+    {
+      "case": "tb_03",
+      "clause": "unit_price",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "unit_price",
+        "item_name": "Cisco Catalyst 9300 Switch",
+        "agreed_unit_price": "540000"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_04",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-10-31",
+        "mode": "flat_percent",
+        "percent": "10",
+        "grace_days": 2
+      },
+      "got": null
+    },
+    {
+      "case": "tb_04",
+      "clause": "unit_price",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "unit_price",
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "agreed_unit_price": "275000"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_06",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2027-01-15",
+        "mode": "per_day_percent",
+        "percent": "0.5",
+        "grace_days": 7,
+        "cap_percent": "5"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_09",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2027-02-28",
+        "mode": "per_day_percent",
+        "percent": "2.5",
+        "grace_days": 4,
+        "cap_percent": "15"
+      },
+      "got": null
+    },
+    {
+      "case": "tb_13",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2027-05-14",
+        "mode": "flat_percent",
+        "percent": "12",
+        "grace_days": 6
+      },
+      "got": null
+    },
+    {
+      "case": "tb_13",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 40
+      },
+      "got": null
+    },
+    {
+      "case": "tb_15",
+      "clause": "unit_price",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "unit_price",
+        "item_name": "Cisco Meraki MR46 Access Point",
+        "agreed_unit_price": "92000"
+      },
+      "got": null
+    }
+  ],
+  "issues": [
+    {
+      "case": "tb_03",
+      "clause": "unit_price",
+      "reason": "Quote not found in the contract text",
+      "quote": "The Cisco Catalyst 9300 Switch shall be supplied at a unit price of PKR 540,000, and the Vendor shall not invoice the Buyer for that item at any amount higher than that unit price, whatever the market conditions at the time of the Purchase Order or of delivery."
+    },
+    {
+      "case": "tb_04",
+      "clause": "late_penalty",
+      "reason": "Model output unusable: No valid output after 3 attempts. Last problems: rules.0.cap_percent: Input should be greater than or equal to 0.01",
+      "quote": ""
+    },
+    {
+      "case": "tb_04",
+      "clause": "unit_price",
+      "reason": "item 'Lenovo ThinkPad T14 Laptop' is not written in the quote; agreed_unit_price 275000.0 is not written in the quote",
+      "quote": "No Invoice issued by the Vendor shall charge any sum in excess of the Agreed Unit Price per Unit, and any amount invoiced above that figure shall not be payable by the Buyer."
+    },
+    {
+      "case": "tb_06",
+      "clause": "late_penalty",
+      "reason": "grace_days 7 is not written in the quote",
+      "quote": "For each subsequent day of delay, the Vendor shall be liable to the Buyer for a penalty calculated at 0.5% of the invoice value, subject to an aggregate maximum of 5% of that invoice value. This delivery penalty is the specific agreed remedy for delay under this clause, to the extent permitted by Applicable Law, and shall not be interpreted as a general charge on unrelated invoices or orders."
+    },
+    {
+      "case": "tb_09",
+      "clause": "late_penalty",
+      "reason": "deadline '28 February 2027 (the \u201cDelivery Deadline\u201d)' is not a date that can be read (YYYY-MM-DD, or a written date such as 15 October 2026)",
+      "quote": "If delivery is delayed beyond the Delivery Deadline, the first four (4) calendar days of delay shall not attract a late-delivery penalty. From the next day, a penalty of 2.5% of the value of the delayed Equipment shown on the relevant Invoice shall apply for each day of delay, subject to an aggregate ceiling of 15% of that Invoice value."
+    },
+    {
+      "case": "tb_13",
+      "clause": "late_penalty",
+      "reason": "deadline 14 May 2027 is not written in the quote",
+      "quote": "4.2 If the Vendor delivers the Equipment, or any part of it, after the Delivery Deadline, the Vendor shall pay the Buyer a single penalty equal to 12% of the invoice value of the Equipment so delivered late. No penalty shall accrue in respect of the first six (6) days of delay, so that the penalty becomes payable only where delivery is completed after that initial period of grace has elapsed."
+    },
+    {
+      "case": "tb_13",
+      "clause": "payment_terms",
+      "reason": "net_days 40 is not written in the quote",
+      "quote": "The Buyer shall pay each invoice that is correct and undisputed in full on or before the expiry of that net period, by bank transfer to the account that the Vendor has nominated in writing for that purpose."
+    },
+    {
+      "case": "tb_13",
+      "clause": "unit_price",
+      "reason": "item 'not specified' is not written in the quote; agreed_unit_price 1.0 is not written in the quote",
+      "quote": "The price of each item of Equipment shall be the price that the Parties have agreed in writing in the relevant Purchase Order before the Vendor acknowledges that Purchase Order. The Vendor shall not be entitled to charge for any item whose price has not been so agreed, and no invoice shall state a price higher than the one so agreed."
+    },
+    {
+      "case": "tb_15",
+      "clause": "unit_price",
+      "reason": "item 'Cisco Meraki MR46 Access Point' is not written in the quote; agreed_unit_price 92000.0 is not written in the quote",
+      "quote": "6.1 The unit prices of the Equipment are set out in Schedule 1. No invoice issued under this Agreement shall state a unit price that exceeds the unit price set out for the relevant item in Schedule 1."
+    }
+  ]
+}

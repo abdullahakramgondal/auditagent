@@ -1,75 +1,163 @@
 {
   "provider": "ollama",
   "model": "qwen2.5:7b",
-  "code_hash": "c20555414bc6",
-  "cases": 3,
-  "ran_now": 3,
+  "code_hash": "588d4a20e8e2",
+  "cases": 31,
+  "ran_now": 31,
   "reused": 0,
   "reused_from_old_code": 0,
   "summary": {
     "anchor": {
       "cases": 1,
-      "correct": 0,
-      "review": 1,
+      "correct": 1,
+      "review": 0,
       "wrong": 0,
       "correct_with_reasons": 0,
-      "accuracy": 0.0
+      "accuracy": 1.0
     },
     "ALL": {
-      "cases": 3,
-      "correct": 1,
-      "review": 2,
+      "cases": 31,
+      "correct": 27,
+      "review": 4,
       "wrong": 0,
-      "correct_with_reasons": 1,
-      "accuracy": 0.333
+      "correct_with_reasons": 2,
+      "accuracy": 0.871
     },
-    "late_flat": {
-      "cases": 1,
-      "correct": 0,
+    "compliant_plain": {
+      "cases": 4,
+      "correct": 3,
       "review": 1,
       "wrong": 0,
       "correct_with_reasons": 0,
-      "accuracy": 0.0
+      "accuracy": 0.75
     },
-    "volume_missed": {
-      "cases": 1,
-      "correct": 1,
+    "compliant_applied": {
+      "cases": 2,
+      "correct": 2,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "late_flat": {
+      "cases": 4,
+      "correct": 4,
       "review": 0,
       "wrong": 0,
       "correct_with_reasons": 1,
       "accuracy": 1.0
+    },
+    "late_per_day": {
+      "cases": 4,
+      "correct": 3,
+      "review": 1,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 0.75
+    },
+    "grace_inside": {
+      "cases": 3,
+      "correct": 2,
+      "review": 1,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 0.667
+    },
+    "volume_missed": {
+      "cases": 3,
+      "correct": 3,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 1,
+      "accuracy": 1.0
+    },
+    "price_over": {
+      "cases": 3,
+      "correct": 3,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "terms_wrong": {
+      "cases": 2,
+      "correct": 2,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "multi_breach": {
+      "cases": 3,
+      "correct": 2,
+      "review": 1,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 0.667
+    },
+    "decoy": {
+      "cases": 2,
+      "correct": 2,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
     }
   },
-  "avg_seconds": 238.3,
-  "median_seconds": 245.5,
+  "avg_seconds": 260.8,
+  "median_seconds": 253.0,
   "avg_calls": 6.0,
   "not_clean": [
     {
-      "case": "case_001",
-      "category": "anchor",
+      "case": "gen_001",
+      "category": "compliant_plain",
       "outcome": "review",
       "checks": {
         "status": false,
-        "billed_total": true,
+        "billed_total": false,
         "correct_payable": false,
         "total_difference": false,
-        "finding_types": false
+        "finding_types": true
       }
     },
     {
-      "case": "gen_010",
+      "case": "gen_007",
       "category": "late_flat",
+      "outcome": "correct",
+      "checks": {
+        "status": true,
+        "billed_total": true,
+        "correct_payable": true,
+        "total_difference": true,
+        "finding_types": true
+      }
+    },
+    {
+      "case": "gen_014",
+      "category": "late_per_day",
       "outcome": "review",
       "checks": {
         "status": false,
-        "billed_total": true,
+        "billed_total": false,
         "correct_payable": false,
         "total_difference": false,
         "finding_types": false
       }
     },
     {
-      "case": "gen_020",
+      "case": "gen_016",
+      "category": "grace_inside",
+      "outcome": "review",
+      "checks": {
+        "status": false,
+        "billed_total": true,
+        "correct_payable": true,
+        "total_difference": true,
+        "finding_types": true
+      }
+    },
+    {
+      "case": "gen_019",
       "category": "volume_missed",
       "outcome": "correct",
       "checks": {
@@ -78,6 +166,18 @@
         "correct_payable": true,
         "total_difference": true,
         "finding_types": true
+      }
+    },
+    {
+      "case": "gen_028",
+      "category": "multi_breach",
+      "outcome": "review",
+      "checks": {
+        "status": false,
+        "billed_total": false,
+        "correct_payable": false,
+        "total_difference": false,
+        "finding_types": false
       }
     }
   ]

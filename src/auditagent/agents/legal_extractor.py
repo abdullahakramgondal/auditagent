@@ -1,7 +1,6 @@
 """Agent 1: find the audit rules in a contract and prove each one against the contract text."""
 
 import re
-from datetime import date
 from decimal import Decimal
 
 from pydantic import TypeAdapter, ValidationError
@@ -14,6 +13,7 @@ from auditagent.agents.grounding import (
     is_clause,
     locate_quote,
     number_in,
+    parse_written_date,
     percent_count,
     percent_in,
     shares_defined_term,
@@ -181,7 +181,8 @@ def _rule_fields(kind: str, form) -> dict:
         cap = _effective_cap(form)
         return {
             "clause_type": kind,
-            "deadline": form.deadline,
+            # _check_deadline has already proven that this text is a readable date.
+            "deadline": parse_written_date(form.deadline),
             "mode": form.mode,
             "percent": Decimal(str(form.percent)),
             "cap_percent": None if cap is None else Decimal(str(cap)),
@@ -244,7 +245,9 @@ def _check_deadline(
 ) -> tuple[str | None, dict | None]:
     """Prove the deadline date. Returns (problem, source of the date when it is outside the penalty quote).
 
-    The date is accepted in four cases:
+    The model should answer YYYY-MM-DD, but a written date such as 15 October 2026 is read too
+    (parse_written_date, TODO item 60). Reading the format proves nothing: the date must still be
+    written in the contract, in one of four cases:
       1. it is written in the penalty quote itself;
       2. it is written in the deadline quote and that passage is in the SAME clause (chunk) as the
          penalty quote, for example the neighbouring sentence "the delivery date is 15 January 2027";
@@ -255,10 +258,15 @@ def _check_deadline(
     The deadline quote must really exist in the contract. Cases 3 and 4 keep a decoy clause from
     borrowing a date: the link has to be written in the contract itself.
     """
-    try:
-        deadline = date.fromisoformat(form.deadline)
-    except ValueError:
-        return f"deadline {form.deadline!r} is not a valid YYYY-MM-DD date", None
+    deadline = parse_written_date(form.deadline)
+    if deadline is None:
+        return (
+            (
+                f"deadline {form.deadline!r} is not a date that can be read "
+                "(YYYY-MM-DD, or a written date such as 15 October 2026)"
+            ),
+            None,
+        )
     if date_in(deadline, form.quote):
         return None, None
     missing = f"deadline {form.deadline} is not written in the quote"

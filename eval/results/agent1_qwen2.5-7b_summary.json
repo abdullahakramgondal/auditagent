@@ -1,0 +1,162 @@
+{
+  "tier": "a",
+  "provider": "ollama",
+  "model": "qwen2.5:7b",
+  "code_hash": "76b84590641d",
+  "contracts": 31,
+  "ran_now": 31,
+  "reused": 0,
+  "reused_from_old_code": 0,
+  "summary": {
+    "late_penalty": {
+      "gold": 20,
+      "correct": 19,
+      "wrong": 0,
+      "refused": 1,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 11,
+      "pairs": 19,
+      "field_ok": 95,
+      "field_n": 95,
+      "page_ok": 19,
+      "page_n": 19,
+      "quote_ok": 19,
+      "quote_n": 19,
+      "recall": 0.95,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": 1.0,
+      "quote_accuracy": 1.0
+    },
+    "volume_discount": {
+      "gold": 13,
+      "correct": 13,
+      "wrong": 0,
+      "refused": 0,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 18,
+      "pairs": 13,
+      "field_ok": 26,
+      "field_n": 26,
+      "page_ok": 13,
+      "page_n": 13,
+      "quote_ok": 13,
+      "quote_n": 13,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": 1.0,
+      "quote_accuracy": 1.0
+    },
+    "payment_terms": {
+      "gold": 15,
+      "correct": 14,
+      "wrong": 0,
+      "refused": 1,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 16,
+      "pairs": 14,
+      "field_ok": 14,
+      "field_n": 14,
+      "page_ok": 14,
+      "page_n": 14,
+      "quote_ok": 14,
+      "quote_n": 14,
+      "recall": 0.933,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": 1.0,
+      "quote_accuracy": 1.0
+    },
+    "unit_price": {
+      "gold": 10,
+      "correct": 10,
+      "wrong": 0,
+      "refused": 0,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 21,
+      "pairs": 10,
+      "field_ok": 20,
+      "field_n": 20,
+      "page_ok": 10,
+      "page_n": 10,
+      "quote_ok": 10,
+      "quote_n": 10,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": 1.0,
+      "quote_accuracy": 1.0
+    },
+    "ALL": {
+      "gold": 58,
+      "correct": 56,
+      "wrong": 0,
+      "refused": 2,
+      "silent_miss": 0,
+      "spurious": 0,
+      "correct_absent": 66,
+      "pairs": 56,
+      "field_ok": 155,
+      "field_n": 155,
+      "page_ok": 56,
+      "page_n": 56,
+      "quote_ok": 56,
+      "quote_n": 56,
+      "recall": 0.966,
+      "precision": 1.0,
+      "field_accuracy": 1.0,
+      "page_accuracy": 1.0,
+      "quote_accuracy": 1.0
+    }
+  },
+  "avg_seconds": 196.1,
+  "median_seconds": 195.1,
+  "avg_calls": 4.0,
+  "problems": [
+    {
+      "case": "gen_001",
+      "clause": "late_penalty",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "late_penalty",
+        "deadline": "2026-10-19",
+        "mode": "per_day_percent",
+        "grace_days": 0,
+        "percent": "2",
+        "cap_percent": "8"
+      },
+      "got": null
+    },
+    {
+      "case": "gen_016",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 60
+      },
+      "got": null
+    }
+  ],
+  "issues": [
+    {
+      "case": "gen_001",
+      "clause": "late_penalty",
+      "reason": "grace_days 19 is not written in the quote",
+      "quote": "For each day of delay beyond 19 October 2026, a penalty of 2% of the invoice value shall apply, up to a maximum of 8%."
+    },
+    {
+      "case": "gen_016",
+      "clause": "payment_terms",
+      "reason": "Keywords found in the contract but no rule extracted: needs review",
+      "quote": ""
+    }
+  ]
+}

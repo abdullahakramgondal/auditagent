@@ -44,6 +44,19 @@ _MONTHS = (
     "november",
     "december",
 )
+# Month names as written: the full name, the first three letters, and "sept".
+_MONTH_NUMBERS = {name: number for number, name in enumerate(_MONTHS, start=1)}
+_MONTH_NUMBERS |= {name[:3]: number for number, name in enumerate(_MONTHS, start=1)}
+_MONTH_NUMBERS["sept"] = 9
+# The written dates a model may answer with instead of YYYY-MM-DD (TODO item 60). A date such as
+# 15/10/2026 is NOT read: nothing says whether the day or the month comes first.
+_ISO_DATE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")
+_DAY_FIRST_RE = re.compile(
+    r"^(\d{1,2})(?:st|nd|rd|th)?(?:\s+of)?[\s-]+([A-Za-z]{3,9})\.?,?[\s-]+(\d{4})$", re.IGNORECASE
+)
+_MONTH_FIRST_RE = re.compile(
+    r"^([A-Za-z]{3,9})\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$", re.IGNORECASE
+)
 _QUOTES = {0x201C: '"', 0x201D: '"', 0x2018: "'", 0x2019: "'"}
 
 
@@ -123,6 +136,32 @@ def date_in(day: date, text: str) -> bool:
                     f"{m} {d}{suffix}, {day.year}",
                 }
     return any(form in t for form in forms)
+
+
+def parse_written_date(text: str) -> date | None:
+    """The date that a model answered with, or None if it cannot be read without guessing.
+
+    Reads YYYY-MM-DD and the clear written forms: 15 October 2026, 15th of October, 2026,
+    October 15, 2026, 15-Oct-2026. It does not prove the date: the caller must still find it in the
+    contract text (date_in). A numeric date such as 15/10/2026 is ambiguous and gives None.
+    """
+    folded = _fold(text)
+    if match := _ISO_DATE_RE.match(folded):
+        year, month, day = (int(group) for group in match.groups())
+    elif match := _DAY_FIRST_RE.match(folded):
+        day, year = int(match.group(1)), int(match.group(3))
+        month = _MONTH_NUMBERS.get(match.group(2).lower())
+    elif match := _MONTH_FIRST_RE.match(folded):
+        day, year = int(match.group(2)), int(match.group(3))
+        month = _MONTH_NUMBERS.get(match.group(1).lower())
+    else:
+        return None
+    if month is None:
+        return None
+    try:
+        return date(year, month, day)
+    except ValueError:
+        return None
 
 
 def defined_terms(text: str) -> set[str]:

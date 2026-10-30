@@ -1,0 +1,124 @@
+{
+  "provider": "ollama",
+  "model": "qwen2.5:7b",
+  "code_hash": "17325b2bb86e",
+  "ran_now": 8,
+  "reused": 0,
+  "reused_from_old_code": 0,
+  "documents": [
+    {
+      "case": "cb_01",
+      "kind": "invoice",
+      "status": "refused",
+      "shape": "other labels (Tax Invoice No, Date of Supply, Payment Due By, Amount Payable)"
+    },
+    {
+      "case": "cb_02",
+      "kind": "purchase_order",
+      "status": "correct",
+      "shape": "four item rows"
+    },
+    {
+      "case": "cb_03",
+      "kind": "invoice",
+      "status": "refused",
+      "shape": "discount written as a percentage line"
+    },
+    {
+      "case": "cb_04",
+      "kind": "purchase_order",
+      "status": "correct",
+      "shape": "month-first and ordinal dates"
+    },
+    {
+      "case": "cb_05",
+      "kind": "invoice",
+      "status": "refused",
+      "shape": "a sales tax line under the items"
+    },
+    {
+      "case": "cb_06",
+      "kind": "purchase_order",
+      "status": "correct",
+      "shape": "an item name wrapped over two lines"
+    },
+    {
+      "case": "cb_07",
+      "kind": "invoice",
+      "status": "wrong",
+      "shape": "payment terms (Net 30 days) instead of a due date"
+    },
+    {
+      "case": "cb_08",
+      "kind": "invoice",
+      "status": "correct",
+      "shape": "quantity column first, amounts written as Rs."
+    }
+  ],
+  "summary": {
+    "invoice": {
+      "docs": 5,
+      "correct": 1,
+      "wrong": 1,
+      "refused": 3,
+      "correct_with_issues": 0,
+      "field_ok": 13,
+      "field_n": 14,
+      "recall": 0.2,
+      "precision": 0.5,
+      "field_accuracy": 0.929
+    },
+    "purchase_order": {
+      "docs": 3,
+      "correct": 3,
+      "wrong": 0,
+      "refused": 0,
+      "correct_with_issues": 0,
+      "field_ok": 15,
+      "field_n": 15,
+      "recall": 1.0,
+      "precision": 1.0,
+      "field_accuracy": 1.0
+    },
+    "ALL": {
+      "docs": 8,
+      "correct": 4,
+      "wrong": 1,
+      "refused": 3,
+      "correct_with_issues": 0,
+      "field_ok": 28,
+      "field_n": 29,
+      "recall": 0.5,
+      "precision": 0.8,
+      "field_accuracy": 0.966
+    }
+  },
+  "wrong_values": [
+    [
+      "cb_07",
+      "line_items",
+      "[LineItem(item_name='Ubiquiti UniFi Dream Machine Pro', quantity=5, unit_price=Decimal('78000'), line_total=Decimal('390000'))]",
+      "[LineItem(item_name='Ubiquiti UniFi Dream Machine Pro 5', quantity=5, unit_price=Decimal('78000.0'), line_total=Decimal('390000.0'))]"
+    ]
+  ],
+  "issues": [
+    [
+      "cb_01",
+      "REFUSED",
+      "delivery_date",
+      "delivery_date: the document shows a date next to a label for it but the model returned none: needs review"
+    ],
+    [
+      "cb_03",
+      "REFUSED",
+      "delivery_date",
+      "delivery_date: the document shows a date next to a label for it but the model returned none: needs review"
+    ],
+    [
+      "cb_05",
+      "REFUSED",
+      "delivery_date",
+      "delivery_date: the document shows a date next to a label for it but the model returned none: needs review"
+    ]
+  ]
+}
