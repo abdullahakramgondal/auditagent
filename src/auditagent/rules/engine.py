@@ -46,6 +46,11 @@ def money(value: Decimal) -> Decimal:
     return value.quantize(CENT, rounding=ROUND_HALF_UP)
 
 
+def pct(value: Decimal) -> str:
+    """A percentage without a trailing zero: 15.0 -> "15", 2.50 -> "2.5" (TODO item 36)."""
+    return format(value.normalize(), "f")
+
+
 def _pkr(value: Decimal) -> str:
     return f"PKR {money(value):,.2f}"
 
@@ -179,7 +184,7 @@ def audit_invoice(
             finding = _deduction_finding(
                 "volume_discount",
                 rule.source,
-                f"The invoice has {units} units, the contract gives {rule.discount_percent}% "
+                f"The invoice has {units} units, the contract gives {pct(rule.discount_percent)}% "
                 f"from {rule.min_quantity} units: {_pkr(owed)} discount not applied.",
                 base,
                 owed,
@@ -201,7 +206,7 @@ def audit_invoice(
                 "late_penalty",
                 rule.source,
                 f"Delivered on {_day(invoice.delivery_date)}, {days_late} days after "
-                f"{_day(rule.deadline)}: a penalty of {percent}% ({_pkr(owed)}) applies "
+                f"{_day(rule.deadline)}: a penalty of {pct(percent)}% ({_pkr(owed)}) applies "
                 "and was not deducted.",
                 base,
                 owed,
