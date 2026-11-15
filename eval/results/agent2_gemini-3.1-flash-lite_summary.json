@@ -1,7 +1,7 @@
 {
   "provider": "gemini",
   "model": "gemini-3.1-flash-lite",
-  "code_hash": "fca98a9039b5",
+  "code_hash": "0f51eebbf133",
   "cases": 31,
   "ran_now": 31,
   "reused": 0,
@@ -44,8 +44,8 @@
       "field_accuracy": 1.0
     }
   },
-  "avg_seconds": 4.9,
-  "median_seconds": 3.9,
+  "avg_seconds": 11.7,
+  "median_seconds": 9.1,
   "avg_calls": 2.0,
   "wrong_values": [],
   "issues": []

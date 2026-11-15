@@ -1,0 +1,77 @@
+{
+  "case_id": "tb_08",
+  "scenario": "breach",
+  "buyer": "Ravi Code Labs Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-12-31",
+      "mode": "flat_percent",
+      "percent": "15",
+      "grace_days": 0
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Fortinet FortiGate 100F Firewall",
+      "agreed_unit_price": "620000"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 10,
+      "discount_percent": "2"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 30
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-0801",
+    "po_date": "2026-11-11",
+    "delivery_due_date": "2026-12-31",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 30,
+        "unit_price": "620000",
+        "line_total": "18600000"
+      }
+    ],
+    "total_amount": "18600000"
+  },
+  "invoice": {
+    "invoice_number": "INV-2026-0802",
+    "invoice_date": "2027-01-07",
+    "delivery_date": "2027-01-04",
+    "due_date": "2027-01-27",
+    "line_items": [
+      {
+        "item_name": "Fortinet FortiGate 100F Firewall",
+        "quantity": 30,
+        "unit_price": "651000",
+        "line_total": "19530000"
+      }
+    ],
+    "adjustments": [],
+    "total_amount": "19530000"
+  },
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "19530000.00",
+    "correct_payable": "15438000.00",
+    "total_difference": "4092000.00",
+    "finding_types": [
+      "late_penalty",
+      "payment_terms",
+      "unit_price",
+      "volume_discount"
+    ],
+    "finding_amounts": {
+      "unit_price": "930000.00",
+      "volume_discount": "372000.00",
+      "late_penalty": "2790000.00",
+      "payment_terms": "0.00"
+    }
+  }
+}

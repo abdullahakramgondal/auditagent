@@ -1,0 +1,78 @@
+{
+  "case_id": "tb_09",
+  "scenario": "breach",
+  "buyer": "Karakoram Software Pvt Ltd",
+  "vendor": "Gulberg Computers",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2027-02-28",
+      "mode": "per_day_percent",
+      "percent": "2.5",
+      "grace_days": 4,
+      "cap_percent": "15"
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 30,
+      "discount_percent": "7"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Dell UltraSharp U2723QE Monitor",
+      "agreed_unit_price": "85000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 28
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-0901",
+    "po_date": "2027-01-09",
+    "delivery_due_date": "2027-02-28",
+    "line_items": [
+      {
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "quantity": 50,
+        "unit_price": "85000",
+        "line_total": "4250000"
+      }
+    ],
+    "total_amount": "4250000"
+  },
+  "invoice": {
+    "invoice_number": "INV-2026-0902",
+    "invoice_date": "2027-03-12",
+    "delivery_date": "2027-03-09",
+    "due_date": "2027-03-30",
+    "line_items": [
+      {
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "quantity": 50,
+        "unit_price": "89250",
+        "line_total": "4462500"
+      }
+    ],
+    "adjustments": [],
+    "total_amount": "4462500"
+  },
+  "expected": {
+    "status": "NON_COMPLIANT",
+    "billed_total": "4462500.00",
+    "correct_payable": "3421250.00",
+    "total_difference": "1041250.00",
+    "finding_types": [
+      "late_penalty",
+      "payment_terms",
+      "unit_price",
+      "volume_discount"
+    ],
+    "finding_amounts": {
+      "unit_price": "212500.00",
+      "volume_discount": "297500.00",
+      "late_penalty": "531250.00",
+      "payment_terms": "0.00"
+    }
+  }
+}

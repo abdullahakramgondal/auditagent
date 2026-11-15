@@ -1,0 +1,67 @@
+{
+  "case_id": "tb_04",
+  "scenario": "clean",
+  "buyer": "Indus Cloud Services Pvt Ltd",
+  "vendor": "Prime Network Solutions",
+  "rules": [
+    {
+      "clause_type": "late_penalty",
+      "deadline": "2026-10-31",
+      "mode": "flat_percent",
+      "percent": "10",
+      "grace_days": 2
+    },
+    {
+      "clause_type": "volume_discount",
+      "min_quantity": 100,
+      "discount_percent": "12"
+    },
+    {
+      "clause_type": "unit_price",
+      "item_name": "Lenovo ThinkPad T14 Laptop",
+      "agreed_unit_price": "275000"
+    },
+    {
+      "clause_type": "payment_terms",
+      "net_days": 60
+    }
+  ],
+  "purchase_order": {
+    "po_number": "PO-2026-0401",
+    "po_date": "2026-09-11",
+    "delivery_due_date": "2026-10-31",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 99,
+        "unit_price": "275000",
+        "line_total": "27225000"
+      }
+    ],
+    "total_amount": "27225000"
+  },
+  "invoice": {
+    "invoice_number": "INV-2026-0402",
+    "invoice_date": "2026-11-02",
+    "delivery_date": "2026-10-30",
+    "due_date": "2027-01-01",
+    "line_items": [
+      {
+        "item_name": "Lenovo ThinkPad T14 Laptop",
+        "quantity": 99,
+        "unit_price": "275000",
+        "line_total": "27225000"
+      }
+    ],
+    "adjustments": [],
+    "total_amount": "27225000"
+  },
+  "expected": {
+    "status": "COMPLIANT",
+    "billed_total": "27225000.00",
+    "correct_payable": "27225000.00",
+    "total_difference": "0.00",
+    "finding_types": [],
+    "finding_amounts": {}
+  }
+}

@@ -1,10 +1,10 @@
 {
   "provider": "gemini",
   "model": "gemini-3.1-flash-lite",
-  "code_hash": "c20555414bc6",
-  "cases": 2,
-  "ran_now": 0,
-  "reused": 2,
+  "code_hash": "c5d9dc97864b",
+  "cases": 31,
+  "ran_now": 31,
+  "reused": 0,
   "reused_from_old_code": 0,
   "summary": {
     "anchor": {
@@ -16,6 +16,22 @@
       "accuracy": 1.0
     },
     "ALL": {
+      "cases": 31,
+      "correct": 31,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "compliant_plain": {
+      "cases": 4,
+      "correct": 4,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "compliant_applied": {
       "cases": 2,
       "correct": 2,
       "review": 0,
@@ -23,17 +39,73 @@
       "correct_with_reasons": 0,
       "accuracy": 1.0
     },
-    "compliant_plain": {
-      "cases": 1,
-      "correct": 1,
+    "late_flat": {
+      "cases": 4,
+      "correct": 4,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "late_per_day": {
+      "cases": 4,
+      "correct": 4,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "grace_inside": {
+      "cases": 3,
+      "correct": 3,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "volume_missed": {
+      "cases": 3,
+      "correct": 3,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "price_over": {
+      "cases": 3,
+      "correct": 3,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "terms_wrong": {
+      "cases": 2,
+      "correct": 2,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "multi_breach": {
+      "cases": 3,
+      "correct": 3,
+      "review": 0,
+      "wrong": 0,
+      "correct_with_reasons": 0,
+      "accuracy": 1.0
+    },
+    "decoy": {
+      "cases": 2,
+      "correct": 2,
       "review": 0,
       "wrong": 0,
       "correct_with_reasons": 0,
       "accuracy": 1.0
     }
   },
-  "avg_seconds": 22.4,
-  "median_seconds": 22.4,
+  "avg_seconds": 35.9,
+  "median_seconds": 26.9,
   "avg_calls": 6.0,
   "not_clean": []
 }

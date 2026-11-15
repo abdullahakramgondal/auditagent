@@ -2,7 +2,7 @@
   "tier": "b",
   "provider": "gemini",
   "model": "gemini-3.1-flash-lite",
-  "code_hash": "b3fd19b36656",
+  "code_hash": "c7b01ef93c05",
   "contracts": 16,
   "ran_now": 16,
   "reused": 0,
@@ -52,20 +52,20 @@
     },
     "payment_terms": {
       "gold": 14,
-      "correct": 14,
+      "correct": 13,
       "wrong": 0,
-      "refused": 0,
+      "refused": 1,
       "silent_miss": 0,
       "spurious": 0,
       "correct_absent": 2,
-      "pairs": 14,
-      "field_ok": 14,
-      "field_n": 14,
+      "pairs": 13,
+      "field_ok": 13,
+      "field_n": 13,
       "page_ok": 0,
       "page_n": 0,
       "quote_ok": 0,
       "quote_n": 0,
-      "recall": 1.0,
+      "recall": 0.929,
       "precision": 1.0,
       "field_accuracy": 1.0,
       "page_accuracy": null,
@@ -94,29 +94,48 @@
     },
     "ALL": {
       "gold": 45,
-      "correct": 45,
+      "correct": 44,
       "wrong": 0,
-      "refused": 0,
+      "refused": 1,
       "silent_miss": 0,
       "spurious": 0,
       "correct_absent": 19,
-      "pairs": 45,
-      "field_ok": 109,
-      "field_n": 109,
+      "pairs": 44,
+      "field_ok": 108,
+      "field_n": 108,
       "page_ok": 0,
       "page_n": 0,
       "quote_ok": 0,
       "quote_n": 0,
-      "recall": 1.0,
+      "recall": 0.978,
       "precision": 1.0,
       "field_accuracy": 1.0,
       "page_accuracy": null,
       "quote_accuracy": null
     }
   },
-  "avg_seconds": 9.2,
-  "median_seconds": 7.25,
+  "avg_seconds": 7.7,
+  "median_seconds": 7.1,
   "avg_calls": 4.0,
-  "problems": [],
-  "issues": []
+  "problems": [
+    {
+      "case": "tb_10",
+      "clause": "payment_terms",
+      "status": "refused",
+      "wrong_fields": [],
+      "gold": {
+        "clause_type": "payment_terms",
+        "net_days": 45
+      },
+      "got": null
+    }
+  ],
+  "issues": [
+    {
+      "case": "tb_10",
+      "clause": "payment_terms",
+      "reason": "The model returned 2 different payment_terms rules for the contract: it cannot be decided which one counts, needs review",
+      "quote": "Each valid invoice shall be paid by the Buyer within 45 days of its invoice date"
+    }
+  ]
 }
