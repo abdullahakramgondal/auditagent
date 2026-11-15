@@ -1,36 +1,31 @@
-import { resultJsonUrl } from '@/api/audits'
 import { ErrorNotice } from '@/shared/ui/ErrorNotice'
 import { useAudit } from '../hooks/useAudit'
+import { useAuditResult } from '../hooks/useAuditResult'
+import { AuditResultView } from './AuditResultView'
+import { FailedView } from './FailedView'
+import { ProgressView } from './ProgressView'
 
-/** Placeholder until M4: shows the state of the job, polled from the real backend. */
+/** The one place that decides which screen an audit shows: loading, error, failed, running or done. */
 export function AuditView({ id }: { id: string }) {
   const job = useAudit(id)
+  const isDone = job.data?.state === 'done'
+  const result = useAuditResult(id, { enabled: isDone })
 
-  if (job.isPending) return <p>Loading…</p>
+  if (job.isPending) return <p role="status">Loading…</p>
   if (job.isError) {
     return <ErrorNotice message={job.error.message} onRetry={() => void job.refetch()} />
   }
+  if (job.data.state === 'failed') return <FailedView job={job.data} />
+  if (!isDone) return <ProgressView job={job.data} />
 
-  const { state, status, error } = job.data
-  return (
-    <div className="flex flex-col gap-3">
-      <h1 className="text-2xl font-semibold tracking-tight">Audit</h1>
-      <p className="text-sm text-slate-600">Audit {id}</p>
-      <p>
-        State: <strong>{state}</strong>
-        {status && (
-          <>
-            {' '}
-            · Status: <strong>{status}</strong>
-          </>
-        )}
-      </p>
-      {error && <ErrorNotice message={error} />}
-      {state === 'done' && (
-        <a className="text-blue-700 underline" href={resultJsonUrl(id)}>
-          Download result JSON
-        </a>
-      )}
-    </div>
-  )
+  if (result.isPending) return <p role="status">Loading the result…</p>
+  if (result.isError) {
+    return (
+      <ErrorNotice
+        message={`${result.error.message} (audit ${id})`}
+        onRetry={() => void result.refetch()}
+      />
+    )
+  }
+  return <AuditResultView result={result.data} />
 }
