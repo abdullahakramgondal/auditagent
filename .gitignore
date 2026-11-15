@@ -13,6 +13,7 @@ __pycache__/
 htmlcov/
 dist/
 build/
+data/jobs/
 
 # Project data / generated
 chroma_db/
@@ -33,3 +34,7 @@ Thumbs.db
 # Local AI instructions (not for GitHub)
 Claude.md
 AuditAgent AI Front End Architecture Audit & Layout Playbook.md
+
+
+auditagent-web/node_modules/
+auditagent-web/dist/
