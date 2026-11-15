@@ -57,6 +57,8 @@ _DAY_FIRST_RE = re.compile(
 _MONTH_FIRST_RE = re.compile(
     r"^([A-Za-z]{3,9})\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$", re.IGNORECASE
 )
+# A model may copy the defined term after the date: 28 February 2027 (the "Delivery Deadline").
+_TRAILING_BRACKET_RE = re.compile(r"\s*\([^()]*\)\s*$")
 _QUOTES = {0x201C: '"', 0x201D: '"', 0x2018: "'", 0x2019: "'"}
 
 
@@ -142,10 +144,12 @@ def parse_written_date(text: str) -> date | None:
     """The date that a model answered with, or None if it cannot be read without guessing.
 
     Reads YYYY-MM-DD and the clear written forms: 15 October 2026, 15th of October, 2026,
-    October 15, 2026, 15-Oct-2026. It does not prove the date: the caller must still find it in the
-    contract text (date_in). A numeric date such as 15/10/2026 is ambiguous and gives None.
+    October 15, 2026, 15-Oct-2026. A bracket at the end, such as the defined term in
+    28 February 2027 (the "Delivery Deadline"), is ignored. It does not prove the date: the caller
+    must still find it in the contract text (date_in). A numeric date such as 15/10/2026 is
+    ambiguous and gives None.
     """
-    folded = _fold(text)
+    folded = _TRAILING_BRACKET_RE.sub("", _fold(text))
     if match := _ISO_DATE_RE.match(folded):
         year, month, day = (int(group) for group in match.groups())
     elif match := _DAY_FIRST_RE.match(folded):
@@ -190,11 +194,15 @@ def is_clause(chunk: Chunk, number: str) -> bool:
 
 
 def locate_quote(chunks: list[Chunk], quote: str, cited_id: str | None = None) -> Chunk | None:
-    """The chunk that really contains the quote, or None if the quote is not in the contract."""
-    needle = _fold(quote)
+    """The chunk that really contains the quote, or None if the quote is not in the contract.
+
+    Letter case is ignored (a model may write "The" where the contract has "the"); words and
+    numbers must still match exactly.
+    """
+    needle = _fold(quote).lower()
     if len(needle) < MIN_QUOTE_CHARS:
         return None
-    holders = [c for c in chunks if needle in _fold(c.text)]
+    holders = [c for c in chunks if needle in _fold(c.text).lower()]
     if not holders:
         return None
     for chunk in holders:

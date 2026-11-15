@@ -150,3 +150,14 @@ def test_a_penalty_clause_is_linked_to_the_clause_that_defines_its_date():
     assert not shares_defined_term(
         definition, "A penalty applies after the delivery deadline."
     )  # case matters
+
+
+def test_a_quote_that_differs_only_in_letter_case_is_found():
+    chunks = [chunk("a-1", "3. Delivery " + QUOTE)]
+    assert locate_quote(chunks, QUOTE.upper()).chunk_id == "a-1"
+    assert locate_quote(chunks, QUOTE.lower()).chunk_id == "a-1"
+
+
+def test_a_quote_with_different_words_is_still_refused_even_ignoring_case():
+    chunks = [chunk("a-1", "3. Delivery " + QUOTE)]
+    assert locate_quote(chunks, "A PENALTY OF 12% APPLIES FOR EVERY WEEK OF DELAY") is None

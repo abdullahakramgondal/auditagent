@@ -85,11 +85,11 @@ def test_a_wrong_date_is_still_refused_when_the_clause_has_another_date():
     assert "2027-02-15" in issue_for(result, "late_penalty").reason
 
 
-def test_the_penalty_sentence_alone_is_refused_for_the_grace_days_not_for_the_date():
+def test_the_penalty_sentence_alone_is_accepted_when_the_grace_days_are_in_the_same_clause():
+    """Batch 2: the grace sentence is in the same clause, so it need not be in the quote."""
     result = extract(tail_rule(quote=PENALTY_S), SAME_CLAUSE)
-    reason = issue_for(result, "late_penalty").reason
-    assert result.contract.rules == []
-    assert "grace_days 7" in reason and "deadline" not in reason
+    assert result.issues == []
+    assert result.contract.rules[0].grace_days == 7
 
 
 def test_a_date_in_another_clause_without_a_defined_term_is_still_refused():

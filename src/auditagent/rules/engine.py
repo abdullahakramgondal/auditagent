@@ -177,6 +177,16 @@ def audit_invoice(
     units = sum(item.quantity for item in invoice.line_items)
     deductions = ZERO
 
+    # A unit price rule whose item is on no invoice row can never be checked: say so, never stay silent.
+    for rule in rules:
+        if isinstance(rule, UnitPriceRule) and not any(
+            same_item(rule.item_name, item.item_name) for item in invoice.line_items
+        ):
+            reasons.append(
+                f"The contract fixes a unit price for {rule.item_name!r} but no invoice item "
+                "matches that name: check it."
+            )
+
     for rule in rules:
         if isinstance(rule, VolumeDiscountRule) and units >= rule.min_quantity:
             owed = base * rule.discount_percent / HUNDRED

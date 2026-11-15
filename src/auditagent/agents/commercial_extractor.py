@@ -3,7 +3,7 @@
 from datetime import date
 from decimal import Decimal
 
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from auditagent.agents.commercial_forms import (
     InvoiceForm,
@@ -38,6 +38,11 @@ PO_TASK = (
     "Fill in the purchase order form from the document below. List every line item. "
     "Use null for a delivery due date that the document does not show."
 )
+# The dates that a model may leave empty (the other dates are required by the form).
+OPTIONAL_DATES = {
+    "invoice": ("delivery_date", "due_date"),
+    "purchase_order": ("delivery_due_date",),
+}
 
 
 def _issue(field: str, reason: str) -> ExtractionIssue:
@@ -54,6 +59,38 @@ def _prompt(task: str, doc: ParsedDocument) -> str:
     """The prompt: the task, the text of the document, and the answer format."""
     text = "\n".join(page.text for page in doc.pages)
     return f"{task}\n\nDocument text:\n\n{text}\n\nReturn the JSON form."
+
+
+def second_look(
+    provider: LLMProvider,
+    task: str,
+    doc: ParsedDocument,
+    form_class: type[BaseModel],
+    form: BaseModel,
+    lines: list[str],
+    fields: tuple[str, ...],
+) -> BaseModel:
+    """Ask once more about a date that the model left empty although the document shows it.
+
+    A date is asked again only when a line of the document carries the label of that date AND a date.
+    Only the missed fields are taken from the second answer, and the checks that follow are the same
+    as for any date: it must be written on a line that is labelled for it. A second empty answer, or
+    an unusable one, leaves the form as it was, so that the document is refused for review.
+    """
+    missed = [name for name in fields if getattr(form, name) is None and shows_a_date(name, lines)]
+    if not missed:
+        return form
+    note = (
+        f"\n\nYour previous answer left {', '.join(missed)} empty, but the document shows a date "
+        "next to a label for it. Read the document again and fill it in as YYYY-MM-DD. "
+        "Leave it empty only if the document really shows no such date."
+    )
+    try:
+        again = generate_structured(provider, SYSTEM, _prompt(task + note, doc), form_class)
+    except LLMOutputError:
+        return form
+    found = {name: getattr(again, name) for name in missed if getattr(again, name) is not None}
+    return form.model_copy(update=found) if found else form
 
 
 def _date_issues(field: str, value: str | None, lines: list[str]) -> list[ExtractionIssue]:
@@ -202,7 +239,11 @@ class CommercialExtractor:
             return InvoiceResult(
                 issues=[_issue("document", f"Model output unusable: {exc}")], llm_model=model
             )
-        issues = _invoice_issues(form, text_lines("\n".join(p.text for p in doc.pages)))
+        lines = text_lines("\n".join(p.text for p in doc.pages))
+        form = second_look(
+            self._provider, INVOICE_TASK, doc, InvoiceForm, form, lines, OPTIONAL_DATES["invoice"]
+        )
+        issues = _invoice_issues(form, lines)
         if issues:
             return InvoiceResult(issues=issues, llm_model=model)
         try:
@@ -242,7 +283,17 @@ class CommercialExtractor:
             return PurchaseOrderResult(
                 issues=[_issue("document", f"Model output unusable: {exc}")], llm_model=model
             )
-        issues = _po_issues(form, text_lines("\n".join(p.text for p in doc.pages)))
+        lines = text_lines("\n".join(p.text for p in doc.pages))
+        form = second_look(
+            self._provider,
+            PO_TASK,
+            doc,
+            PurchaseOrderForm,
+            form,
+            lines,
+            OPTIONAL_DATES["purchase_order"],
+        )
+        issues = _po_issues(form, lines)
         if issues:
             return PurchaseOrderResult(issues=issues, llm_model=model)
         try:

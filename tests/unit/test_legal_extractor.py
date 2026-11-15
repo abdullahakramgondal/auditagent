@@ -219,13 +219,32 @@ def test_a_clause_whose_values_sit_in_three_sentences_is_accepted_when_the_quote
     assert late.source.page == 2 and late.deadline_source is None
 
 
-def test_quoting_only_the_penalty_sentence_is_refused_because_the_date_and_grace_are_not_in_it():
-    """Regression (tb_06): the model's values were right but its quote held only the third sentence."""
+def test_grace_days_in_a_delay_sentence_of_the_same_clause_are_accepted():
+    """tb_06: the quote holds only the penalty sentence, the grace sentence is next to it."""
     partial = {**MULTI_LATE, "quote": PENALTY_S, "deadline_quote": DATE_S}
     result, _ = run([reply(partial), reply(), reply(), reply()], document=doc(MULTI_PAGES))
+    assert result.issues == []
+    late = result.contract.rules[0]
+    assert late.grace_days == 7 and late.source.text == PENALTY_S
+
+
+def test_grace_days_that_the_clause_does_not_write_are_refused():
+    wrong = {**MULTI_LATE, "quote": PENALTY_S, "deadline_quote": DATE_S, "grace_days": 9}
+    result, _ = run([reply(wrong), reply(), reply(), reply()], document=doc(MULTI_PAGES))
     assert result.contract.rules == []
-    reason = issue_for(result, "late_penalty").reason
-    assert "grace_days 7" in reason and "deadline" not in reason
+    assert "grace_days 9" in issue_for(result, "late_penalty").reason
+
+
+def test_days_from_a_sentence_that_is_not_about_delay_are_not_a_grace_period():
+    extra = "The Buyer shall inspect the goods within thirty (30) days."
+    pages = [
+        MULTI_PAGES[0],
+        f"SUPPLY AGREEMENT\n7. Delivery and Schedule\n7.3 {WHOLE_CLAUSE} {extra}\nPage 2 of 2",
+    ]
+    wrong = {**MULTI_LATE, "quote": PENALTY_S, "deadline_quote": DATE_S, "grace_days": 30}
+    result, _ = run([reply(wrong), reply(), reply(), reply()], document=doc(pages))
+    assert result.contract.rules == []
+    assert "grace_days 30" in issue_for(result, "late_penalty").reason
 
 
 def test_wrong_chunk_id_does_not_matter_the_real_location_is_used():

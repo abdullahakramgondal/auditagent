@@ -200,6 +200,11 @@ def test_items_are_matched_by_containment_not_equality():
     assert types(result) == ["unit_price"]
 
 
+def test_a_unit_price_rule_for_an_item_that_is_not_on_the_invoice_needs_review():
+    result = audit_invoice(contract(price(item="Router")), invoice())
+    assert result.status == "NEEDS_REVIEW" and "Router" in result.review_reasons[0]
+
+
 # ---- the payment terms ----
 
 

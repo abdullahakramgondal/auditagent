@@ -75,6 +75,13 @@ _UNIT_PRICE_HINT = re.compile(
 _INVOICE_WORD = re.compile(r"\binvoices?\b", re.IGNORECASE)
 _PAYMENT_WORD = re.compile(r"\b(?:pay\w*|paid|settle\w*|due)\b", re.IGNORECASE)
 
+# Values that may come from the SAME clause as the quote (batch 2): the sentences of the clause
+# that talk about the delay (for grace_days) or about the price (for a unit price rule).
+_SENTENCE_END = re.compile(r"(?<=[.;])\s+")
+_DELAY_CONTEXT = re.compile(r"\b(?:delay\w*|penalt\w*|late)\b", re.IGNORECASE)
+_PRICE_CONTEXT = re.compile(r"\b(?:price|unit|rate)\b", re.IGNORECASE)
+_PKR_AMOUNT = re.compile(r"\b(?:PKR|Rs\.?)\s*(\d[\d,]*(?:\.\d+)?)", re.IGNORECASE)
+
 FORMS = {
     "late_penalty": LateRulesForm,
     "volume_discount": VolumeRulesForm,
@@ -203,9 +210,26 @@ def _rule_fields(kind: str, form) -> dict:
     }
 
 
-def _fact_problems(kind: str, form) -> list[str]:
+def _sentences_about(clause_text: str, context: re.Pattern) -> list[str]:
+    """The sentences of a clause that talk about the given subject (delay, price, ...)."""
+    sentences = _SENTENCE_END.split(normalize_for_match(clause_text))
+    return [sentence for sentence in sentences if context.search(sentence)]
+
+
+def _pkr_in(value, text: str) -> bool:
+    """True if `value` is written as a rupee amount (PKR 275,000 or Rs. 275,000) in `text`."""
+    wanted = Decimal(str(value))
+    return any(Decimal(token.replace(",", "")) == wanted for token in _PKR_AMOUNT.findall(text))
+
+
+def _fact_problems(kind: str, form, clause_text: str = "") -> list[str]:
     """Numbers the model reported must really be written in its own quote, in the right role.
-    (The late-penalty deadline is checked separately: its date may sit in another sentence or clause.)"""
+
+    Two values may also come from the SAME clause as the quote (TODO items 41, 59, 64):
+    grace_days from a sentence of the clause that talks about the delay, and the item name and
+    the rupee price of a unit price rule from the clause (the quote may be only a part of it).
+    (The late-penalty deadline is checked separately: its date may sit in another clause.)
+    """
     quote = form.quote
     problems = []
 
@@ -227,16 +251,33 @@ def _fact_problems(kind: str, form) -> list[str]:
                     "and is written only once in the quote"
                 )
         if form.grace_days > 0:
-            need("grace_days", form.grace_days, days_in)
+            written = days_in(form.grace_days, quote) or any(
+                days_in(form.grace_days, sentence)
+                for sentence in _sentences_about(clause_text, _DELAY_CONTEXT)
+            )
+            if not written:
+                problems.append(
+                    f"grace_days {form.grace_days} is not written in the quote "
+                    "or in a sentence about the delay of its clause"
+                )
     elif kind == "volume_discount":
         need("min_quantity", form.min_quantity, units_in)
         need("discount_percent", form.discount_percent, percent_in)
     elif kind == "payment_terms":
         need("net_days", form.net_days, days_in)
     else:
-        if normalize_for_match(form.item_name).lower() not in normalize_for_match(quote).lower():
-            problems.append(f"item {form.item_name!r} is not written in the quote")
-        need("agreed_unit_price", form.agreed_unit_price, number_in)
+        name = normalize_for_match(form.item_name).lower()
+        if (
+            name not in normalize_for_match(quote).lower()
+            and name not in normalize_for_match(clause_text).lower()
+        ):
+            problems.append(f"item {form.item_name!r} is not written in the quote or its clause")
+        price = form.agreed_unit_price
+        in_clause = any(
+            _pkr_in(price, sentence) for sentence in _sentences_about(clause_text, _PRICE_CONTEXT)
+        )
+        if not (number_in(price, quote) or in_clause):
+            problems.append(f"agreed_unit_price {price} is not written in the quote or its clause")
     return problems
 
 
@@ -288,6 +329,53 @@ def _check_deadline(
     )
 
 
+def _canonical(value) -> str:
+    """A value of a rule in one spelling, so that 10 and 10.0 or a different case are the same."""
+    if isinstance(value, Decimal):
+        return format(value.normalize(), "f")
+    return " ".join(str(value).split()).lower()
+
+
+def _rule_key(rule) -> tuple:
+    """What a rule says, without where it was found."""
+    values = rule.model_dump(exclude={"source", "deadline_source"})
+    return tuple(sorted((name, _canonical(value)) for name, value in values.items()))
+
+
+def merge_rules(kind: str, rules: list) -> tuple[list, list[ExtractionIssue]]:
+    """One rule per thing: the same rule found twice is kept once (TODO item 88).
+
+    The engine of v1 audits one rule per clause type, and one unit price per item. Two DIFFERENT rules
+    for the same thing (two net periods, two penalties) cannot be told apart by code: both are dropped
+    and the contract goes to review, never a guess.
+    """
+    distinct: dict[tuple, object] = {}
+    for rule in rules:
+        distinct.setdefault(_rule_key(rule), rule)
+    groups: dict[str, list] = {}
+    for rule in distinct.values():
+        name = _canonical(rule.item_name) if kind == "unit_price" else kind
+        groups.setdefault(name, []).append(rule)
+    kept: list = []
+    issues: list[ExtractionIssue] = []
+    for name, group in groups.items():
+        if len(group) == 1:
+            kept.append(group[0])
+            continue
+        thing = f"item {name!r}" if kind == "unit_price" else "the contract"
+        issues.append(
+            ExtractionIssue(
+                clause_type=kind,
+                reason=(
+                    f"The model returned {len(group)} different {kind} rules for {thing}: "
+                    "it cannot be decided which one counts, needs review"
+                ),
+                quote=group[0].source.text,
+            )
+        )
+    return kept, issues
+
+
 class LegalExtractor:
     """Agent 1: reads one contract and returns the rules it can prove, plus every proposal it had to refuse."""
 
@@ -319,12 +407,16 @@ class LegalExtractor:
                         ExtractionIssue(clause_type=kind, reason=f"Model output unusable: {exc}")
                     )
                     continue
+                found: list = []
                 for item in form.rules:
                     rule, issue = self._verify(kind, item, chunks)
                     if rule is not None:
-                        rules.append(rule)
+                        found.append(rule)
                     if issue is not None:
                         issues.append(issue)
+                merged, merge_issues = merge_rules(kind, found)
+                rules.extend(merged)
+                issues.extend(merge_issues)
                 if not form.rules and any(hint_fires(kind, c.text) for c in shown):
                     issues.append(
                         ExtractionIssue(
@@ -343,7 +435,7 @@ class LegalExtractor:
             return None, ExtractionIssue(
                 clause_type=kind, reason="Quote not found in the contract text", quote=item.quote
             )
-        problems = _fact_problems(kind, item)
+        problems = _fact_problems(kind, item, chunk.text)
         deadline_source = None
         if kind == "late_penalty":
             problem, deadline_source = _check_deadline(item, chunks, chunk)

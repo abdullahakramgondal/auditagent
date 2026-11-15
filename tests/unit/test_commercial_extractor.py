@@ -112,16 +112,53 @@ def test_a_total_that_is_not_on_the_total_line_is_refused():
     assert result.invoice is None and "total_amount" in {i.clause_type for i in result.issues}
 
 
-def test_a_none_for_a_date_the_document_shows_is_refused():
-    result, _ = invoice([json.dumps({**GOOD_INVOICE, "delivery_date": None})])
+def test_a_none_for_a_date_the_document_shows_is_asked_again_and_then_accepted():
+    """A model that left the delivery date empty gets one more look at the document."""
+    missed = json.dumps({**GOOD_INVOICE, "delivery_date": None})
+    result, provider = invoice([missed, json.dumps(GOOD_INVOICE)])
+    assert result.issues == []
+    assert result.invoice.delivery_date == date(2026, 10, 25)
+    assert len(provider.prompts) == 2
+    assert "delivery_date" in provider.prompts[1] and "previous answer" in provider.prompts[1]
+
+
+def test_a_none_that_stays_none_after_the_second_look_is_refused_for_review():
+    missed = json.dumps({**GOOD_INVOICE, "delivery_date": None})
+    result, provider = invoice([missed, missed])
+    assert result.invoice is None and len(provider.prompts) == 2
+    assert "returned none" in issue_for(result, "delivery_date").reason
+
+
+def test_a_date_found_by_the_second_look_must_still_sit_on_a_line_with_its_label():
+    missed = json.dumps({**GOOD_INVOICE, "delivery_date": None})
+    wrong_day = json.dumps({**GOOD_INVOICE, "delivery_date": "2026-10-24"})
+    result, _ = invoice([missed, wrong_day])
+    assert result.invoice is None
+    assert "labelled" in issue_for(result, "delivery_date").reason
+
+
+def test_only_the_missed_date_is_taken_from_the_second_answer():
+    missed = json.dumps({**GOOD_INVOICE, "delivery_date": None})
+    changed = json.dumps({**GOOD_INVOICE, "total_amount": 1, "due_date": "2026-01-01"})
+    changed = json.dumps({**json.loads(changed), "delivery_date": "2026-10-25"})
+    result, _ = invoice([missed, changed])
+    assert result.issues == []
+    assert result.invoice.total_amount == Decimal(7000000)
+    assert result.invoice.due_date == date(2026, 11, 25)
+
+
+def test_an_unusable_second_answer_leaves_the_document_refused_for_review():
+    missed = json.dumps({**GOOD_INVOICE, "delivery_date": None})
+    result, _ = invoice([missed, "bad", "bad", "bad"])
     assert result.invoice is None
     assert "returned none" in issue_for(result, "delivery_date").reason
 
 
-def test_a_none_for_a_date_the_document_does_not_show_is_accepted():
+def test_a_none_for_a_date_the_document_does_not_show_is_accepted_without_a_second_look():
     text = invoice_text().replace("Delivery Date: 25 October 2026\n", "")
-    result, _ = invoice([json.dumps({**GOOD_INVOICE, "delivery_date": None})], text=text)
+    result, provider = invoice([json.dumps({**GOOD_INVOICE, "delivery_date": None})], text=text)
     assert result.issues == [] and result.invoice.delivery_date is None
+    assert len(provider.prompts) == 1
 
 
 def test_a_row_amount_that_is_not_quantity_times_price_is_returned_with_an_issue():
@@ -179,3 +216,10 @@ def test_a_purchase_order_with_swapped_dates_is_refused():
     result, _ = order([json.dumps(swapped)])
     assert result.purchase_order is None
     assert {"po_date", "delivery_due_date"} <= {i.clause_type for i in result.issues}
+
+
+def test_a_purchase_order_date_left_empty_is_asked_again_and_then_accepted():
+    missed = json.dumps({**GOOD_PO, "delivery_due_date": None})
+    result, provider = order([missed, json.dumps(GOOD_PO)])
+    assert result.issues == [] and len(provider.prompts) == 2
+    assert result.purchase_order.delivery_due_date == date(2026, 10, 15)
