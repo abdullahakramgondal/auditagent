@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { describe, expect, it } from 'vitest'
+import { installFetchMock, respondJson } from '@/test/fetchMock'
 import { createWrapper } from '@/test/queryWrapper'
 import App from './App'
+
+installFetchMock()
 
 function renderAt(path: string) {
   render(
@@ -22,10 +25,12 @@ describe('App', () => {
     expect(screen.getByRole('link', { name: 'History' })).toBeInTheDocument()
   })
 
-  it('opens the history page', () => {
+  it('opens the history page', async () => {
+    respondJson([])
     renderAt('/history')
     expect(screen.getByRole('heading', { name: /audit history/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'History' })).toHaveAttribute('aria-current', 'page')
+    expect(await screen.findByText('No audits yet')).toBeInTheDocument()
   })
 
   it('shows a page not found for an unknown address', () => {
