@@ -13,9 +13,10 @@ from typing import Annotated
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 
 from auditagent.api.jobs import JobManager, JobStore
+from auditagent.api.report_pdf import build_report_pdf
 from auditagent.api.runner import run_audit
 from auditagent.api.schemas import AuditOut, JobInfo, Submitted
 
@@ -106,5 +107,16 @@ def create_app(manager: JobManager | None = None) -> FastAPI:
         if path is None:
             raise HTTPException(404, "No result for this audit.")
         return FileResponse(path, media_type="application/json", filename=f"audit-{audit_id}.json")
+
+    @app.get("/audits/{audit_id}/report.pdf")
+    def report(audit_id: str) -> Response:
+        out = jobs.store.read_result(audit_id)
+        if out is None:
+            raise HTTPException(404, "No result for this audit.")
+        return Response(
+            content=build_report_pdf(out),
+            media_type="application/pdf",
+            headers={"Content-Disposition": f'attachment; filename="audit-{audit_id}.pdf"'},
+        )
 
     return app

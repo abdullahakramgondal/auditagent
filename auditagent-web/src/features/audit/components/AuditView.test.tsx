@@ -129,6 +129,10 @@ describe('a finished non-compliant audit', () => {
       'href',
       `http://localhost:8000/audits/${NON_COMPLIANT_ID}/result.json`,
     )
+    expect(screen.getByRole('link', { name: 'Download PDF report' })).toHaveAttribute(
+      'href',
+      `http://localhost:8000/audits/${NON_COMPLIANT_ID}/report.pdf`,
+    )
     expect(screen.getByText('Contract rules')).toBeInTheDocument()
     expect(screen.getByText('Purchase order')).toBeInTheDocument()
     expect(screen.getByText('Invoice')).toBeInTheDocument()

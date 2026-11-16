@@ -47,3 +47,9 @@ export function listAudits() {
 export function resultJsonUrl(id: string): string {
   return `${env.apiBaseUrl}/audits/${encodeURIComponent(id)}/result.json`
 }
+
+
+/** The address of the PDF report (the backend sends it as an attachment). */
+export function reportPdfUrl(id: string): string {
+  return `${env.apiBaseUrl}/audits/${encodeURIComponent(id)}/report.pdf`
+}
