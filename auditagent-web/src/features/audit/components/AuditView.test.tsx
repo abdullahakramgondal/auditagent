@@ -75,7 +75,7 @@ describe('a job that failed', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'The language model service is busy. Try again in a few minutes.',
     )
-    expect(screen.getByRole('link', { name: 'Start a new audit' })).toHaveAttribute('href', '/')
+    expect(screen.getByRole('link', { name: 'Start a new audit' })).toHaveAttribute('href', '/new')
   })
 
   it('shows the error text of a file that cannot be used', async () => {

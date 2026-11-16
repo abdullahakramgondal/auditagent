@@ -28,7 +28,7 @@ export function HistoryView() {
   if (history.data.length === 0) {
     return (
       <EmptyState title="No audits yet">
-        <Link to="/" className="text-blue-700 underline">
+        <Link to="/new" className="text-blue-700 underline">
           Start a new audit
         </Link>
       </EmptyState>

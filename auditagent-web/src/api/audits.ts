@@ -1,6 +1,12 @@
 import { request } from './client'
 import { env } from './config'
-import { AuditResultSchema, HistorySchema, JobInfoSchema, SubmittedSchema } from './schemas'
+import {
+  AuditResultSchema,
+  HistorySchema,
+  JobInfoSchema,
+  SubmittedSchema,
+  SummarySchema,
+} from './schemas'
 
 export type AuditFiles = {
   contract: File
@@ -43,11 +49,15 @@ export function listAudits() {
   return request('/audits', HistorySchema)
 }
 
+/** GET /audits/summary: the numbers of the dashboard (counted and added by the backend). */
+export function getSummary() {
+  return request('/audits/summary', SummarySchema)
+}
+
 /** The address of the JSON download (a plain link: the backend sends it as an attachment). */
 export function resultJsonUrl(id: string): string {
   return `${env.apiBaseUrl}/audits/${encodeURIComponent(id)}/result.json`
 }
-
 
 /** The address of the PDF report (the backend sends it as an attachment). */
 export function reportPdfUrl(id: string): string {

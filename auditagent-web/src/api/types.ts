@@ -16,6 +16,7 @@ import type {
   ReviewReasonSchema,
   SourceSchema,
   SubmittedSchema,
+  SummarySchema,
 } from './schemas'
 
 export type AuditStatus = z.infer<typeof AuditStatusSchema>
@@ -34,3 +35,4 @@ export type PurchaseOrder = z.infer<typeof PurchaseOrderSchema>
 export type Submitted = z.infer<typeof SubmittedSchema>
 export type JobInfo = z.infer<typeof JobInfoSchema>
 export type AuditResult = z.infer<typeof AuditResultSchema>
+export type Summary = z.infer<typeof SummarySchema>

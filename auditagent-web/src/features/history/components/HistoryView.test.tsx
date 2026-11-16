@@ -64,7 +64,7 @@ describe('HistoryView without audits', () => {
     respondJson([])
     renderView()
     expect(await screen.findByText('No audits yet')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Start a new audit' })).toHaveAttribute('href', '/')
+    expect(screen.getByRole('link', { name: 'Start a new audit' })).toHaveAttribute('href', '/new')
     expect(screen.queryByRole('table')).not.toBeInTheDocument()
   })
 })

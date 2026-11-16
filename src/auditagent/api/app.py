@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, Response
 from auditagent.api.jobs import JobManager, JobStore
 from auditagent.api.report_pdf import build_report_pdf
 from auditagent.api.runner import run_audit
-from auditagent.api.schemas import AuditOut, JobInfo, Submitted
+from auditagent.api.schemas import AuditOut, AuditSummary, JobInfo, Submitted, summarize
 
 MAX_BYTES = 10 * 1024 * 1024
 PROVIDERS = ("gemini", "ollama")
@@ -81,6 +81,10 @@ def create_app(manager: JobManager | None = None) -> FastAPI:
     @app.get("/audits", response_model=list[JobInfo])
     def history() -> list[JobInfo]:
         return jobs.store.list_infos()
+
+    @app.get("/audits/summary", response_model=AuditSummary)
+    def summary() -> AuditSummary:
+        return summarize(jobs.store.list_infos())
 
     @app.get("/audits/{audit_id}", response_model=JobInfo)
     def job_state(audit_id: str) -> JobInfo:

@@ -101,3 +101,32 @@ def to_audit_out(
         llm_model=report.llm_model,
         seconds=seconds,
     )
+
+
+class AuditSummary(BaseModel):
+    """The numbers of the dashboard. The backend counts and adds; the front end never adds money."""
+
+    total: int
+    in_progress: int
+    failed: int
+    compliant: int
+    non_compliant: int
+    needs_review: int
+    total_difference: Decimal
+
+
+def summarize(infos: list[JobInfo]) -> AuditSummary:
+    """Count the audits and add up the money found. Only finished audits have a verdict."""
+    done = [info for info in infos if info.state == "done"]
+    return AuditSummary(
+        total=len(infos),
+        in_progress=sum(info.state in ("queued", "running") for info in infos),
+        failed=sum(info.state == "failed" for info in infos),
+        compliant=sum(info.status == "COMPLIANT" for info in done),
+        non_compliant=sum(info.status == "NON_COMPLIANT" for info in done),
+        needs_review=sum(info.status == "NEEDS_REVIEW" for info in done),
+        total_difference=sum(
+            (info.total_difference for info in done if info.total_difference is not None),
+            Decimal(0),
+        ),
+    )

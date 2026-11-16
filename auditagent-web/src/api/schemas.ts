@@ -155,3 +155,15 @@ export const AuditResultSchema = z.object({
   llm_model: z.string(),
   seconds: z.number(),
 })
+
+
+/** GET /audits/summary: counted and added by the backend, the front end never adds money. */
+export const SummarySchema = z.object({
+  total: z.number().int().min(0),
+  in_progress: z.number().int().min(0),
+  failed: z.number().int().min(0),
+  compliant: z.number().int().min(0),
+  non_compliant: z.number().int().min(0),
+  needs_review: z.number().int().min(0),
+  total_difference: decimalString,
+})

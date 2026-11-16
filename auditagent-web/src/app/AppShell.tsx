@@ -16,10 +16,13 @@ export function AppShell() {
         Skip to content
       </a>
       <header className="sticky top-0 z-10 border-b bg-white/95 backdrop-blur">
-        <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
-          <span className="font-semibold">AuditAgent AI</span>
+        <div className="mx-auto flex min-h-14 w-full max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 sm:px-6">
+          <span className="shrink-0 font-semibold">AuditAgent AI</span>
           <nav aria-label="Main" className="flex gap-1">
             <NavLink to="/" end className={linkClass}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/new" className={linkClass}>
               New audit
             </NavLink>
             <NavLink to="/history" className={linkClass}>
