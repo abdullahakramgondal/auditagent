@@ -1,6 +1,7 @@
 """The PDF report of a finished audit: plain words, the same numbers as the screen."""
 
 import io
+import json
 from datetime import UTC, date, datetime
 from decimal import Decimal
 
@@ -10,7 +11,7 @@ from fastapi.testclient import TestClient
 from auditagent.api.app import create_app
 from auditagent.api.jobs import JobManager, JobStore
 from auditagent.api.report_pdf import build_report_pdf, pkr
-from auditagent.api.schemas import to_audit_out
+from auditagent.api.schemas import AuditOut, to_audit_out
 from auditagent.pipeline.run import AuditReport
 from auditagent.rules.engine import audit_invoice
 from auditagent.schemas.audit import AuditResult
@@ -235,3 +236,51 @@ def test_there_is_no_report_for_an_unknown_audit_or_a_strange_id(tmp_path):
     client = make_client(tmp_path)
     assert client.get("/audits/" + "0" * 32 + "/report.pdf").status_code == 404
     assert client.get("/audits/not-an-id/report.pdf").status_code == 404
+
+
+def test_the_result_has_a_plain_summary_with_one_problem_for_each_finding():
+    plain = out_of(make_full_report()).plain
+    assert plain.headline == "This invoice is too high"
+    assert plain.advice == "Do not pay it as it is. Ask the vendor for a corrected invoice."
+    assert [p.clause_type for p in plain.problems] == [
+        "unit_price",
+        "late_penalty",
+        "volume_discount",
+        "payment_terms",
+    ]
+    assert [p.amount_text for p in plain.problems] == [
+        "PKR 212,500 too much",
+        "PKR 531,250 too much",
+        "PKR 297,500 too much",
+        "A rule was broken",
+    ]
+    assert [p.page for p in plain.problems] == [6, 4, 6, 6]
+    price = plain.problems[0]
+    assert price.title == "The price per item is higher than agreed"
+    assert price.quote == "8.1 The agreed unit price is PKR 85,000 per unit."
+    assert price.paragraphs == [
+        (
+            "The contract says each Dell UltraSharp U2723QE Monitor costs PKR 85,000. "
+            "The invoice charges PKR 89,250 each for 50 items."
+        )
+    ]
+
+
+def test_a_correct_invoice_has_no_problems_in_its_plain_summary():
+    plain = out_of(make_report(delivered="2026-10-14")).plain
+    assert plain.headline == "This invoice is correct" and plain.problems == []
+
+
+def test_a_result_saved_before_the_plain_summary_existed_can_still_be_read():
+    old = out_of(make_report()).model_dump_json(exclude={"plain"})
+    assert "plain" not in json.loads(old)
+    assert AuditOut.model_validate_json(old).plain.headline == "This invoice is too high"
+
+
+def test_the_result_endpoint_sends_the_plain_summary(tmp_path):
+    client = make_client(tmp_path)
+    body = client.get(f"/audits/{start(client)}/result").json()
+    assert body["plain"]["headline"] == "This invoice is too high"
+    problem = body["plain"]["problems"][0]
+    assert problem["title"] == "The delivery was late, but no penalty was taken off"
+    assert problem["amount_text"] == "PKR 1,000,000 too much" and problem["page"] == 4

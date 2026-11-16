@@ -7,6 +7,11 @@ export const needsReview: Record<string, unknown> = {
   correct_payable: null,
   total_difference: null,
   amounts_provisional: false,
+  plain: {
+    headline: 'We could not fully check this invoice',
+    advice: 'Please ask a person to look at it before you pay.',
+    problems: [],
+  },
   findings: [],
   review_reasons: [
     {

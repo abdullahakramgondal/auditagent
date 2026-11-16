@@ -138,6 +138,23 @@ export const JobInfoSchema = z.object({
 
 export const HistorySchema = z.array(JobInfoSchema)
 
+// ---- the result in plain words (made by the backend, shown as it is) ----
+
+export const PlainProblemSchema = z.object({
+  clause_type: ClauseTypeSchema,
+  title: z.string(),
+  amount_text: z.string(),
+  paragraphs: z.array(z.string()),
+  page: z.number().int().min(1),
+  quote: z.string().min(1),
+})
+
+export const PlainSummarySchema = z.object({
+  headline: z.string(),
+  advice: z.string(),
+  problems: z.array(PlainProblemSchema),
+})
+
 /** GET /audits/{id}/result. The amounts are null when no invoice could be proven. */
 export const AuditResultSchema = z.object({
   audit_id: z.string(),
@@ -147,6 +164,7 @@ export const AuditResultSchema = z.object({
   correct_payable: decimalString.nullable(),
   total_difference: decimalString.nullable(),
   amounts_provisional: z.boolean(),
+  plain: PlainSummarySchema,
   findings: z.array(FindingSchema),
   review_reasons: z.array(ReviewReasonSchema),
   contract: ExtractedContractSchema,

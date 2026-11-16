@@ -64,7 +64,7 @@ export function ExtractedDocuments({ contract, invoice, purchaseOrder }: Props) 
   return (
     <section aria-labelledby="documents-heading" className="flex flex-col gap-3">
       <h2 id="documents-heading" className="text-lg font-semibold">
-        Extracted documents
+        The documents we read
       </h2>
       <p className="text-sm text-slate-600">
         What the system read from your PDFs. Compare it with the originals.

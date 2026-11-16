@@ -2,19 +2,21 @@ import type { AuditStatus } from '@/api/types'
 import { statusMeta } from '@/shared/lib/statusMeta'
 import { StatusIcon } from '@/shared/ui/StatusIcon'
 
-/** Colour, icon and text together: the colour is never the only signal. */
-export function StatusBanner({ status, message }: { status: AuditStatus; message: string }) {
-  const { label, className } = statusMeta[status]
+type Props = { status: AuditStatus; headline: string; advice: string }
+
+/** The answer in one look: colour, icon and plain words together (colour is never the only signal). */
+export function StatusBanner({ status, headline, advice }: Props) {
+  const { className } = statusMeta[status]
   return (
     <section
       role="status"
-      aria-label="Audit status"
-      className={`flex items-start gap-3 rounded-lg border-l-4 p-4 ${className}`}
+      aria-label="Result"
+      className={`flex items-start gap-4 rounded-xl border-l-8 p-5 md:p-6 ${className}`}
     >
-      <StatusIcon status={status} className="mt-0.5 size-5 shrink-0" />
+      <StatusIcon status={status} className="mt-1 size-7 shrink-0" />
       <div>
-        <p className="font-semibold">{label}</p>
-        <p className="text-sm">{message}</p>
+        <p className="text-xl font-semibold md:text-2xl">{headline}</p>
+        <p className="mt-1 text-base md:text-lg">{advice}</p>
       </div>
     </section>
   )

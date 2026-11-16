@@ -5,8 +5,9 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 
+from auditagent.api.plain import PlainSummary, plain_summary
 from auditagent.pipeline.run import AuditReport
 from auditagent.schemas.audit import AuditStatus, Finding
 from auditagent.schemas.contract import ExtractedContract
@@ -69,6 +70,12 @@ class AuditOut(BaseModel):
     purchase_order: PurchaseOrderData | None
     llm_model: str
     seconds: float
+
+    @computed_field
+    @property
+    def plain(self) -> PlainSummary:
+        """The same result in plain words, for a person who is not a technician (screen and PDF)."""
+        return plain_summary(self)
 
 
 def reason_out(text: str) -> ReviewReason:

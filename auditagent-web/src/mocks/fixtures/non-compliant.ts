@@ -7,6 +7,60 @@ export const nonCompliant: Record<string, unknown> = {
   correct_payable: '3421250.00',
   total_difference: '1041250.00',
   amounts_provisional: false,
+  plain: {
+    headline: 'This invoice is too high',
+    advice: 'Do not pay it as it is. Ask the vendor for a corrected invoice.',
+    problems: [
+      {
+        clause_type: 'unit_price',
+        title: 'The price per item is higher than agreed',
+        amount_text: 'PKR 212,500 too much',
+        paragraphs: [
+          'The contract says each Dell UltraSharp U2723QE Monitor costs PKR 85,000. The invoice charges PKR 89,250 each for 50 items.',
+        ],
+        page: 6,
+        quote:
+          '8.1 The agreed unit price for each Dell UltraSharp U2723QE Monitor is PKR 85,000 per unit. The Vendor shall ensure that the unit amount shown on an Invoice does not exceed that agreed figure.',
+      },
+      {
+        clause_type: 'late_penalty',
+        title: 'The delivery was late, but no penalty was taken off',
+        amount_text: 'PKR 531,250 too much',
+        paragraphs: [
+          'The contract says the goods must arrive by 28 February 2027. They arrived on 9 March 2027, which is 9 days late.',
+          "The contract's penalty for this is 2.5% of the invoice for each day of delay (the first 4 days are free), up to a maximum of 15%.",
+          'The invoice does not take the full penalty off, so the vendor is asking for too much.',
+        ],
+        page: 4,
+        quote:
+          '6.5 If delivery is delayed beyond the Delivery Deadline, the first four (4) calendar days of delay shall not attract a late-delivery penalty. From the next day, a penalty of 2.5% of the value of the delayed Equipment shown on the relevant Invoice shall apply for each day of delay, subject to an aggregate ceiling of 15% of that Invoice value.',
+      },
+      {
+        clause_type: 'volume_discount',
+        title: 'A discount for a big order was not given',
+        amount_text: 'PKR 297,500 too much',
+        paragraphs: [
+          'The contract gives a 7% discount on orders of 30 or more items. This order has 50 items, so the discount applies.',
+          'The invoice does not include the full discount.',
+        ],
+        page: 6,
+        quote:
+          '8.2 A single Order containing 30 or more units qualifies for a volume discount of 7% on the Equipment value of that Order.',
+      },
+      {
+        clause_type: 'payment_terms',
+        title: 'The payment deadline is shorter than agreed',
+        amount_text: 'A rule was broken',
+        paragraphs: [
+          'The contract gives the buyer 28 days to pay after the invoice date. This invoice is dated 12 March 2027 and asks for payment by 30 March 2027, which is only 18 days.',
+          'The buyer should have until 9 April 2027.',
+        ],
+        page: 6,
+        quote:
+          '9.1 The Buyer shall pay each valid and undisputed Invoice within 28 days of the invoice date.',
+      },
+    ],
+  },
   findings: [
     {
       clause_type: 'unit_price',

@@ -1,12 +1,11 @@
 """The PDF report of a finished audit, written for a person who is not a technician.
 
-The words are plain: what is wrong, how much too much, where the contract says so. Technical
-details (report number, model) sit in small print at the end. Built from the same AuditOut that
-the screen shows, so the report and the screen never disagree. Every dynamic text is escaped.
+The words come from api/plain.py, the same place that feeds the screen, so the two never
+disagree. Technical details (report number, model) sit in small print at the end.
+Every dynamic text is escaped.
 """
 
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+from datetime import datetime
 from io import BytesIO
 from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -24,22 +23,9 @@ from reportlab.platypus import (
     TableStyle,
 )
 
+from auditagent.api.plain import PlainProblem, day, pkr, rule_line
 from auditagent.api.schemas import AuditOut
-from auditagent.rules.engine import same_item
-from auditagent.schemas.audit import Finding
-from auditagent.schemas.contract import (
-    LatePenaltyRule,
-    PaymentTermsRule,
-    UnitPriceRule,
-    VolumeDiscountRule,
-)
 
-TITLES = {
-    "unit_price": "The price per item is higher than agreed",
-    "late_penalty": "The delivery was late, but no penalty was taken off",
-    "volume_discount": "A discount for a big order was not given",
-    "payment_terms": "The payment deadline is shorter than agreed",
-}
 SOURCE_LABELS = {
     "contract": "About the contract",
     "invoice": "About the invoice",
@@ -49,34 +35,8 @@ SOURCE_LABELS = {
 BACKGROUNDS = {"COMPLIANT": "#f0fdf4", "NON_COMPLIANT": "#fef2f2", "NEEDS_REVIEW": "#fffbeb"}
 ACCENTS = {"COMPLIANT": "#16a34a", "NON_COMPLIANT": "#dc2626", "NEEDS_REVIEW": "#d97706"}
 CONTENT_WIDTH = 170 * mm
-NOT_KNOWN = "—"
 GREY = colors.HexColor("#cbd5e1")
 MUTED = colors.HexColor("#475569")
-
-
-def pkr(value: Decimal | None) -> str:
-    """4462500.00 -> PKR 4,462,500; 1234.5 -> PKR 1,234.50; None -> a dash (not known, never zero)."""
-    if value is None:
-        return NOT_KNOWN
-    sign = "-" if value < 0 else ""
-    amount = abs(value)
-    text = f"{amount:,.0f}" if amount == amount.to_integral_value() else f"{amount:,.2f}"
-    return f"{sign}PKR {text}"
-
-
-def pct(value: Decimal) -> str:
-    """A percentage without a trailing zero: 15.0 -> 15, 2.50 -> 2.5."""
-    return format(value.normalize(), "f")
-
-
-def day(value: date | None) -> str:
-    """A date as 9 March 2027."""
-    return NOT_KNOWN if value is None else f"{value.day} {value:%B %Y}"
-
-
-def days(count: int) -> str:
-    """1 -> 1 day; 9 -> 9 days."""
-    return f"{count} day" if count == 1 else f"{count} days"
 
 
 def when(value: datetime) -> str:
@@ -86,136 +46,6 @@ def when(value: datetime) -> str:
     except ZoneInfoNotFoundError:  # no time zone data on this machine: show the time as it is
         local = value
     return f"{local.day} {local:%b %Y}, {local:%H:%M}"
-
-
-def verdict(out: AuditOut) -> tuple[str, str]:
-    """The headline and one line of advice, in plain words."""
-    if out.status == "COMPLIANT":
-        return "This invoice is correct", "It matches the contract. You can go ahead and pay it."
-    if out.status == "NEEDS_REVIEW":
-        return (
-            "We could not fully check this invoice",
-            "Please ask a person to look at it before you pay.",
-        )
-    if out.total_difference is not None and out.total_difference != 0:
-        return (
-            "This invoice is too high",
-            "Do not pay it as it is. Ask the vendor for a corrected invoice.",
-        )
-    return (
-        "This invoice breaks a rule of the contract",
-        "Ask the vendor to correct it before you pay.",
-    )
-
-
-# ---- plain words for each kind of problem ----
-
-
-def _rule_for(out: AuditOut, finding: Finding):
-    """The contract rule behind a finding: the one with the same clause text, else the first of its kind."""
-    same_kind = [rule for rule in out.contract.rules if rule.clause_type == finding.clause_type]
-    exact = next((rule for rule in same_kind if rule.source.text == finding.source.text), None)
-    return exact or (same_kind[0] if same_kind else None)
-
-
-def _penalty_terms(rule: LatePenaltyRule) -> str:
-    """The penalty of the contract in plain words."""
-    if rule.mode == "flat_percent":
-        return f"{pct(rule.percent)}% of the invoice, once"
-    text = f"{pct(rule.percent)}% of the invoice for each day of delay"
-    if rule.grace_days:
-        text += f" (the first {days(rule.grace_days)} are free)"
-    if rule.cap_percent:
-        text += f", up to a maximum of {pct(rule.cap_percent)}%"
-    return text
-
-
-def _explain_price(out: AuditOut, rule) -> list[str] | None:
-    if not isinstance(rule, UnitPriceRule) or out.invoice is None:
-        return None
-    row = next((i for i in out.invoice.line_items if same_item(rule.item_name, i.item_name)), None)
-    if row is None:
-        return None
-    return [
-        (
-            f"The contract says each {rule.item_name} costs {pkr(rule.agreed_unit_price)}. "
-            f"The invoice charges {pkr(row.unit_price)} each for {row.quantity} items."
-        )
-    ]
-
-
-def _explain_late(out: AuditOut, rule) -> list[str] | None:
-    if not isinstance(rule, LatePenaltyRule) or out.invoice is None:
-        return None
-    delivered = out.invoice.delivery_date
-    if delivered is None:
-        return None
-    late = (delivered - rule.deadline).days
-    return [
-        (
-            f"The contract says the goods must arrive by {day(rule.deadline)}. "
-            f"They arrived on {day(delivered)}, which is {days(late)} late."
-        ),
-        f"The contract's penalty for this is {_penalty_terms(rule)}.",
-        "The invoice does not take the full penalty off, so the vendor is asking for too much.",
-    ]
-
-
-def _explain_volume(out: AuditOut, rule) -> list[str] | None:
-    if not isinstance(rule, VolumeDiscountRule) or out.invoice is None:
-        return None
-    items = sum(row.quantity for row in out.invoice.line_items)
-    return [
-        (
-            f"The contract gives a {pct(rule.discount_percent)}% discount on orders of "
-            f"{rule.min_quantity} or more items. This order has {items} items, so the discount applies."
-        ),
-        "The invoice does not include the full discount.",
-    ]
-
-
-def _explain_payment(out: AuditOut, rule) -> list[str] | None:
-    invoice = out.invoice
-    if not isinstance(rule, PaymentTermsRule) or invoice is None or invoice.due_date is None:
-        return None
-    given = (invoice.due_date - invoice.invoice_date).days
-    earliest = invoice.invoice_date + timedelta(days=rule.net_days)
-    return [
-        (
-            f"The contract gives the buyer {days(rule.net_days)} to pay after the invoice date. "
-            f"This invoice is dated {day(invoice.invoice_date)} and asks for payment by "
-            f"{day(invoice.due_date)}, which is only {days(given)}."
-        ),
-        f"The buyer should have until {day(earliest)}.",
-    ]
-
-
-EXPLAINERS = {
-    "unit_price": _explain_price,
-    "late_penalty": _explain_late,
-    "volume_discount": _explain_volume,
-    "payment_terms": _explain_payment,
-}
-
-
-def explain(out: AuditOut, finding: Finding) -> list[str]:
-    """What went wrong, in sentences. If a detail is missing, the plain sentence of the engine is used."""
-    paragraphs = EXPLAINERS[finding.clause_type](out, _rule_for(out, finding))
-    return paragraphs or [finding.description]
-
-
-def _rule_line(rule) -> str:
-    """One contract rule that the system used, in plain words."""
-    if isinstance(rule, LatePenaltyRule):
-        return f"Late delivery after {day(rule.deadline)}: a penalty of {_penalty_terms(rule)}."
-    if isinstance(rule, VolumeDiscountRule):
-        return f"Orders of {rule.min_quantity} or more items: a {pct(rule.discount_percent)}% discount."
-    if isinstance(rule, PaymentTermsRule):
-        return f"Payment: {days(rule.net_days)} after the invoice date."
-    return f"{rule.item_name}: agreed price {pkr(rule.agreed_unit_price)} per item."
-
-
-# ---- the pages ----
 
 
 def _styles() -> dict[str, ParagraphStyle]:
@@ -244,12 +74,13 @@ def _styles() -> dict[str, ParagraphStyle]:
 
 
 def _verdict_box(out: AuditOut, styles: dict) -> Table:
-    headline, advice = verdict(out)
     accent = ACCENTS[out.status]
     cell = [
-        Paragraph(f'<font color="{accent}">{escape(headline)}</font>', styles["headline"]),
+        Paragraph(
+            f'<font color="{accent}">{escape(out.plain.headline)}</font>', styles["headline"]
+        ),
         Spacer(1, 4),
-        Paragraph(escape(advice), styles["advice"]),
+        Paragraph(escape(out.plain.advice), styles["advice"]),
     ]
     box = Table([[cell]], colWidths=[CONTENT_WIDTH])
     box.setStyle(
@@ -295,16 +126,14 @@ def _money_table(out: AuditOut, styles: dict) -> Table:
     return table
 
 
-def _finding(number: int, finding: Finding, out: AuditOut, styles: dict) -> KeepTogether:
-    if finding.difference != 0:
-        amount = f'<font color="#b91c1c">{escape(pkr(finding.difference))} too much</font>'
-    else:
-        amount = "A rule was broken"
+def _problem(number: int, problem: PlainProblem, styles: dict) -> KeepTogether:
     head = Table(
         [
             [
-                Paragraph(f"{number}. {escape(TITLES[finding.clause_type])}", styles["item"]),
-                Paragraph(amount, styles["amount"]),
+                Paragraph(f"{number}. {escape(problem.title)}", styles["item"]),
+                Paragraph(
+                    f'<font color="#b91c1c">{escape(problem.amount_text)}</font>', styles["amount"]
+                ),
             ]
         ],
         colWidths=[CONTENT_WIDTH * 0.64, CONTENT_WIDTH * 0.36],
@@ -324,10 +153,8 @@ def _finding(number: int, finding: Finding, out: AuditOut, styles: dict) -> Keep
         [
             [
                 [
-                    Paragraph(
-                        f"What the contract says (page {finding.source.page})", styles["label"]
-                    ),
-                    Paragraph(escape(finding.source.text), styles["quote"]),
+                    Paragraph(f"What the contract says (page {problem.page})", styles["label"]),
+                    Paragraph(escape(problem.quote), styles["quote"]),
                 ]
             ]
         ],
@@ -345,16 +172,16 @@ def _finding(number: int, finding: Finding, out: AuditOut, styles: dict) -> Keep
         )
     )
     story: list = [head, Spacer(1, 6)]
-    story += [Paragraph(escape(text), styles["body"]) for text in explain(out, finding)]
+    story += [Paragraph(escape(text), styles["body"]) for text in problem.paragraphs]
     story += [Spacer(1, 2), quote, Spacer(1, 14)]
     return KeepTogether(story)
 
 
 def _problems(out: AuditOut, styles: dict) -> list:
     story: list = [Paragraph("What is wrong", styles["h2"])]
-    if out.findings:
-        for number, finding in enumerate(out.findings, start=1):
-            story.append(_finding(number, finding, out, styles))
+    if out.plain.problems:
+        for number, problem in enumerate(out.plain.problems, start=1):
+            story.append(_problem(number, problem, styles))
     elif out.status == "COMPLIANT":
         story.append(
             Paragraph(
@@ -397,7 +224,7 @@ def _rules(out: AuditOut, styles: dict) -> list:
     if not out.contract.rules:
         story.append(Paragraph("No rule could be proven in the contract.", styles["body"]))
     for rule in out.contract.rules:
-        story.append(Paragraph(escape(_rule_line(rule)), styles["body"], bulletText="•"))
+        story.append(Paragraph(escape(rule_line(rule)), styles["body"], bulletText="•"))
     return story
 
 

@@ -10,8 +10,8 @@ type Props = {
 function Card({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
   return (
     <div
-      className={`rounded-lg border bg-white p-4 md:p-6 ${
-        strong ? 'order-first border-slate-900 sm:order-none' : 'border-slate-200'
+      className={`rounded-xl bg-white p-4 md:p-6 ${
+        strong ? 'order-first ring-2 ring-slate-900 sm:order-none' : 'ring-1 ring-slate-200'
       }`}
     >
       <dt className="text-sm text-slate-600">{label}</dt>
@@ -22,15 +22,15 @@ function Card({ label, value, strong = false }: { label: string; value: string; 
 
 export function MoneySummary({ billedTotal, correctPayable, totalDifference, provisional }: Props) {
   return (
-    <section aria-label="Money" className="flex flex-col gap-2">
+    <section aria-label="The money" className="flex flex-col gap-2">
       <dl className="grid gap-4 sm:grid-cols-3">
-        <Card label="Billed total" value={formatPkr(billedTotal)} />
-        <Card label="Correct payable" value={formatPkr(correctPayable)} />
-        <Card label="Over-billed" value={formatPkr(totalDifference)} strong />
+        <Card label="The vendor is asking for" value={formatPkr(billedTotal)} />
+        <Card label="The right amount is" value={formatPkr(correctPayable)} />
+        <Card label="Too much" value={formatPkr(totalDifference)} strong />
       </dl>
       {provisional && (
         <p className="text-sm text-amber-900">
-          These amounts may be incomplete: something could not be proven. See the reasons to check.
+          These amounts may be incomplete, because something could not be checked.
         </p>
       )}
     </section>

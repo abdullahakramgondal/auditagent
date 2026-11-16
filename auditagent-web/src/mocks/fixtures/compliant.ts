@@ -7,6 +7,11 @@ export const compliant: Record<string, unknown> = {
   correct_payable: '10000000.00',
   total_difference: '0.00',
   amounts_provisional: false,
+  plain: {
+    headline: 'This invoice is correct',
+    advice: 'It matches the contract. You can go ahead and pay it.',
+    problems: [],
+  },
   findings: [],
   review_reasons: [],
   contract: {

@@ -12,6 +12,8 @@ import type {
   JobInfoSchema,
   JobStateSchema,
   LineItemSchema,
+  PlainProblemSchema,
+  PlainSummarySchema,
   PurchaseOrderSchema,
   ReviewReasonSchema,
   SourceSchema,
@@ -36,3 +38,5 @@ export type Submitted = z.infer<typeof SubmittedSchema>
 export type JobInfo = z.infer<typeof JobInfoSchema>
 export type AuditResult = z.infer<typeof AuditResultSchema>
 export type Summary = z.infer<typeof SummarySchema>
+export type PlainProblem = z.infer<typeof PlainProblemSchema>
+export type PlainSummary = z.infer<typeof PlainSummarySchema>
