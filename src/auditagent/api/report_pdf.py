@@ -1,8 +1,9 @@
 """The PDF report of a finished audit, written for a person who is not a technician.
 
-The words come from api/plain.py, the same place that feeds the screen, so the two never
-disagree. Technical details (report number, model) sit in small print at the end.
-Every dynamic text is escaped.
+Every sentence comes from api/plain.py, the same place that feeds the screen, so the two never
+disagree: the status label, the problems, the working-out, the checklist and the open points.
+Technical details (report number, model, raw messages) sit in small print.
+Every dynamic text is escaped. The standard PDF fonts have no minus sign, so it is written as "-".
 """
 
 from datetime import datetime
@@ -26,17 +27,34 @@ from reportlab.platypus import (
 from auditagent.api.plain import PlainProblem, day, pkr, rule_line
 from auditagent.api.schemas import AuditOut
 
-SOURCE_LABELS = {
-    "contract": "About the contract",
-    "invoice": "About the invoice",
-    "purchase_order": "About the purchase order",
-    "audit": "General",
+STATUS_LABELS = {
+    "COMPLIANT": "COMPLIANT",
+    "NON_COMPLIANT": "NON-COMPLIANT",
+    "NEEDS_REVIEW": "NEEDS HUMAN REVIEW",
 }
 BACKGROUNDS = {"COMPLIANT": "#f0fdf4", "NON_COMPLIANT": "#fef2f2", "NEEDS_REVIEW": "#fffbeb"}
 ACCENTS = {"COMPLIANT": "#16a34a", "NON_COMPLIANT": "#dc2626", "NEEDS_REVIEW": "#d97706"}
+AMOUNT_COLOURS = {
+    "start": "#0f172a",
+    "base": "#0f172a",
+    "minus": "#b91c1c",
+    "result": "#166534",
+    "difference": "#b91c1c",
+}
+CHECK_LOOK = {
+    "ok": ("Checked, no problem", "#15803d"),
+    "problem": ("Problem found", "#b91c1c"),
+    "unchecked": ("Could not check", "#b45309"),
+    "none": ("No rule found", "#475569"),
+}
 CONTENT_WIDTH = 170 * mm
 GREY = colors.HexColor("#cbd5e1")
 MUTED = colors.HexColor("#475569")
+
+
+def _t(text: str) -> str:
+    """Text for a paragraph: escaped, and with a plain minus sign (the PDF font has no U+2212)."""
+    return escape(text.replace("\u2212", "-"))
 
 
 def when(value: datetime) -> str:
@@ -58,11 +76,17 @@ def _styles() -> dict[str, ParagraphStyle]:
         ),
         "h3": ParagraphStyle("h3", parent=body, fontName="Helvetica-Bold", spaceBefore=6),
         "body": body,
+        "bullet": ParagraphStyle(
+            "bullet", parent=body, leftIndent=14, bulletIndent=2, spaceAfter=3
+        ),
         "small": ParagraphStyle("small", parent=body, fontSize=8.5, leading=12, textColor=MUTED),
         "label": ParagraphStyle("label", parent=body, fontSize=9, leading=12, textColor=MUTED),
         "quote": ParagraphStyle("quote", parent=body, fontName="Helvetica-Oblique", fontSize=10),
         "money": ParagraphStyle(
             "money", parent=body, fontName="Helvetica-Bold", fontSize=16, leading=20
+        ),
+        "status": ParagraphStyle(
+            "status", parent=body, fontName="Helvetica-Bold", fontSize=9, leading=12, spaceAfter=2
         ),
         "headline": ParagraphStyle(
             "headline", parent=body, fontName="Helvetica-Bold", fontSize=20, leading=24
@@ -77,10 +101,11 @@ def _verdict_box(out: AuditOut, styles: dict) -> Table:
     accent = ACCENTS[out.status]
     cell = [
         Paragraph(
-            f'<font color="{accent}">{escape(out.plain.headline)}</font>', styles["headline"]
+            f'<font color="{accent}">{_t(STATUS_LABELS[out.status])}</font>', styles["status"]
         ),
+        Paragraph(f'<font color="{accent}">{_t(out.plain.headline)}</font>', styles["headline"]),
         Spacer(1, 4),
-        Paragraph(escape(out.plain.advice), styles["advice"]),
+        Paragraph(_t(out.plain.advice), styles["advice"]),
     ]
     box = Table([[cell]], colWidths=[CONTENT_WIDTH])
     box.setStyle(
@@ -101,28 +126,27 @@ def _money_table(out: AuditOut, styles: dict) -> Table:
     cells = [
         ("The vendor is asking for", out.billed_total),
         ("The right amount is", out.correct_payable),
-        ("Too much", out.total_difference),
     ]
-    width = CONTENT_WIDTH / 3
+    if out.status == "NON_COMPLIANT":  # only a result with a mistake shows the overcharge
+        cells.append(("Overcharged by", out.total_difference))
+    width = CONTENT_WIDTH / len(cells)
     table = Table(
         [
-            [Paragraph(escape(label), styles["label"]) for label, _ in cells],
-            [Paragraph(escape(pkr(value)), styles["money"]) for _, value in cells],
+            [Paragraph(_t(label), styles["label"]) for label, _ in cells],
+            [Paragraph(_t(pkr(value)), styles["money"]) for _, value in cells],
         ],
-        colWidths=[width] * 3,
+        colWidths=[width] * len(cells),
     )
-    table.setStyle(
-        TableStyle(
-            [
-                ("BOX", (0, 0), (-1, -1), 0.5, GREY),
-                ("INNERGRID", (0, 0), (-1, -1), 0.5, GREY),
-                ("BOX", (2, 0), (2, 1), 1.2, colors.HexColor("#0f172a")),
-                ("LEFTPADDING", (0, 0), (-1, -1), 10),
-                ("TOPPADDING", (0, 0), (-1, -1), 7),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
-            ]
-        )
-    )
+    commands = [
+        ("BOX", (0, 0), (-1, -1), 0.5, GREY),
+        ("INNERGRID", (0, 0), (-1, -1), 0.5, GREY),
+        ("LEFTPADDING", (0, 0), (-1, -1), 10),
+        ("TOPPADDING", (0, 0), (-1, -1), 7),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+    ]
+    if len(cells) == 3:
+        commands.append(("BOX", (2, 0), (2, 1), 1.2, colors.HexColor("#0f172a")))
+    table.setStyle(TableStyle(commands))
     return table
 
 
@@ -130,9 +154,9 @@ def _problem(number: int, problem: PlainProblem, styles: dict) -> KeepTogether:
     head = Table(
         [
             [
-                Paragraph(f"{number}. {escape(problem.title)}", styles["item"]),
+                Paragraph(f"{number}. {_t(problem.title)}", styles["item"]),
                 Paragraph(
-                    f'<font color="#b91c1c">{escape(problem.amount_text)}</font>', styles["amount"]
+                    f'<font color="#b91c1c">{_t(problem.amount_text)}</font>', styles["amount"]
                 ),
             ]
         ],
@@ -154,7 +178,7 @@ def _problem(number: int, problem: PlainProblem, styles: dict) -> KeepTogether:
             [
                 [
                     Paragraph(f"What the contract says (page {problem.page})", styles["label"]),
-                    Paragraph(escape(problem.quote), styles["quote"]),
+                    Paragraph(_t(problem.quote), styles["quote"]),
                 ]
             ]
         ],
@@ -172,50 +196,125 @@ def _problem(number: int, problem: PlainProblem, styles: dict) -> KeepTogether:
         )
     )
     story: list = [head, Spacer(1, 6)]
-    story += [Paragraph(escape(text), styles["body"]) for text in problem.paragraphs]
+    story += [Paragraph(_t(text), styles["body"]) for text in problem.paragraphs]
     story += [Spacer(1, 2), quote, Spacer(1, 14)]
     return KeepTogether(story)
 
 
 def _problems(out: AuditOut, styles: dict) -> list:
+    """The mistakes. With no mistake nothing is shown: 'What we checked' says the rest."""
+    if not out.plain.problems:
+        return []
     story: list = [Paragraph("What is wrong", styles["h2"])]
-    if out.plain.problems:
-        for number, problem in enumerate(out.plain.problems, start=1):
-            story.append(_problem(number, problem, styles))
-    elif out.status == "COMPLIANT":
-        story.append(
-            Paragraph(
-                "Nothing is wrong. The invoice follows every rule that we found in the contract.",
-                styles["body"],
-            )
-        )
-    else:
-        story.append(
-            Paragraph(
-                "No mistake was proven, but some things could not be checked (see the list "
-                "of things we could not check).",
-                styles["body"],
-            )
-        )
+    for number, problem in enumerate(out.plain.problems, start=1):
+        story.append(_problem(number, problem, styles))
     return story
 
 
-def _reasons(out: AuditOut, styles: dict) -> list:
-    story: list = [
-        Paragraph("Things we could not check", styles["h2"]),
+def _calculation(out: AuditOut, styles: dict) -> list:
+    steps = out.plain.calculation
+    if not steps:
+        return []
+    rows = []
+    for step in steps:
+        colour = AMOUNT_COLOURS[step.kind]
+        left = [
+            Paragraph(f"<b>{_t(step.label)}</b>", styles["body"]),
+            Paragraph(_t(step.detail), styles["small"]),
+        ]
+        right = Paragraph(f'<font color="{colour}">{_t(step.amount_text)}</font>', styles["amount"])
+        rows.append([left, right])
+    table = Table(rows, colWidths=[CONTENT_WIDTH * 0.7, CONTENT_WIDTH * 0.3])
+    commands = [
+        ("BOX", (0, 0), (-1, -1), 0.5, GREY),
+        ("LINEBELOW", (0, 0), (-1, -2), 0.5, GREY),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 10),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 10),
+        ("TOPPADDING", (0, 0), (-1, -1), 6),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+    ]
+    for index, step in enumerate(steps):
+        if step.kind == "result":
+            commands.append(("BACKGROUND", (0, index), (-1, index), colors.HexColor("#f8fafc")))
+    table.setStyle(TableStyle(commands))
+    return [
+        Paragraph("How we worked it out", styles["h2"]),
+        Paragraph("Step by step, with the numbers of your documents.", styles["body"]),
+        table,
+    ]
+
+
+def _checks(out: AuditOut, styles: dict) -> list:
+    items = out.plain.checks
+    if not items:
+        return []
+    rows = []
+    for item in items:
+        text, colour = CHECK_LOOK[item.state]
+        rows.append(
+            [
+                [
+                    Paragraph(
+                        f'<b>{_t(item.label)}</b> - <font color="{colour}">{text}</font>',
+                        styles["body"],
+                    ),
+                    Paragraph(_t(item.detail), styles["small"]),
+                ]
+            ]
+        )
+    table = Table(rows, colWidths=[CONTENT_WIDTH])
+    table.setStyle(
+        TableStyle(
+            [
+                ("BOX", (0, 0), (-1, -1), 0.5, GREY),
+                ("LINEBELOW", (0, 0), (-1, -2), 0.5, GREY),
+                ("LEFTPADDING", (0, 0), (-1, -1), 10),
+                ("TOPPADDING", (0, 0), (-1, -1), 6),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ]
+        )
+    )
+    return [
+        Paragraph("What we checked", styles["h2"]),
         Paragraph(
-            "The system did not guess. These points need a person to look at them.",
+            "We check four things: the price, the volume discount, the delivery date and the "
+            "payment deadline. Tax and extra charges are not checked.",
+            styles["body"],
+        ),
+        table,
+    ]
+
+
+def _reasons(out: AuditOut, styles: dict) -> list:
+    notes = out.plain.review_notes
+    if not notes:
+        return []
+    story: list = [
+        Paragraph("What a person should check", styles["h2"]),
+        Paragraph(
+            "The system did not guess. Each point says what we could not confirm "
+            "and what to do about it.",
             styles["body"],
         ),
     ]
-    for source, label in SOURCE_LABELS.items():
-        rows = [reason for reason in out.review_reasons if reason.source == source]
-        if not rows:
-            continue
-        story.append(Paragraph(label, styles["h3"]))
-        for reason in rows:
-            field = reason.field.replace("_", " ").capitalize() + ": " if reason.field else ""
-            story.append(Paragraph(escape(field + reason.reason), styles["body"], bulletText="•"))
+    groups: dict[str, list] = {}
+    for note in notes:
+        groups.setdefault(note.group, []).append(note)
+    for group, rows in groups.items():
+        story.append(Paragraph(_t(group), styles["h3"]))
+        for note in rows:
+            story.append(
+                KeepTogether(
+                    [
+                        Paragraph(f"<b>{_t(note.title)}</b>", styles["body"]),
+                        Paragraph(_t(note.what), styles["body"]),
+                        Paragraph(f"<b>What to do:</b> {_t(note.todo)}", styles["body"]),
+                        Paragraph(f"Technical details: {_t(note.technical)}", styles["small"]),
+                        Spacer(1, 8),
+                    ]
+                )
+            )
     return story
 
 
@@ -224,7 +323,7 @@ def _rules(out: AuditOut, styles: dict) -> list:
     if not out.contract.rules:
         story.append(Paragraph("No rule could be proven in the contract.", styles["body"]))
     for rule in out.contract.rules:
-        story.append(Paragraph(escape(rule_line(rule)), styles["body"], bulletText="•"))
+        story.append(Paragraph(_t(rule_line(rule)), styles["bullet"], bulletText="•"))
     return story
 
 
@@ -237,7 +336,7 @@ def _documents(out: AuditOut, styles: dict) -> list:
             text += f", delivered on {day(inv.delivery_date)}"
         if inv.due_date:
             text += f", payment due {day(inv.due_date)}"
-        story.append(Paragraph(escape(f"{text}. Total {pkr(inv.total_amount)}."), styles["body"]))
+        story.append(Paragraph(_t(f"{text}. Total {pkr(inv.total_amount)}."), styles["body"]))
     else:
         story.append(Paragraph("Invoice: could not be read with certainty.", styles["body"]))
     if out.purchase_order:
@@ -245,7 +344,7 @@ def _documents(out: AuditOut, styles: dict) -> list:
         text = f"Purchase order {po.po_number}, dated {day(po.po_date)}"
         if po.delivery_due_date:
             text += f", delivery wanted by {day(po.delivery_due_date)}"
-        story.append(Paragraph(escape(f"{text}. Total {pkr(po.total_amount)}."), styles["body"]))
+        story.append(Paragraph(_t(f"{text}. Total {pkr(po.total_amount)}."), styles["body"]))
     else:
         story.append(Paragraph("Purchase order: could not be read with certainty.", styles["body"]))
     return story
@@ -261,7 +360,7 @@ def _small_print(out: AuditOut, styles: dict) -> list:
             styles["small"],
         ),
         Paragraph(
-            f"Report number {escape(out.audit_id)} · checked by {escape(out.llm_model)}",
+            f"Report number {_t(out.audit_id)} · checked by {_t(out.llm_model)}",
             styles["small"],
         ),
     ]
@@ -277,17 +376,19 @@ def _footer(canvas, doc) -> None:
 
 
 def build_report_pdf(out: AuditOut) -> bytes:
-    """The report of one finished audit as PDF bytes."""
+    """The report of one finished audit as PDF bytes (the same order as the screen)."""
     styles = _styles()
     subtitle = f"Checked on {when(out.created_at)}"
     if out.invoice:
         subtitle += f" · Invoice {out.invoice.invoice_number}"
     story: list = [
         Paragraph("Invoice check report", styles["title"]),
-        Paragraph(escape(subtitle), styles["small"]),
+        Paragraph(_t(subtitle), styles["small"]),
         Spacer(1, 12),
         _verdict_box(out, styles),
     ]
+    if out.status == "NEEDS_REVIEW":
+        story += _reasons(out, styles)
     if out.billed_total is not None:
         story += [Spacer(1, 14), _money_table(out, styles)]
         if out.amounts_provisional:
@@ -298,10 +399,10 @@ def build_report_pdf(out: AuditOut) -> bytes:
                     styles["small"],
                 ),
             ]
-    if out.status == "NEEDS_REVIEW":
-        story += _reasons(out, styles)
     story += _problems(out, styles)
-    if out.status != "NEEDS_REVIEW" and out.review_reasons:
+    story += _calculation(out, styles)
+    story += _checks(out, styles)
+    if out.status != "NEEDS_REVIEW":
         story += _reasons(out, styles)
     story += _rules(out, styles)
     story += _documents(out, styles)
