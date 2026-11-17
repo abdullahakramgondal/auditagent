@@ -5,6 +5,8 @@ type Props = {
   correctPayable: string | null
   totalDifference: string | null
   provisional: boolean
+  /** Only a result with a mistake shows the "Overcharged by" card. */
+  showDifference: boolean
 }
 
 function Card({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
@@ -20,13 +22,21 @@ function Card({ label, value, strong = false }: { label: string; value: string; 
   )
 }
 
-export function MoneySummary({ billedTotal, correctPayable, totalDifference, provisional }: Props) {
+export function MoneySummary({
+  billedTotal,
+  correctPayable,
+  totalDifference,
+  provisional,
+  showDifference,
+}: Props) {
   return (
     <section aria-label="The money" className="flex flex-col gap-2">
-      <dl className="grid gap-4 sm:grid-cols-3">
+      <dl className={`grid gap-4 ${showDifference ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
         <Card label="The vendor is asking for" value={formatPkr(billedTotal)} />
         <Card label="The right amount is" value={formatPkr(correctPayable)} />
-        <Card label="Too much" value={formatPkr(totalDifference)} strong />
+        {showDifference && (
+          <Card label="Overcharged by" value={formatPkr(totalDifference)} strong />
+        )}
       </dl>
       {provisional && (
         <p className="text-sm text-amber-900">

@@ -1,0 +1,154 @@
+{
+  "audit_id": "ce7ec0a418c04e7fbc87e13b0f514aa9",
+  "created_at": "2026-11-17T11:58:36.564690Z",
+  "status": "COMPLIANT",
+  "billed_total": "3162000.00",
+  "correct_payable": "3162000.00",
+  "total_difference": "0.00",
+  "amounts_provisional": false,
+  "findings": [],
+  "review_reasons": [],
+  "contract": {
+    "rules": [
+      {
+        "clause_type": "late_penalty",
+        "deadline": "2027-01-31",
+        "mode": "per_day_percent",
+        "percent": "2.5",
+        "cap_percent": "15.0",
+        "grace_days": 4,
+        "source": {
+          "page": 4,
+          "text": "6.5 If delivery is delayed beyond the Delivery Deadline, the first four (4) calendar days of delay shall not attract a late-delivery penalty. From the next day, a penalty of 2.5% of the value of the delayed Equipment shown on the relevant Invoice shall apply for each day of delay, subject to an aggregate ceiling of 15% of that Invoice value."
+        },
+        "deadline_source": {
+          "page": 4,
+          "text": "6.2 For Orders governed by this Agreement, the required delivery date is 31 January 2027 (the “Delivery Deadline”), unless a later or different date is expressly agreed in a written amendment signed by both Parties."
+        }
+      },
+      {
+        "clause_type": "volume_discount",
+        "min_quantity": 30,
+        "discount_percent": "7.0",
+        "source": {
+          "page": 5,
+          "text": "8.2 A single Order containing 30 or more units qualifies for a volume discount of 7% on the Equipment value of that Order."
+        }
+      },
+      {
+        "clause_type": "payment_terms",
+        "net_days": 28,
+        "source": {
+          "page": 6,
+          "text": "The Buyer shall pay each valid and undisputed Invoice within 28 days of the invoice date."
+        }
+      },
+      {
+        "clause_type": "unit_price",
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "agreed_unit_price": "85000.0",
+        "source": {
+          "page": 5,
+          "text": "The agreed unit price for each Dell UltraSharp U2723QE Monitor is PKR 85,000 per unit. The Vendor shall ensure that the unit amount shown on an Invoice does not exceed that agreed figure."
+        }
+      }
+    ]
+  },
+  "invoice": {
+    "invoice_number": "INV-2026-1102",
+    "invoice_date": "2027-02-01",
+    "delivery_date": "2027-01-28",
+    "due_date": "2027-03-01",
+    "line_items": [
+      {
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "quantity": 40,
+        "unit_price": "85000.0",
+        "line_total": "3400000.0"
+      }
+    ],
+    "adjustments": [
+      {
+        "label": "Volume Discount (7%)",
+        "amount": "-238000.0"
+      }
+    ],
+    "total_amount": "3162000.0",
+    "currency": "PKR"
+  },
+  "purchase_order": {
+    "po_number": "PO-2026-1101",
+    "po_date": "2026-12-15",
+    "delivery_due_date": "2027-01-31",
+    "line_items": [
+      {
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "quantity": 40,
+        "unit_price": "85000.0",
+        "line_total": "3400000.0"
+      }
+    ],
+    "total_amount": "3400000.0",
+    "currency": "PKR"
+  },
+  "llm_model": "gemini-3.1-flash-lite",
+  "seconds": 121.8,
+  "plain": {
+    "headline": "No problems found",
+    "advice": "All 4 rules we found in the contract match the invoice. Tax and extra charges are not checked.",
+    "problems": [],
+    "calculation": [
+      {
+        "kind": "start",
+        "label": "What the vendor is asking for",
+        "detail": "40 × PKR 85,000 = PKR 3,400,000 − PKR 238,000 (already taken off by the vendor: Volume Discount (7%))",
+        "amount_text": "PKR 3,162,000"
+      },
+      {
+        "kind": "base",
+        "label": "The same goods at the agreed price",
+        "detail": "40 × PKR 85,000 (the price in the contract)",
+        "amount_text": "PKR 3,400,000"
+      },
+      {
+        "kind": "minus",
+        "label": "Volume discount",
+        "detail": "7% of PKR 3,400,000, because the order has 40 items (the discount starts at 30)",
+        "amount_text": "− PKR 238,000"
+      },
+      {
+        "kind": "result",
+        "label": "The right amount to pay",
+        "detail": "PKR 3,400,000 − PKR 238,000",
+        "amount_text": "PKR 3,162,000"
+      }
+    ],
+    "checks": [
+      {
+        "clause_type": "unit_price",
+        "label": "Price per item",
+        "state": "ok",
+        "detail": "The invoice charges PKR 85,000 per item, not above the agreed PKR 85,000."
+      },
+      {
+        "clause_type": "volume_discount",
+        "label": "Volume discount",
+        "state": "ok",
+        "detail": "The order has 40 items and the discount was taken."
+      },
+      {
+        "clause_type": "late_penalty",
+        "label": "Delivery on time",
+        "state": "ok",
+        "detail": "Delivered on time (28 January 2027)."
+      },
+      {
+        "clause_type": "payment_terms",
+        "label": "Payment deadline",
+        "state": "ok",
+        "detail": "The invoice is due on 1 March 2027, at least 28 days after the invoice date."
+      }
+    ],
+    "review_notes": []
+  }
+}

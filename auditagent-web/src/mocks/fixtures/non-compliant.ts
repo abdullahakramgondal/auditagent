@@ -29,7 +29,7 @@ export const nonCompliant: Record<string, unknown> = {
         paragraphs: [
           'The contract says the goods must arrive by 28 February 2027. They arrived on 9 March 2027, which is 9 days late.',
           "The contract's penalty for this is 2.5% of the invoice for each day of delay (the first 4 days are free), up to a maximum of 15%.",
-          'The invoice does not take the full penalty off, so the vendor is asking for too much.',
+          'The invoice does not show this penalty being taken off. So the vendor is asking for too much.',
         ],
         page: 4,
         quote:
@@ -41,7 +41,7 @@ export const nonCompliant: Record<string, unknown> = {
         amount_text: 'PKR 297,500 too much',
         paragraphs: [
           'The contract gives a 7% discount on orders of 30 or more items. This order has 50 items, so the discount applies.',
-          'The invoice does not include the full discount.',
+          'The invoice does not show this discount.',
         ],
         page: 6,
         quote:
@@ -54,12 +54,78 @@ export const nonCompliant: Record<string, unknown> = {
         paragraphs: [
           'The contract gives the buyer 28 days to pay after the invoice date. This invoice is dated 12 March 2027 and asks for payment by 30 March 2027, which is only 18 days.',
           'The buyer should have until 9 April 2027.',
+          'This one does not change the amount to pay.',
         ],
         page: 6,
         quote:
           '9.1 The Buyer shall pay each valid and undisputed Invoice within 28 days of the invoice date.',
       },
     ],
+    calculation: [
+      {
+        kind: 'start',
+        label: 'What the vendor is asking for',
+        detail: '50 × PKR 89,250',
+        amount_text: 'PKR 4,462,500',
+      },
+      {
+        kind: 'base',
+        label: 'The same goods at the agreed price',
+        detail: '50 × PKR 85,000 (the price in the contract)',
+        amount_text: 'PKR 4,250,000',
+      },
+      {
+        kind: 'minus',
+        label: 'Late delivery penalty',
+        detail: '9 days late, the first 4 days are free, so 5 × 2.5% = 12.5%, of PKR 4,250,000',
+        amount_text: '− PKR 531,250',
+      },
+      {
+        kind: 'minus',
+        label: 'Volume discount',
+        detail: '7% of PKR 4,250,000, because the order has 50 items (the discount starts at 30)',
+        amount_text: '− PKR 297,500',
+      },
+      {
+        kind: 'result',
+        label: 'The right amount to pay',
+        detail: 'PKR 4,250,000 − PKR 531,250 − PKR 297,500',
+        amount_text: 'PKR 3,421,250',
+      },
+      {
+        kind: 'difference',
+        label: 'Overcharged by',
+        detail: 'PKR 4,462,500 − PKR 3,421,250',
+        amount_text: 'PKR 1,041,250',
+      },
+    ],
+    checks: [
+      {
+        clause_type: 'unit_price',
+        label: 'Price per item',
+        state: 'problem',
+        detail: 'A problem was found: see above.',
+      },
+      {
+        clause_type: 'volume_discount',
+        label: 'Volume discount',
+        state: 'problem',
+        detail: 'A problem was found: see above.',
+      },
+      {
+        clause_type: 'late_penalty',
+        label: 'Delivery on time',
+        state: 'problem',
+        detail: 'A problem was found: see above.',
+      },
+      {
+        clause_type: 'payment_terms',
+        label: 'Payment deadline',
+        state: 'problem',
+        detail: 'A problem was found: see above.',
+      },
+    ],
+    review_notes: [],
   },
   findings: [
     {

@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import type { AuditResult } from '@/api/types'
 import { formatDateTime } from '@/shared/lib/dates'
+import { CalculationSummary } from './CalculationSummary'
+import { Checklist } from './Checklist'
 import { ExportButtons } from './ExportButtons'
 import { ExtractedDocuments } from './ExtractedDocuments'
 import { MoneySummary } from './MoneySummary'
@@ -16,8 +18,9 @@ export function AuditResultView({ result }: { result: AuditResult }) {
     heading.current?.focus()
   }, [])
 
+  const { plain } = result
   const reasons =
-    result.review_reasons.length > 0 ? <ReviewReasons reasons={result.review_reasons} /> : null
+    plain.review_notes.length > 0 ? <ReviewReasons notes={plain.review_notes} /> : null
   const needsReview = result.status === 'NEEDS_REVIEW'
   const invoice = result.invoice ? ` · Invoice ${result.invoice.invoice_number}` : ''
 
@@ -40,11 +43,7 @@ export function AuditResultView({ result }: { result: AuditResult }) {
         <ExportButtons id={result.audit_id} />
       </div>
 
-      <StatusBanner
-        status={result.status}
-        headline={result.plain.headline}
-        advice={result.plain.advice}
-      />
+      <StatusBanner status={result.status} headline={plain.headline} advice={plain.advice} />
       {needsReview && reasons}
       {result.billed_total !== null && (
         <MoneySummary
@@ -52,9 +51,12 @@ export function AuditResultView({ result }: { result: AuditResult }) {
           correctPayable={result.correct_payable}
           totalDifference={result.total_difference}
           provisional={result.amounts_provisional}
+          showDifference={result.status === 'NON_COMPLIANT'}
         />
       )}
-      <ProblemList problems={result.plain.problems} status={result.status} />
+      <ProblemList problems={plain.problems} />
+      <CalculationSummary steps={plain.calculation} />
+      <Checklist items={plain.checks} />
       {!needsReview && reasons}
       <ExtractedDocuments
         contract={result.contract}

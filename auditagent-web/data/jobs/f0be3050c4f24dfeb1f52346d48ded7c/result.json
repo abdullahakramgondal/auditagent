@@ -1,0 +1,126 @@
+{
+  "audit_id": "f0be3050c4f24dfeb1f52346d48ded7c",
+  "created_at": "2026-11-17T12:09:40.442951Z",
+  "status": "COMPLIANT",
+  "billed_total": "4250000.00",
+  "correct_payable": "4250000.00",
+  "total_difference": "0.00",
+  "amounts_provisional": false,
+  "findings": [],
+  "review_reasons": [],
+  "contract": {
+    "rules": [
+      {
+        "clause_type": "late_penalty",
+        "deadline": "2027-03-31",
+        "mode": "per_day_percent",
+        "percent": "2.5",
+        "cap_percent": "15.0",
+        "grace_days": 4,
+        "source": {
+          "page": 4,
+          "text": "6.5 If delivery is delayed beyond the Delivery Deadline, the first four (4) calendar days of delay shall not attract a late-delivery penalty. From the next day, a penalty of 2.5% of the value of the delayed Equipment shown on the relevant Invoice shall apply for each day of delay, subject to an aggregate ceiling of 15% of that Invoice value."
+        },
+        "deadline_source": {
+          "page": 4,
+          "text": "6.2 For Orders governed by this Agreement, the required delivery date is 31 March 2027 (the “Delivery Deadline”), unless a later or different date is expressly agreed in a written amendment signed by both Parties."
+        }
+      },
+      {
+        "clause_type": "unit_price",
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "agreed_unit_price": "85000.0",
+        "source": {
+          "page": 5,
+          "text": "8.1 The agreed unit price for each Dell UltraSharp U2723QE Monitor is PKR 85,000 per unit. The Vendor shall ensure that the unit amount shown on an Invoice does not exceed that agreed figure."
+        }
+      }
+    ]
+  },
+  "invoice": {
+    "invoice_number": "INV-2026-1402",
+    "invoice_date": "2027-03-30",
+    "delivery_date": "2027-03-25",
+    "due_date": "2027-04-14",
+    "line_items": [
+      {
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "quantity": 50,
+        "unit_price": "85000.0",
+        "line_total": "4250000.0"
+      }
+    ],
+    "adjustments": [],
+    "total_amount": "4250000.0",
+    "currency": "PKR"
+  },
+  "purchase_order": {
+    "po_number": "PO-2026-1401",
+    "po_date": "2027-01-15",
+    "delivery_due_date": "2027-03-31",
+    "line_items": [
+      {
+        "item_name": "Dell UltraSharp U2723QE Monitor",
+        "quantity": 50,
+        "unit_price": "85000.0",
+        "line_total": "4250000.0"
+      }
+    ],
+    "total_amount": "4250000.0",
+    "currency": "PKR"
+  },
+  "llm_model": "gemini-3.1-flash-lite",
+  "seconds": 18.9,
+  "plain": {
+    "headline": "No problems found",
+    "advice": "All 2 rules we found in the contract match the invoice. Tax and extra charges are not checked.",
+    "problems": [],
+    "calculation": [
+      {
+        "kind": "start",
+        "label": "What the vendor is asking for",
+        "detail": "50 × PKR 85,000",
+        "amount_text": "PKR 4,250,000"
+      },
+      {
+        "kind": "base",
+        "label": "The same goods at the agreed price",
+        "detail": "50 × PKR 85,000 (the price in the contract)",
+        "amount_text": "PKR 4,250,000"
+      },
+      {
+        "kind": "result",
+        "label": "The right amount to pay",
+        "detail": "PKR 4,250,000",
+        "amount_text": "PKR 4,250,000"
+      }
+    ],
+    "checks": [
+      {
+        "clause_type": "unit_price",
+        "label": "Price per item",
+        "state": "ok",
+        "detail": "The invoice charges PKR 85,000 per item, not above the agreed PKR 85,000."
+      },
+      {
+        "clause_type": "volume_discount",
+        "label": "Volume discount",
+        "state": "none",
+        "detail": "We found no rule about this in the contract."
+      },
+      {
+        "clause_type": "late_penalty",
+        "label": "Delivery on time",
+        "state": "ok",
+        "detail": "Delivered on time (25 March 2027)."
+      },
+      {
+        "clause_type": "payment_terms",
+        "label": "Payment deadline",
+        "state": "none",
+        "detail": "We found no rule about this in the contract."
+      }
+    ],
+    "review_notes": []
+  }
+}

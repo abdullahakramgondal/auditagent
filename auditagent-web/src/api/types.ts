@@ -3,6 +3,8 @@ import type {
   AdjustmentSchema,
   AuditResultSchema,
   AuditStatusSchema,
+  CalcStepSchema,
+  CheckItemSchema,
   ClauseTypeSchema,
   ContractRuleSchema,
   ErrorKindSchema,
@@ -15,6 +17,7 @@ import type {
   PlainProblemSchema,
   PlainSummarySchema,
   PurchaseOrderSchema,
+  ReviewNoteSchema,
   ReviewReasonSchema,
   SourceSchema,
   SubmittedSchema,
@@ -40,3 +43,6 @@ export type AuditResult = z.infer<typeof AuditResultSchema>
 export type Summary = z.infer<typeof SummarySchema>
 export type PlainProblem = z.infer<typeof PlainProblemSchema>
 export type PlainSummary = z.infer<typeof PlainSummarySchema>
+export type CalcStep = z.infer<typeof CalcStepSchema>
+export type CheckItem = z.infer<typeof CheckItemSchema>
+export type ReviewNote = z.infer<typeof ReviewNoteSchema>

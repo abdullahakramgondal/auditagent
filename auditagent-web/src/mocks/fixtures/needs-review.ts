@@ -11,6 +11,50 @@ export const needsReview: Record<string, unknown> = {
     headline: 'We could not fully check this invoice',
     advice: 'Please ask a person to look at it before you pay.',
     problems: [],
+    calculation: [],
+    checks: [
+      {
+        clause_type: 'unit_price',
+        label: 'Price per item',
+        state: 'none',
+        detail: 'The contract has no rule about this.',
+      },
+      {
+        clause_type: 'volume_discount',
+        label: 'Volume discount',
+        state: 'none',
+        detail: 'The contract has no rule about this.',
+      },
+      {
+        clause_type: 'late_penalty',
+        label: 'Delivery on time',
+        state: 'unchecked',
+        detail: 'The invoice could not be read.',
+      },
+      {
+        clause_type: 'payment_terms',
+        label: 'Payment deadline',
+        state: 'none',
+        detail: 'The contract has no rule about this.',
+      },
+    ],
+    review_notes: [
+      {
+        group: 'About the invoice',
+        title: 'We could not read the delivery date',
+        what: 'The invoice seems to show a delivery date, but the system could not read it with certainty.',
+        todo: 'Open the invoice PDF and check it by hand.',
+        technical:
+          'delivery_date: delivery_date: the document shows a date next to a label for it but the model returned none: needs review',
+      },
+      {
+        group: 'General',
+        title: 'The invoice could not be read with certainty',
+        what: 'Because of this, no amount was checked.',
+        todo: 'Open the invoice PDF and check it by hand, or upload a clearer copy.',
+        technical: 'The invoice could not be proven from its text, so no amount was checked.',
+      },
+    ],
   },
   findings: [],
   review_reasons: [

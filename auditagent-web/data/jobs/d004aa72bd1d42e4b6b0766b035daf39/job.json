@@ -1,0 +1,12 @@
+{
+  "audit_id": "d004aa72bd1d42e4b6b0766b035daf39",
+  "state": "done",
+  "created_at": "2026-11-17T12:04:13.898200Z",
+  "provider": null,
+  "model": null,
+  "error": null,
+  "error_kind": null,
+  "status": "NON_COMPLIANT",
+  "total_difference": "267750.00",
+  "llm_model": "gemini-3.1-flash-lite"
+}

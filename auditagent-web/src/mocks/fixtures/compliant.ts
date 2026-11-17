@@ -8,9 +8,57 @@ export const compliant: Record<string, unknown> = {
   total_difference: '0.00',
   amounts_provisional: false,
   plain: {
-    headline: 'This invoice is correct',
-    advice: 'It matches the contract. You can go ahead and pay it.',
+    headline: 'No problems found',
+    advice:
+      'The 1 rule we found in the contract matches the invoice. Tax and extra charges are not checked.',
     problems: [],
+    calculation: [
+      {
+        kind: 'start',
+        label: 'What the vendor is asking for',
+        detail: '10 × PKR 1,000,000',
+        amount_text: 'PKR 10,000,000',
+      },
+      {
+        kind: 'base',
+        label: 'The goods at the invoice price',
+        detail: '10 × PKR 1,000,000',
+        amount_text: 'PKR 10,000,000',
+      },
+      {
+        kind: 'result',
+        label: 'The right amount to pay',
+        detail: 'PKR 10,000,000',
+        amount_text: 'PKR 10,000,000',
+      },
+    ],
+    checks: [
+      {
+        clause_type: 'unit_price',
+        label: 'Price per item',
+        state: 'none',
+        detail: 'We found no rule about this in the contract.',
+      },
+      {
+        clause_type: 'volume_discount',
+        label: 'Volume discount',
+        state: 'none',
+        detail: 'We found no rule about this in the contract.',
+      },
+      {
+        clause_type: 'late_penalty',
+        label: 'Delivery on time',
+        state: 'ok',
+        detail: 'Delivered on time (14 October 2026).',
+      },
+      {
+        clause_type: 'payment_terms',
+        label: 'Payment deadline',
+        state: 'none',
+        detail: 'We found no rule about this in the contract.',
+      },
+    ],
+    review_notes: [],
   },
   findings: [],
   review_reasons: [],

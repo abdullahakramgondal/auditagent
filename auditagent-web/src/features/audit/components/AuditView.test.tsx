@@ -98,19 +98,20 @@ describe('a finished audit with mistakes', () => {
     })
   }
 
-  it('says in plain words that the invoice is too high, and shows the money', async () => {
+  it('shows the status label, the plain headline and the three money boxes', async () => {
     serveNonCompliant()
     renderView(NON_COMPLIANT_ID)
     expect(await screen.findByRole('heading', { name: 'Invoice check result' })).toBeInTheDocument()
+    expect(screen.getByText('Non-compliant')).toBeInTheDocument()
     expect(screen.getByText('This invoice is too high')).toBeInTheDocument()
     expect(
       screen.getByText('Do not pay it as it is. Ask the vendor for a corrected invoice.'),
     ).toBeInTheDocument()
     expect(screen.getByText('The vendor is asking for')).toBeInTheDocument()
     expect(screen.getByText('The right amount is')).toBeInTheDocument()
-    expect(screen.getByText('Too much')).toBeInTheDocument()
-    expect(screen.getByText('PKR 3,421,250')).toBeInTheDocument()
-    expect(screen.getByText('PKR 1,041,250')).toBeInTheDocument()
+    expect(screen.getAllByText('Overcharged by').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('PKR 3,421,250').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('PKR 1,041,250').length).toBeGreaterThan(0)
     expect(screen.getAllByText('PKR 4,462,500').length).toBeGreaterThan(0)
   })
 
@@ -123,10 +124,34 @@ describe('a finished audit with mistakes', () => {
     expect(screen.getByText(/The delivery was late, but no penalty was taken off/)).toBeInTheDocument()
     expect(screen.getByText('PKR 531,250 too much')).toBeInTheDocument()
     expect(screen.getByText('A rule was broken')).toBeInTheDocument()
+    expect(screen.getByText('This one does not change the amount to pay.')).toBeInTheDocument()
+    expect(screen.getByText('The invoice does not show this discount.')).toBeInTheDocument()
     expect(screen.getByText(/which is 9 days late/)).toBeInTheDocument()
     expect(screen.getAllByText('What the contract says (page 6)')).toHaveLength(3)
     expect(screen.getByText('What the contract says (page 4)')).toBeInTheDocument()
-    expect(screen.queryByRole('heading', { name: 'Things we could not check' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'What a person should check' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows the working-out line by line, written by the backend', async () => {
+    serveNonCompliant()
+    renderView(NON_COMPLIANT_ID)
+    expect(await screen.findByRole('heading', { name: 'How we worked it out' })).toBeInTheDocument()
+    expect(screen.getByText('What the vendor is asking for')).toBeInTheDocument()
+    expect(screen.getByText('The same goods at the agreed price')).toBeInTheDocument()
+    expect(screen.getByText('The right amount to pay')).toBeInTheDocument()
+    expect(screen.getByText('− PKR 531,250')).toBeInTheDocument()
+    expect(screen.getByText('− PKR 297,500')).toBeInTheDocument()
+    expect(screen.getByText(/so 5 × 2.5% = 12.5%/)).toBeInTheDocument()
+  })
+
+  it('shows what was checked, with a word and not only a colour', async () => {
+    serveNonCompliant()
+    renderView(NON_COMPLIANT_ID)
+    expect(await screen.findByRole('heading', { name: 'What we checked' })).toBeInTheDocument()
+    expect(screen.getAllByText(/Problem found/)).toHaveLength(4)
+    expect(screen.getByText(/Tax and extra charges are not checked/)).toBeInTheDocument()
   })
 
   it('moves the focus to the result heading', async () => {
@@ -161,32 +186,54 @@ describe('a finished audit with mistakes', () => {
 })
 
 describe('a finished correct audit', () => {
-  it('says that the invoice is correct and that nothing is wrong', async () => {
+  function serveCompliant() {
     serve({
       [`/audits/${COMPLIANT_ID}`]: { body: history[2] },
       [`/audits/${COMPLIANT_ID}/result`]: { body: compliant },
     })
+  }
+
+  it('says that no problem was found in the four things, and does not promise more', async () => {
+    serveCompliant()
     renderView(COMPLIANT_ID)
-    expect(await screen.findByText('This invoice is correct')).toBeInTheDocument()
-    expect(screen.getByText('It matches the contract. You can go ahead and pay it.')).toBeInTheDocument()
-    expect(screen.getByText(/Nothing is wrong/)).toBeInTheDocument()
+    expect(await screen.findByText('No problems found')).toBeInTheDocument()
+    expect(screen.getByText('Compliant')).toBeInTheDocument()
+    expect(
+      screen.getByText(/The 1 rule we found in the contract matches the invoice/),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/go ahead and pay/i)).not.toBeInTheDocument()
+  })
+
+  it('shows what was checked instead of a "What is wrong" box, and no overcharge card', async () => {
+    serveCompliant()
+    renderView(COMPLIANT_ID)
+    expect(await screen.findByRole('heading', { name: 'What we checked' })).toBeInTheDocument()
+    expect(screen.getByText('Delivered on time (14 October 2026).')).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'What is wrong' })).not.toBeInTheDocument()
+    expect(screen.queryByText('Overcharged by')).not.toBeInTheDocument()
+    expect(screen.getByText('The right amount is')).toBeInTheDocument()
   })
 })
 
 describe('a finished audit that needs a person', () => {
-  it('asks for a person, lists what could not be checked and shows no amounts', async () => {
+  it('explains each open point in plain words, with what to do, and shows no amounts', async () => {
     serve({
       [`/audits/${REVIEW_ID}`]: { body: history[1] },
       [`/audits/${REVIEW_ID}/result`]: { body: needsReview },
     })
     renderView(REVIEW_ID)
     expect(await screen.findByText('We could not fully check this invoice')).toBeInTheDocument()
+    expect(screen.getByText('Needs human review')).toBeInTheDocument()
     expect(screen.getByText('Please ask a person to look at it before you pay.')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Things we could not check' })).toBeInTheDocument()
-    expect(screen.getByText(/the document shows a date next to a label/i)).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Invoice' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'What a person should check' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'About the invoice' })).toBeInTheDocument()
+    expect(screen.getByText('We could not read the delivery date')).toBeInTheDocument()
+    expect(screen.getAllByText(/What to do:/).length).toBe(2)
+    expect(screen.getAllByText('Technical details')).toHaveLength(2)
     expect(screen.queryByText('The vendor is asking for')).not.toBeInTheDocument()
-    expect(screen.getByText(/No mistake was proven/)).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'What is wrong' })).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'What we checked' })).toBeInTheDocument()
+    expect(screen.getByText(/Could not check/)).toBeInTheDocument()
   })
 })
 

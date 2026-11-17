@@ -149,10 +149,38 @@ export const PlainProblemSchema = z.object({
   quote: z.string().min(1),
 })
 
+/** One line of the working-out (the sums are made by the backend). */
+export const CalcStepSchema = z.object({
+  kind: z.enum(['start', 'base', 'minus', 'result', 'difference']),
+  label: z.string(),
+  detail: z.string(),
+  amount_text: z.string(),
+})
+
+/** One of the four things that the system checks, and how it went. */
+export const CheckItemSchema = z.object({
+  clause_type: ClauseTypeSchema,
+  label: z.string(),
+  state: z.enum(['ok', 'problem', 'unchecked', 'none']),
+  detail: z.string(),
+})
+
+/** One thing the system could not prove, in plain words. */
+export const ReviewNoteSchema = z.object({
+  group: z.string(),
+  title: z.string(),
+  what: z.string(),
+  todo: z.string(),
+  technical: z.string(),
+})
+
 export const PlainSummarySchema = z.object({
   headline: z.string(),
   advice: z.string(),
   problems: z.array(PlainProblemSchema),
+  calculation: z.array(CalcStepSchema).default([]),
+  checks: z.array(CheckItemSchema).default([]),
+  review_notes: z.array(ReviewNoteSchema).default([]),
 })
 
 /** GET /audits/{id}/result. The amounts are null when no invoice could be proven. */
@@ -173,7 +201,6 @@ export const AuditResultSchema = z.object({
   llm_model: z.string(),
   seconds: z.number(),
 })
-
 
 /** GET /audits/summary: counted and added by the backend, the front end never adds money. */
 export const SummarySchema = z.object({

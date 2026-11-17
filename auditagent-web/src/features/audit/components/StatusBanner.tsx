@@ -4,9 +4,9 @@ import { StatusIcon } from '@/shared/ui/StatusIcon'
 
 type Props = { status: AuditStatus; headline: string; advice: string }
 
-/** The answer in one look: colour, icon and plain words together (colour is never the only signal). */
+/** The answer in one look: colour, icon, the status label and plain words together. */
 export function StatusBanner({ status, headline, advice }: Props) {
-  const { className } = statusMeta[status]
+  const { className, label } = statusMeta[status]
   return (
     <section
       role="status"
@@ -15,6 +15,7 @@ export function StatusBanner({ status, headline, advice }: Props) {
     >
       <StatusIcon status={status} className="mt-1 size-7 shrink-0" />
       <div>
+        <p className="text-sm font-semibold uppercase tracking-wide">{label}</p>
         <p className="text-xl font-semibold md:text-2xl">{headline}</p>
         <p className="mt-1 text-base md:text-lg">{advice}</p>
       </div>
