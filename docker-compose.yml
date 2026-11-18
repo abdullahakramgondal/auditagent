@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    image: auditagent:latest
+    ports:
+      - "80:8000"
+    env_file:
+      - .env
+    volumes:
+      - jobs:/data/jobs
+    restart: unless-stopped
+
+volumes:
+  # The uploaded PDFs and the results of every audit: they survive a restart and a rebuild.
+  jobs:

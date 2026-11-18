@@ -38,3 +38,7 @@ AuditAgent AI Front End Architecture Audit & Layout Playbook.md
 
 auditagent-web/node_modules/
 auditagent-web/dist/
+
+
+# Keys and server files
+*.pem

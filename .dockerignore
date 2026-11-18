@@ -1,0 +1,16 @@
+.git
+.env
+.venv
+**/node_modules
+**/dist
+**/__pycache__
+.pytest_cache
+.ruff_cache
+*.pem
+*.db
+chroma_db
+data/jobs
+data/generated
+eval/results
+tests
+docs
