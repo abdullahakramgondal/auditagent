@@ -33,6 +33,26 @@ async function fillAll(user: ReturnType<typeof setup>) {
 }
 
 describe('UploadForm', () => {
+  it('says in one sentence what each document is', () => {
+    setup()
+    expect(screen.getByText(/The agreement you signed with the vendor/)).toBeInTheDocument()
+    expect(screen.getByText(/What you ordered: the items/)).toBeInTheDocument()
+    expect(screen.getByText(/The bill the vendor sent you/)).toBeInTheDocument()
+    expect(screen.getByLabelText('Contract')).toHaveAccessibleDescription(
+      /The agreement you signed with the vendor/,
+    )
+  })
+
+  it('counts the chosen files', async () => {
+    const user = setup()
+    expect(screen.getByText('0 of 3 files chosen.')).toBeInTheDocument()
+    await user.upload(screen.getByLabelText('Contract'), pdf('contract.pdf'))
+    expect(await screen.findByText('1 of 3 files chosen.')).toBeInTheDocument()
+    await user.upload(screen.getByLabelText('Purchase order'), pdf('po.pdf'))
+    await user.upload(screen.getByLabelText('Invoice'), pdf('invoice.pdf'))
+    expect(await screen.findByText('All three files are ready.')).toBeInTheDocument()
+  })
+
   it('cannot start an audit before all three files are chosen', async () => {
     const user = setup()
     const button = screen.getByRole('button', { name: /start audit/i })

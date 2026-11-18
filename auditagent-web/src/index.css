@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* A visible ring for keyboard users on every control. */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}

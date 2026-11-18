@@ -4,6 +4,8 @@ import { MAX_BYTES, formatSize } from '../lib/validation'
 type Props = {
   id: string
   label: string
+  /** One plain sentence: what this document is and what we read from it. */
+  hint: string
   file: File | null
   error: string | null
   onSelect: (file: File) => void
@@ -17,10 +19,11 @@ function toneOf(file: File | null, error: string | null, dragging: boolean): str
   return 'border-dashed border-slate-300 bg-white'
 }
 
-export function FileSlot({ id, label, file, error, onSelect, onRemove }: Props) {
+export function FileSlot({ id, label, hint, file, error, onSelect, onRemove }: Props) {
   const input = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
   const name = label.toLowerCase()
+  const hintId = `${id}-hint`
 
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const chosen = event.target.files?.[0]
@@ -36,7 +39,8 @@ export function FileSlot({ id, label, file, error, onSelect, onRemove }: Props) 
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    // h-full + flex-1: the three boxes of the grid always have the same height.
+    <div className="flex h-full flex-col gap-2">
       <div
         onDragOver={(event) => {
           event.preventDefault()
@@ -44,16 +48,22 @@ export function FileSlot({ id, label, file, error, onSelect, onRemove }: Props) 
         }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        className={`flex min-h-44 flex-col justify-between gap-4 rounded-lg border-2 p-4 focus-within:ring-2 focus-within:ring-blue-600 md:p-6 ${toneOf(file, error, dragging)}`}
+        className={`flex min-h-48 flex-1 flex-col justify-between gap-4 rounded-lg border-2 p-4 focus-within:ring-2 focus-within:ring-blue-600 md:p-6 ${toneOf(file, error, dragging)}`}
       >
-        <label htmlFor={id} className="text-base font-semibold">
-          {label}
-        </label>
+        <div>
+          <label htmlFor={id} className="text-base font-semibold">
+            {label}
+          </label>
+          <p id={hintId} className="mt-1 text-sm text-slate-600">
+            {hint}
+          </p>
+        </div>
         <input
           ref={input}
           id={id}
           type="file"
           accept="application/pdf,.pdf"
+          aria-describedby={hintId}
           className="sr-only"
           onChange={onChange}
         />
@@ -82,7 +92,7 @@ export function FileSlot({ id, label, file, error, onSelect, onRemove }: Props) 
               type="button"
               aria-label={`Remove ${name} file`}
               onClick={onRemove}
-              className="self-start rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-100"
+              className="min-h-11 self-start rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-100"
             >
               Remove
             </button>
@@ -94,7 +104,7 @@ export function FileSlot({ id, label, file, error, onSelect, onRemove }: Props) 
               type="button"
               aria-label={`Choose ${name} file`}
               onClick={() => input.current?.click()}
-              className="self-start rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-100"
+              className="min-h-11 self-start rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-100"
             >
               Choose file
             </button>

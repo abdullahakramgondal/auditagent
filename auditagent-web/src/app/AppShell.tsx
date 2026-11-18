@@ -1,9 +1,29 @@
-import { NavLink, Outlet } from 'react-router'
+import { Link, NavLink, Outlet } from 'react-router'
 
 function linkClass({ isActive }: { isActive: boolean }): string {
-  return `rounded-md px-3 py-2 text-sm font-medium ${
+  return `inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium ${
     isActive ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
   }`
+}
+
+/** The logo: a dark square with a tick, the same picture as the browser tab icon. */
+function Logo() {
+  return (
+    <Link to="/" className="flex shrink-0 items-center gap-2 font-semibold">
+      <svg aria-hidden="true" viewBox="0 0 32 32" className="size-7">
+        <rect width="32" height="32" rx="7" fill="#0f172a" />
+        <path
+          d="M9 16.5l4.5 4.5L23 11"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="3.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      AuditAgent AI
+    </Link>
+  )
 }
 
 export function AppShell() {
@@ -16,9 +36,9 @@ export function AppShell() {
         Skip to content
       </a>
       <header className="sticky top-0 z-10 border-b bg-white/95 backdrop-blur">
-        <div className="mx-auto flex min-h-14 w-full max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 sm:px-6">
-          <span className="shrink-0 font-semibold">AuditAgent AI</span>
-          <nav aria-label="Main" className="flex gap-1">
+        <div className="mx-auto flex min-h-14 w-full max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-1 sm:px-6">
+          <Logo />
+          <nav aria-label="Main" className="flex flex-wrap gap-1">
             <NavLink to="/" end className={linkClass}>
               Dashboard
             </NavLink>
