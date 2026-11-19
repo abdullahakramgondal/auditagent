@@ -210,31 +210,45 @@ def _problems(out: AuditOut, styles: dict) -> list:
         story.append(_problem(number, problem, styles))
     return story
 
-
 def _calculation(out: AuditOut, styles: dict) -> list:
     steps = out.plain.calculation
     if not steps:
         return []
-    rows = []
+    head_right = ParagraphStyle("head_right", parent=styles["label"], alignment=2)
+    rows = [
+        [
+            Paragraph("<b>Step</b>", styles["label"]),
+            Paragraph("<b>How we got it</b>", styles["label"]),
+            Paragraph("<b>Amount</b>", head_right),
+        ]
+    ]
     for step in steps:
         colour = AMOUNT_COLOURS[step.kind]
-        left = [
-            Paragraph(f"<b>{_t(step.label)}</b>", styles["body"]),
-            Paragraph(_t(step.detail), styles["small"]),
-        ]
-        right = Paragraph(f'<font color="{colour}">{_t(step.amount_text)}</font>', styles["amount"])
-        rows.append([left, right])
-    table = Table(rows, colWidths=[CONTENT_WIDTH * 0.7, CONTENT_WIDTH * 0.3])
+        rows.append(
+            [
+                Paragraph(f"<b>{_t(step.label)}</b>", styles["body"]),
+                Paragraph(_t(step.detail), styles["small"]),
+                Paragraph(
+                    f'<font color="{colour}">{_t(step.amount_text)}</font>', styles["amount"]
+                ),
+            ]
+        )
+    table = Table(
+        rows,
+        colWidths=[CONTENT_WIDTH * 0.27, CONTENT_WIDTH * 0.46, CONTENT_WIDTH * 0.27],
+        repeatRows=1,
+    )
     commands = [
         ("BOX", (0, 0), (-1, -1), 0.5, GREY),
         ("LINEBELOW", (0, 0), (-1, -2), 0.5, GREY),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#f1f5f9")),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 10),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 10),
+        ("LEFTPADDING", (0, 0), (-1, -1), 8),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 8),
         ("TOPPADDING", (0, 0), (-1, -1), 6),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
     ]
-    for index, step in enumerate(steps):
+    for index, step in enumerate(steps, start=1):  # row 0 is the header
         if step.kind == "result":
             commands.append(("BACKGROUND", (0, index), (-1, index), colors.HexColor("#f8fafc")))
     table.setStyle(TableStyle(commands))
