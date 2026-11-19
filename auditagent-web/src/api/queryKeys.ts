@@ -8,3 +8,8 @@ export const auditKeys = {
   detail: (id: string) => [...all, 'detail', id] as const,
   result: (id: string) => [...all, 'result', id] as const,
 }
+
+/** The person who is logged in (null when nobody is). */
+export const authKeys = {
+  me: ['auth', 'me'] as const,
+}

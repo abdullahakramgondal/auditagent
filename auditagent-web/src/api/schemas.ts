@@ -212,3 +212,13 @@ export const SummarySchema = z.object({
   needs_review: z.number().int().min(0),
   total_difference: decimalString,
 })
+
+/** GET /auth/me, POST /auth/login and /auth/register: the person who is logged in. */
+export const UserSchema = z.object({
+  email: z.string(),
+})
+
+/** POST /auth/logout. */
+export const LoggedOutSchema = z.object({
+  status: z.string(),
+})

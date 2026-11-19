@@ -48,7 +48,7 @@ export async function request<T>(
 ): Promise<T> {
   let response: Response
   try {
-    response = await fetch(`${env.apiBaseUrl}${path}`, init)
+      response = await fetch(`${env.apiBaseUrl}${path}`, { credentials: 'include', ...init })
   } catch {
     throw new ApiError('network', 'The service is not reachable. Check that the backend is running.')
   }

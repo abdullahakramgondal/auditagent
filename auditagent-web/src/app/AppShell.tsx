@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet } from 'react-router'
+import { LogoutButton, useMe } from '@/features/auth'
 
 function linkClass({ isActive }: { isActive: boolean }): string {
   return `inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium ${
@@ -27,6 +28,7 @@ function Logo() {
 }
 
 export function AppShell() {
+  const me = useMe()
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <a
@@ -38,17 +40,25 @@ export function AppShell() {
       <header className="sticky top-0 z-10 border-b bg-white/95 backdrop-blur">
         <div className="mx-auto flex min-h-14 w-full max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-1 sm:px-6">
           <Logo />
-          <nav aria-label="Main" className="flex flex-wrap gap-1">
-            <NavLink to="/" end className={linkClass}>
-              Dashboard
-            </NavLink>
-            <NavLink to="/new" className={linkClass}>
-              New audit
-            </NavLink>
-            <NavLink to="/history" className={linkClass}>
-              History
-            </NavLink>
-          </nav>
+          {me.data && (
+            <div className="flex flex-wrap items-center gap-1">
+              <nav aria-label="Main" className="flex flex-wrap gap-1">
+                <NavLink to="/" end className={linkClass}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/new" className={linkClass}>
+                  New audit
+                </NavLink>
+                <NavLink to="/history" className={linkClass}>
+                  History
+                </NavLink>
+              </nav>
+              <span className="hidden max-w-48 truncate px-2 text-sm text-slate-600 md:inline">
+                {me.data.email}
+              </span>
+              <LogoutButton />
+            </div>
+          )}
         </div>
       </header>
       <p role="note" className="bg-slate-100 px-4 py-2 text-sm text-slate-600 sm:px-6">
