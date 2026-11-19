@@ -42,6 +42,7 @@ class JobInfo(BaseModel):
     status: AuditStatus | None = None
     total_difference: Decimal | None = None
     llm_model: str | None = None
+    user_id: int | None = None  # the owner: an audit without an owner is nobody's
 
 
 class Submitted(BaseModel):

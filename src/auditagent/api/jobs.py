@@ -92,7 +92,13 @@ class JobManager:
         self.runner = runner
         self.executor = executor or ThreadPoolExecutor(max_workers=1)
 
-    def submit(self, pdfs: dict[str, bytes], provider: str | None, model: str | None) -> JobInfo:
+    def submit(
+        self,
+        pdfs: dict[str, bytes],
+        provider: str | None,
+        model: str | None,
+        user_id: int | None = None,
+    ) -> JobInfo:
         """Save the three PDFs, record the job as queued and hand it to the worker."""
         audit_id = uuid.uuid4().hex
         folder = self.store.create(audit_id)
@@ -104,6 +110,7 @@ class JobManager:
             created_at=datetime.now(UTC),
             provider=provider,
             model=model,
+            user_id=user_id,
         )
         self.store.write_info(info)
         self.executor.submit(self._run, audit_id)

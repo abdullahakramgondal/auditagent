@@ -14,6 +14,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from auditagent.api.app import create_app
+from auditagent.api.auth import UserStore
 from auditagent.api.jobs import JobManager
 
 DEFAULT_WEB_DIR = Path(__file__).resolve().parents[3] / "auditagent-web" / "dist"
@@ -36,8 +37,12 @@ class SpaFiles(StaticFiles):
             raise
 
 
-def create_web_app(manager: JobManager | None = None, web_dir: Path | None = None) -> FastAPI:
-    """The API at /api and the built front end everywhere else. Tests pass a manager and a folder."""
+def create_web_app(
+    manager: JobManager | None = None,
+    web_dir: Path | None = None,
+    users: UserStore | None = None,
+) -> FastAPI:
+    """The API at /api and the built front end everywhere else. Tests pass a manager, a folder, users."""
     folder = Path(web_dir or os.environ.get("AUDITAGENT_WEB_DIR", DEFAULT_WEB_DIR))
     if not (folder / "index.html").is_file():
         raise RuntimeError(
@@ -45,6 +50,6 @@ def create_web_app(manager: JobManager | None = None, web_dir: Path | None = Non
             "Run: cd auditagent-web && npm run build"
         )
     app = FastAPI(title="AuditAgent AI", docs_url=None, redoc_url=None, openapi_url=None)
-    app.mount("/api", create_app(manager))  # the API docs are at /api/docs
+    app.mount("/api", create_app(manager, users))  # the API docs are at /api/docs
     app.mount("/", SpaFiles(directory=folder, html=True))
     return app

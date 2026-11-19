@@ -15,7 +15,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app/src \
     HF_HOME=/opt/hf \
     AUDITAGENT_WEB_DIR=/app/web \
-    AUDITAGENT_JOBS_DIR=/data/jobs
+    AUDITAGENT_JOBS_DIR=/data/jobs \
+    AUDITAGENT_DB=/data/auditagent.db
 WORKDIR /app
 
 # torch from the CPU index: the default wheel brings a few GB of GPU libraries that a t3 server cannot use.

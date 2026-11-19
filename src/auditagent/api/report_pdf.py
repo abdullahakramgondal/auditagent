@@ -210,6 +210,7 @@ def _problems(out: AuditOut, styles: dict) -> list:
         story.append(_problem(number, problem, styles))
     return story
 
+
 def _calculation(out: AuditOut, styles: dict) -> list:
     steps = out.plain.calculation
     if not steps:

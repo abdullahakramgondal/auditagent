@@ -7,9 +7,10 @@ services:
     env_file:
       - .env
     volumes:
-      - jobs:/data/jobs
+      - data:/data
     restart: unless-stopped
 
 volumes:
-  # The uploaded PDFs and the results of every audit: they survive a restart and a rebuild.
-  jobs:
+  # Everything under /data: the user database (auditagent.db) and the PDFs and results of every audit.
+  # It survives a restart and a rebuild.
+  data:

@@ -6,6 +6,7 @@ from decimal import Decimal
 from fastapi.testclient import TestClient
 
 from auditagent.api.app import create_app
+from auditagent.api.auth import UserStore
 from auditagent.api.jobs import JobManager, JobStore
 from auditagent.ingestion.pdf_parser import PdfParseError
 from auditagent.llm.base import LLMError, LLMTransientError
@@ -81,7 +82,12 @@ def runner_raising(error):
 
 def make_client(tmp_path, runner, executor=None):
     manager = JobManager(JobStore(tmp_path / "jobs"), runner, executor or SyncExecutor())
-    return TestClient(create_app(manager))
+    client = TestClient(create_app(manager, UserStore(tmp_path / "users.db", rounds=4)))
+    reply = client.post(
+        "/auth/register", json={"email": "user@example.com", "password": "password123"}
+    )
+    assert reply.status_code == 200  # the client keeps the login cookie
+    return client
 
 
 def upload(client, contract=PDF, purchase_order=PDF, invoice=PDF, **fields):

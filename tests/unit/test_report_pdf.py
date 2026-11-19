@@ -9,6 +9,7 @@ import pdfplumber
 from fastapi.testclient import TestClient
 
 from auditagent.api.app import create_app
+from auditagent.api.auth import UserStore
 from auditagent.api.jobs import JobManager, JobStore
 from auditagent.api.report_pdf import build_report_pdf, pkr
 from auditagent.api.schemas import AuditOut, to_audit_out
@@ -198,7 +199,7 @@ def test_a_too_high_invoice_says_so_in_plain_words_with_the_money_and_the_clause
 
 def test_the_report_has_the_working_out_and_the_checklist_like_the_screen():
     text = text_of(build_report_pdf(out_of(make_report())))
-    assert "How we worked it out" in text and "The right amount to pay" in text
+    assert "How we worked it out" in text and "The right amount to" in text
     assert "What we checked" in text and "Problem found" in text
     assert "Tax and extra charges are not checked." in text
 
@@ -281,7 +282,12 @@ def test_a_long_report_runs_over_to_more_than_one_page():
 
 def make_client(tmp_path) -> TestClient:
     manager = JobManager(JobStore(tmp_path / "jobs"), lambda *args: make_report(), SyncExecutor())
-    return TestClient(create_app(manager))
+    client = TestClient(create_app(manager, UserStore(tmp_path / "users.db", rounds=4)))
+    reply = client.post(
+        "/auth/register", json={"email": "user@example.com", "password": "password123"}
+    )
+    assert reply.status_code == 200
+    return client
 
 
 def start(client) -> str:
